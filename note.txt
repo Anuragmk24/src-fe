@@ -1,0 +1,19 @@
+need to ask spouse before clicking the group , if spouse , only 2 group 
+
+
+country select option library
+
+need to add iim number AND VERIFY IIM MEMBER
+
+
+iia number
+
+
+need to add role in token . and decoded from middeleware and 
+do with some checks for authorisation
+
+
+- student has limited entry. 100
+
+
+when logout clear role also from localstorage

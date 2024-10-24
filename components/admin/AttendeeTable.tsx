@@ -1,0 +1,131 @@
+'use client';
+import { DataTable, DataTableSortStatus } from 'mantine-datatable';
+import { useEffect, useState } from 'react';
+import sortBy from 'lodash/sortBy';
+import { useSelector } from 'react-redux';
+import { IRootState } from '@/store';
+import { useQuery } from '@tanstack/react-query';
+import { fetchBookings } from '@/data/admin/registration';
+import { Loader } from '@mantine/core'; // Assuming you are using Mantine loader
+import { formatDate } from '@/utils/common';
+import IconEye from '../icon/icon-eye';
+import Modal from './Modal';
+
+const AttendeeTable = () => {
+    const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
+    const { token } = useSelector((state: any) => state.admin);
+
+    const PAGE_SIZES = [10, 20, 30, 50, 100];
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
+    const [search, setSearch] = useState('');
+    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
+        columnAccessor: 'firstName',
+        direction: 'asc',
+    });
+
+    // Fetch bookings with pagination and token
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['bookings', page, pageSize],
+        queryFn: () => fetchBookings(token, (page - 1) * pageSize, pageSize),
+        // keepPreviousData: true, // Keeps previous data while fetching new page data
+    });
+
+    const [records, setRecords] = useState<any[]>([]);
+
+    // Set records and apply sorting/filtering
+    useEffect(() => {
+        if (data?.data?.bookings) {
+            let filteredRecords = data.data.bookings;
+
+            // Apply search filter
+            if (search) {
+                filteredRecords = filteredRecords.filter((item: any) =>
+                    item.firstName.toLowerCase().includes(search.toLowerCase()) ||
+                    item.lastName.toLowerCase().includes(search.toLowerCase()) ||
+                    item.email.toLowerCase().includes(search.toLowerCase()) ||
+                    item.phone.toLowerCase().includes(search.toLowerCase())
+                );
+            }
+
+            // Apply sorting
+            const sortedRecords = sortBy(filteredRecords, sortStatus.columnAccessor);
+            setRecords(sortStatus.direction === 'desc' ? sortedRecords.reverse() : sortedRecords);
+        }
+    }, [data, search, sortStatus]);
+
+    if (isLoading) {
+        return <Loader size="xl" />;
+    }
+
+    if (isError) {
+        return <div>Error fetching bookings.</div>;
+    }
+
+    const handleAction = (id:any)=>{
+
+    }
+
+    return (
+        <div className="panel mt-6">
+            <div className="mb-5 flex flex-col gap-5 md:flex-row md:items-center">
+                <h5 className="text-lg font-semibold dark:text-white-light">Order Sorting</h5>
+                <div className="ltr:ml-auto rtl:mr-auto">
+                    <input
+                        type="text"
+                        className="form-input w-auto"
+                        placeholder="Search..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                </div>
+            </div>
+            <div className="datatables">
+                <DataTable
+                    highlightOnHover
+                    className={`${isRtl ? 'table-hover whitespace-nowrap' : 'table-hover whitespace-nowrap'}`}
+                    records={records}
+                    columns={[
+                        { accessor: 'firstName', title: 'Name', sortable: true ,render:(record) => `${record.firstName} ${record.lastName}`},
+                        { accessor: 'createdAt', title: 'Date', sortable: true ,render:(record:any) => formatDate(record.createdAt)},
+                        { accessor: 'mobile', title: 'Phone No.', sortable: true },
+                        { accessor: 'mobile', title: 'Member Type', sortable: true,  render:(record:any) =><div>member type</div> },
+                        { accessor: 'regFee', title: 'Reg. fee', sortable: true, render:(record:any) => 2500 }, // Assuming real data fields
+                        { accessor: 'accommodation', title: 'Accommodation', sortable: true,render:(record:any) => <div className='flex items-center gap-x-2 cursor-pointer'>Yes<IconEye/> </div> }, // Assuming real data fields
+                        { accessor: 'designation', title: 'Occupancy', sortable: true }, // Assuming real data fields
+                        { accessor: 'accPrice', title: 'Accomodoation Price', sortable: true, render:(record:any) => 1500 }, // Assuming real data fields
+                        { accessor: 'paymentAmount', title: 'Payment Amount', sortable: true,render:(record:any) => 3500 }, // Assuming real data fields
+                        { accessor: 'paymentStatus', title: 'Payment Status', sortable: true,render:(record:any) => record?.payments?.length > 0 ? record?.payment?.[0]?.paymentStatus : "Payment not initiated" }, // Assuming real data fields
+                        {
+                            accessor: 'action',
+                            title: 'Action',
+                            render: (record) => (
+                                // <button className="btn btn-primary" onClick={() => handleAction(record.id)}>
+                                //     View Details
+                                // </button>
+                               <div className='cursor-pointer'>
+
+                                <Modal/>
+                               </div>
+                            ),
+                        },
+                    ]}
+                    totalRecords={data?.data?.totalCount}
+                    recordsPerPage={pageSize}
+                    page={page}
+                    onPageChange={setPage}
+                    recordsPerPageOptions={PAGE_SIZES}
+                    onRecordsPerPageChange={setPageSize}
+                    sortStatus={sortStatus}
+                    onSortStatusChange={setSortStatus}
+                    minHeight={200}
+                    paginationText={({ from, to, totalRecords }) =>
+                        `Showing ${from} to ${to} of ${totalRecords} entries`
+                    }
+                />
+            </div>
+        </div>
+    );
+};
+
+export default AttendeeTable;
