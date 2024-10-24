@@ -97,6 +97,7 @@ export const clientFetch = async (url: string, options: any = {}): Promise<any> 
         headers: {
             ...options.headers,
             'Content-Type': options.contentType ?? 'application/json',
+            "Access-Control-Allow-Origin": "*"
         },
         // Control caching behavior
         next: options.cache ? undefined : { cache: 'no-store' },
