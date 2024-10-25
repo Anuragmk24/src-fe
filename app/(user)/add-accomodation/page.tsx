@@ -147,7 +147,7 @@ function NewAccomodationAdding() {
                             )}
                             <div className="flex  flex-col sm:flex-row gap-x-2 justify-start items-center">
                                 {amount > 0 && (
-                                    <span className="flex  rounded p-2 items-start">
+                                    <span className="flex  rounded p-2 items-center">
                                         Total Amount: <MdCurrencyRupee />
                                         {amount}
                                     </span>
