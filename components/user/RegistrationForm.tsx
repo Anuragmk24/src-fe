@@ -41,6 +41,8 @@ function RegistrationForm() {
     });
     const memberType = watch('definition');
     const bookingType = watch('bookingType');
+    const [customError, setCustomError] = useState('');
+
     const groupSize = watch('groupSize');
     const isBringingSpouse = watch('bringingSpouse');
     const accomodation = watch('accomodation');
@@ -63,6 +65,13 @@ function RegistrationForm() {
     const [priceDetails, setPriceDetails] = useState<any>([]);
 
     const onSubmit = async (data: any) => {
+        console.log('Daata ==========> ', data);
+        if (data.definition === 'IIA_MEMBER') {
+            if (data.group[0].iia === '' && (!data.group[0].iiaReceipt || data.group[0].iiaReceipt.length === 0)) {
+                setCustomError('Please provide either IIA number or upload the IIA receipt.');
+                return;
+            }
+        }
         setLoading(true);
         const uploadPromises = data.group.map(async (member: any) => {
             // Assign the filename to the member before uploading
@@ -140,7 +149,7 @@ function RegistrationForm() {
                     hash: '',
                     mode: 'TEST',
                     name: bookingResult?.data?.[0]?.firstName,
-                    order_id: '200s02603' + bookingResult?.data?.[0]?.id + '5647',
+                    order_id: '2a00s02603' + bookingResult?.data?.[0]?.id + '5647',
                     phone: Number(bookingResult?.data?.[0]?.mobile),
                     return_url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/payment/response`,
                     // return_url: `http://localhost:8888/paymentResponse`,
@@ -177,7 +186,7 @@ function RegistrationForm() {
                         { name: 'email', value: bookingResult?.data?.[0]?.email },
                         { name: 'mode', value: 'TEST' },
                         { name: 'name', value: bookingResult?.data?.[0]?.firstName },
-                        { name: 'order_id', value: '200s02603' + bookingResult?.data?.[0]?.id + '5647' }, // Example order id, can be dynamic
+                        { name: 'order_id', value: '2a00s02603' + bookingResult?.data?.[0]?.id + '5647' }, // Example order id, can be dynamic
                         { name: 'phone', value: Number(bookingResult?.data?.[0]?.mobile) },
                         { name: 'return_url', value: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/payment/response` },
                         // { name: 'return_url', value: `http://localhost:8888/paymentResponse` },
@@ -192,7 +201,6 @@ function RegistrationForm() {
                         input.value = inputData.value;
                         form.appendChild(input);
                     });
-                    ``;
 
                     document.body.appendChild(form);
                     form.submit();
@@ -277,6 +285,7 @@ function RegistrationForm() {
         setPriceDetails(details);
     }, [priceData, accomodation]);
 
+    console.log('errors ', errors);
     const renderContactInfoFields = (size: number) => {
         return Array.from({ length: size }, (_, i) => (
             <div key={i}>
@@ -322,6 +331,8 @@ function RegistrationForm() {
                             {Array.isArray(errors?.group) && errors.group[i]?.iiaReceipt && <p className="text-red-600">{errors.group[i].iiaReceipt.message}</p>}
                         </div>
                     )}
+                    {customError && <p className="text-red-600">{customError}</p>}
+
                     {memberType !== 'STUDENT' && (
                         <>
                             <div>

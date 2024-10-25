@@ -1,6 +1,4 @@
-import { z } from "zod";
-
-
+import { z } from 'zod';
 
 export const registrationSchemaWithSpouse = z.object({
     definition: z.string().optional(),
@@ -11,14 +9,13 @@ export const registrationSchemaWithSpouse = z.object({
     gstBillingAddress: z.string().nullable().optional(),
     isStudentAffiliatedToIia: z.string().nullable().optional(),
 
-    spouse: z
-        .object({
-            spouseFirstName: z.string().nonempty('First name is required'),
-            spouseLastName: z.string().nonempty('Last name is required'),
-            spouseEmail: z.string().email('Invalid email address'),
-            spouseMobile: z.string().min(10, 'Mobile number should be at least 10 digits'),
-        }),
-       
+    spouse: z.object({
+        spouseFirstName: z.string().nonempty('First name is required'),
+        spouseLastName: z.string().nonempty('Last name is required'),
+        spouseEmail: z.string().email('Invalid email address'),
+        spouseMobile: z.string().min(10, 'Mobile number should be at least 10 digits'),
+    }),
+
     group: z
         .array(
             z.object({
@@ -29,6 +26,7 @@ export const registrationSchemaWithSpouse = z.object({
                 companyName: z.string().optional(),
                 designation: z.string().optional(),
                 iia: z.string().optional(),
+                iiaReceipt: z.any().optional(), // Add this for file upload
                 collegeName: z.string().optional(),
                 country: z.string().nonempty('Country is required'),
                 state: z.string().nonempty('State is required'),
