@@ -85,7 +85,7 @@ function NewAccomodationAdding() {
     }, [uniqueUsers]);
 
     return (
-        <div className="max-w-5xl mx-auto p-4  panel px-8 md:px-12 g-white dark:bg-white text-black dark:text-black">
+        <div className="max-w-5xl mx-auto p-4  panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             <h2 className="text-lg font-bold mb-4">Already Registered? Want to book accommodation?</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {fields.map((field, index) => (
@@ -97,7 +97,7 @@ function NewAccomodationAdding() {
                             {...register(`referenceNumbers.${index}.referenceNumber`, { required: 'Reference number is required' })}
                             className={`mt-1 block w-full px-3 py-2 border ${
                                 errors?.referenceNumbers?.[index]?.referenceNumber ? 'border-red-500' : 'border-gray-300'
-                            } rounded-md shadow-sm focus:outline-none dark:bg-white`}
+                            } rounded-md shadow-sm focus:outline-none dark:bg-white bg-white`}
                         />
                         <div className="flex flex-col justify-start items-start">
                             <small>* Maximum 4 members group allowed</small>
@@ -127,14 +127,14 @@ function NewAccomodationAdding() {
                 {isLoading && <p className="text-blue-600 font-medium">Loading user details...</p>}
                 {error && <p className="text-red-600 font-medium">{error?.message || 'Error fetching user details. Please try again later.'}</p>}
                 {uniqueUsers?.length > 0 && (
-                    <div className="mt-6 bg-white p-6 rounded-lg shadow-lg border border-gray-200 g-white dark:bg-white text-black dark:text-black">
+                    <div className="mt-6 bg-white p-6 rounded-lg shadow-lg border border-gray-200 g-white dark:bg-white bg-white text-black dark:text-black">
                         <h3 className="text-xl font-bold text-[#16616E] dark:text-black mb-4">User Details</h3>
                         <ul className="space-y-4">
                             {uniqueUsers.slice(0, 4).map(
                                 (
                                     user: any // Removed slicing to show all unique users
                                 ) => (
-                                    <li key={user.id} className="p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition duration-200 g-white dark:bg-white text-black dark:text-black">
+                                    <li key={user.id} className="p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition duration-200 g-white dark:bg-white bg-white text-black dark:text-black">
                                         <p className="text-gray-900 text-lg font-medium dark:text-black">
                                             <span className="font-semibold text-[#16616E]  dark:text-black">Name:</span> {user?.firstName} {user?.lastName}
                                         </p>
