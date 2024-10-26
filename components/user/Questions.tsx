@@ -3,8 +3,8 @@ import Points from './Points';
 
 function Questions({ register, question, name }: { register: any; question: string; name: string }) {
     return (
-        <div className="bg-white  mb-6">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">{question}?</h2>
+        <div className="bg-white  mb-6 g-white dark:bg-gray-900 text-black dark:text-white">
+            <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">{question}?</h2>
 
             <div className="flex gap-y-4 flex-col">
                 <label className="flex items-center text-gray-700">

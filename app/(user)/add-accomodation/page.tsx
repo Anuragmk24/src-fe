@@ -84,9 +84,8 @@ function NewAccomodationAdding() {
         setAmount(uniqueUsers.length * 4000);
     }, [uniqueUsers]);
 
-    console.log('usercount ', amount);
     return (
-        <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12">
+        <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-gray-900 text-black dark:text-white">
             <h2 className="text-lg font-bold mb-4">Already Registered? Want to book accommodation?</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {fields.map((field, index) => (
@@ -124,23 +123,23 @@ function NewAccomodationAdding() {
             </form>
 
             {/* Display loading, error, or user details */}
-            <div className="mt-6">
+            <div className="mt-6 ">
                 {isLoading && <p className="text-blue-600 font-medium">Loading user details...</p>}
                 {error && <p className="text-red-600 font-medium">{error?.message || 'Error fetching user details. Please try again later.'}</p>}
                 {uniqueUsers?.length > 0 && (
-                    <div className="mt-6 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                        <h3 className="text-xl font-bold text-[#16616E] mb-4">User Details</h3>
+                    <div className="mt-6 bg-white p-6 rounded-lg shadow-lg border border-gray-200 g-white dark:bg-gray-900 text-black dark:text-white">
+                        <h3 className="text-xl font-bold text-[#16616E] dark:text-white mb-4">User Details</h3>
                         <ul className="space-y-4">
                             {uniqueUsers.slice(0, 4).map(
                                 (
                                     user: any // Removed slicing to show all unique users
                                 ) => (
-                                    <li key={user.id} className="p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition duration-200">
-                                        <p className="text-gray-900 text-lg font-medium">
-                                            <span className="font-semibold text-[#16616E]">Name:</span> {user?.firstName} {user?.lastName}
+                                    <li key={user.id} className="p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition duration-200 g-white dark:bg-gray-900 text-black dark:text-white">
+                                        <p className="text-gray-900 text-lg font-medium dark:text-white">
+                                            <span className="font-semibold text-[#16616E]  dark:text-white">Name:</span> {user?.firstName} {user?.lastName}
                                         </p>
-                                        <p className="text-gray-700 text-md">
-                                            <span className="font-semibold text-[#16616E]">Email:</span> {user?.email}
+                                        <p className="text-gray-700 text-md dark:text-white">
+                                            <span className="font-semibold text-[#16616E] dark:text-white ">Email:</span> {user?.email}
                                         </p>
                                     </li>
                                 )
