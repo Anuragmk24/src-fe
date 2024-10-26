@@ -5,7 +5,7 @@ import React from 'react';
 
 export default function page() {
     return (
-        <div>
+        <div className='dark:bg-white'>
             <Carousal />
 
             <RegistrationForm />

@@ -71,14 +71,14 @@ function Modal({ uniqueUsers }: { uniqueUsers: any }) {
                     </Transition.Child>
                     <div id="slideIn_down_modal" className="fixed inset-0 bg-[black]/60 z-[999] overflow-y-auto">
                         <div className="flex items-start justify-center min-h-screen px-4">
-                            <Dialog.Panel className="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg my-8 text-black dark:text-white-dark animate__animated animate__slideInDown">
+                            <Dialog.Panel className="panel dark:bg-white border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg my-8 text-black dark:text-white animate__animated animate__slideInDown">
                                 <div className="p-5">
                                     <img src="/assets/images/qrcode.png" alt="qrcode" />
                                     <h1 className="text-xl font-bold text-center my-3">OR</h1>
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         {' '}
                                         {/* Add the form submission handler */}
-                                        <div className="px-5 py-4 panel bg-gray-100 rounded-lg shadow-md">
+                                        <div className="px-5 py-4 panel bg-gray-100 dark:bg-gray-200 dark:text-black rounded-lg shadow-md">
                                             <h3 className="font-bold text-lg text-[#16616E] mb-2">Beneficiary Information</h3>
                                             <div className="flex flex-col space-y-2">
                                                 <div className="flex justify-between">
@@ -100,7 +100,7 @@ function Modal({ uniqueUsers }: { uniqueUsers: any }) {
                                             </div>
                                         </div>
                                         <label className="block my-3">Upload Screenshot here</label>
-                                        <input type="file" {...register('accomodationReciept')} className="border rounded px-2 py-1 w-full mt-4" accept=".pdf,.jpg,.png,.svg,.webp" />
+                                        <input type="file" {...register('accomodationReciept')} className="border border-2 rounded px-2 py-1 w-full mt-4" accept=".pdf,.jpg,.png,.svg,.webp" />
                                         <div className="flex justify-end items-center mt-8">
                                             <button type="button" onClick={() => setModal10(false)} className="btn btn-outline-danger">
                                                 Discard

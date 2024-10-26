@@ -293,32 +293,32 @@ function RegistrationForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label className="block mb-1">First Name</label>
-                        <input type="text" {...register(`group[${i}].firstName`)} className="border rounded px-2 py-1 w-full" />
+                        <input type="text" {...register(`group[${i}].firstName`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.firstName && <p className="text-red-600">{errors.group[i].firstName.message}</p>}
                     </div>
 
                     <div>
                         <label className="block mb-1">Last Name</label>
-                        <input type="text" {...register(`group[${i}].lastName`)} className="border rounded px-2 py-1 w-full" />
+                        <input type="text" {...register(`group[${i}].lastName`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.lastName && <p className="text-red-600">{errors.group[i].lastName.message}</p>}
                     </div>
 
                     <div>
                         <label className="block mb-1">Email</label>
-                        <input type="email" {...register(`group[${i}].email`)} className="border rounded px-2 py-1 w-full" />
+                        <input type="email" {...register(`group[${i}].email`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.email && <p className="text-red-600">{errors.group[i].email.message}</p>}
                     </div>
 
                     <div>
                         <label className="block mb-1">Mobile</label>
-                        <input type="tel" {...register(`group[${i}].mobile`)} className="border rounded px-2 py-1 w-full" />
+                        <input type="tel" {...register(`group[${i}].mobile`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.mobile && <p className="text-red-600">{errors.group[i].mobile.message}</p>}
                     </div>
 
                     {memberType === 'IIA_MEMBER' && (
                         <div>
                             <label className="block mb-1">IIA Number</label>
-                            <input type="text" {...register(`group[${i}].iia`)} className="border rounded px-2 py-1 w-full" />
+                            <input type="text" {...register(`group[${i}].iia`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                             {Array.isArray(errors?.group) && errors.group[i]?.iia && <p className="text-red-600">{errors.group[i].iia.message}</p>}
                         </div>
                     )}
@@ -327,7 +327,7 @@ function RegistrationForm() {
                     {memberType === 'IIA_MEMBER' && !watch(`group[${i}].iia`) && (
                         <div>
                             <label className="block mb-1">Upload IIA Membership Receipt (Newly registerd)</label>
-                            <input type="file" {...register(`group[${i}].iiaReceipt`)} className="border rounded px-2 py-1 w-full" accept=".pdf,.jpg,.png" />
+                            <input type="file" {...register(`group[${i}].iiaReceipt`)} className="border rounded px-2 py-1 w-full dark:bg-white" accept=".pdf,.jpg,.png" />
                             {Array.isArray(errors?.group) && errors.group[i]?.iiaReceipt && <p className="text-red-600">{errors.group[i].iiaReceipt.message}</p>}
                         </div>
                     )}
@@ -337,24 +337,24 @@ function RegistrationForm() {
                         <>
                             <div>
                                 <label className="block mb-1">Company Name</label>
-                                <input type="text" {...register(`group[${i}].companyName`)} className="border rounded px-2 py-1 w-full" />
+                                <input type="text" {...register(`group[${i}].companyName`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                             </div>
                             <div>
                                 <label className="block mb-1">Designation</label>
-                                <input type="text" {...register(`group[${i}].designation`)} className="border rounded px-2 py-1 w-full" />
+                                <input type="text" {...register(`group[${i}].designation`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                             </div>
                         </>
                     )}
                     {memberType === 'NON_IIA_MEMBER' && (
                         <div>
                             <label className="block mb-1">COA Number</label>
-                            <input type="text" {...register(`group[${i}].coaNumber`)} className="border rounded px-2 py-1 w-full" />
+                            <input type="text" {...register(`group[${i}].coaNumber`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         </div>
                     )}
                     {memberType === 'STUDENT' && (
                         <div>
                             <label className="block mb-1">College Name</label>
-                            <input type="text" {...register(`group[${i}].collegeName`)} className="border rounded px-2 py-1 w-full" />
+                            <input type="text" {...register(`group[${i}].collegeName`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         </div>
                     )}
 
@@ -400,18 +400,18 @@ function RegistrationForm() {
 
                     <div>
                         <label className="block mb-1">City</label>
-                        <input type="text" {...register(`group[${i}].city`)} className="border rounded px-2 py-1 w-full" />
+                        <input type="text" {...register(`group[${i}].city`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.city && <p className="text-red-600">{errors.group[i].city.message}</p>}
                     </div>
                     <div>
                         <label className="block mb-1">Center</label>
-                        <input type="text" {...register(`group[${i}].center`)} className="border rounded px-2 py-1 w-full" />
+                        <input type="text" {...register(`group[${i}].center`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.center && <p className="text-red-600">{errors.group[i].center.message}</p>}
                     </div>
 
                     <div>
                         <label className="block mb-1">Pin Code</label>
-                        <input type="text" {...register(`group[${i}].pinCode`)} className="border rounded px-2 py-1 w-full" />
+                        <input type="text" {...register(`group[${i}].pinCode`)} className="border rounded px-2 py-1 w-full dark:bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.pinCode && <p className="text-red-600">{errors.group[i].pinCode.message}</p>}
                     </div>
                 </div>
@@ -430,7 +430,7 @@ function RegistrationForm() {
     }, [isBringingSpouse, setValue]);
 
     return (
-        <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-gray-900 text-black dark:text-white">
+        <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-white text-black dark:text-black">
             <div className="flex flex-col items-center justify-center">
                 <img src="/assets/sponsors/jidal-sml-logo-black.svg" alt="Logo" className="w-36 h-16 md:w-20 md:h-20" />
                 <img src="/assets/images/SRC-logo-black.svg" alt="Logo" className="w-60 h-20 md:w-72 mb-5 md:h-20" />
@@ -519,7 +519,7 @@ function RegistrationForm() {
                                     control={control}
                                     render={({ field }) => (
                                         <Select
-                                        className='dark:text-black g-white dark:bg-gray-900 text-black dark:text-black'
+                                        className='dark:text-black g-white dark:bg-white text-black dark:text-black'
                                             {...field}
                                             options={
                                                 isBringingSpouse === 'Yes'
@@ -566,7 +566,7 @@ function RegistrationForm() {
                                 <input
                                     type="text"
                                     {...register('spouse.spouseFirstName')} // Register as part of the spouse object
-                                    className="border rounded px-2 py-1 w-full"
+                                    className="border rounded px-2 py-1 w-full dark:bg-white"
                                 />
                                 {errors?.spouse && (
                                     <p className="text-red-600">{(errors.spouse as any).spouseFirstName?.message}</p> // Corrected error access
@@ -577,7 +577,7 @@ function RegistrationForm() {
                                 <input
                                     type="text"
                                     {...register('spouse.spouseLastName')} // Register as part of the spouse object
-                                    className="border rounded px-2 py-1 w-full"
+                                    className="border rounded px-2 py-1 w-full dark:bg-white"
                                 />
                                 {errors?.spouse && (
                                     <p className="text-red-600">{(errors.spouse as any).spouseLastName?.message}</p> // Corrected error access
@@ -588,7 +588,7 @@ function RegistrationForm() {
                                 <input
                                     type="email"
                                     {...register('spouse.spouseEmail')} // Register as part of the spouse object
-                                    className="border rounded px-2 py-1 w-full"
+                                    className="border rounded px-2 py-1 w-full dark:bg-white"
                                 />
                                 {errors?.spouse && (
                                     <p className="text-red-600">{(errors.spouse as any).spouseEmail?.message}</p> // Corrected error access
@@ -599,7 +599,7 @@ function RegistrationForm() {
                                 <input
                                     type="tel"
                                     {...register('spouse.spouseMobile')} // Register as part of the spouse object
-                                    className="border rounded px-2 py-1 w-full"
+                                    className="border rounded px-2 py-1 w-full dark:bg-white"
                                 />
                                 {errors?.spouse && (
                                     <p className="text-red-600">{(errors.spouse as any).spouseMobile?.message}</p> // Corrected error access
@@ -618,7 +618,7 @@ function RegistrationForm() {
                                     type="checkbox"
                                     {...register('gstBill')} // No need for {required: true} here
                                     value={watch('gstBill') === true ? 'true' : 'false'}
-                                    className="mr-2"
+                                    className="mr-2 dark:bg-white"
                                 />
                                 Do you want GST bill?
                             </label>
@@ -626,14 +626,14 @@ function RegistrationForm() {
                             {watch('gstBill') && (
                                 <div>
                                     <label className="block mb-1">GST Number</label>
-                                    <input type="text" {...register('gstNumber', { required: watch('gstBill') })} className="border rounded px-2 py-1 w-1/2" />
+                                    <input type="text" {...register('gstNumber', { required: watch('gstBill') })} className="border rounded px-2 py-1 w-1/2 dark:bg-white" />
                                 </div>
                             )}
 
                             {watch('gstBill') && (
                                 <div>
                                     <label className="block mb-1">GST Billing Address</label>
-                                    <input type="text" {...register('gstBillingAddress', { required: watch('gstBill') })} className="border rounded px-2 py-1 w-1/2" />
+                                    <input type="text" {...register('gstBillingAddress', { required: watch('gstBill') })} className="border rounded px-2 py-1 w-1/2 dark:bg-white" />
                                 </div>
                             )}
                         </div>
