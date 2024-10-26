@@ -9,12 +9,12 @@ function Questions({ register, question, name }: { register: any; question: stri
             <div className="flex gap-y-4 flex-col">
                 <label className="flex items-center text-gray-700">
                     <input type="radio" {...register(`${name}`, { required: true })} value="Yes" className="mr-3  text-green-500 focus:ring-green-500" />
-                    <span className="">Yes</span>
+                    <span className="dark:text-white">Yes</span>
                 </label>
 
                 <label className="flex items-center text-gray-700">
                     <input type="radio" {...register(`${name}`, { required: true })} value="No" className="mr-3  text-red-500 focus:ring-red-500" />
-                    <span className="">No</span>
+                    <span className="dark:text-white">No</span>
                 </label>
             </div>
             {question === 'Do you want accomodation' && (
