@@ -10,6 +10,7 @@ import { Loader } from '@mantine/core'; // Assuming you are using Mantine loader
 import { formatDate } from '@/utils/common';
 import IconEye from '../icon/icon-eye';
 import Modal from './Modal';
+import AccomodationModal from './AccomodationModal';
 
 const AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
@@ -40,11 +41,12 @@ const AttendeeTable = () => {
 
             // Apply search filter
             if (search) {
-                filteredRecords = filteredRecords.filter((item: any) =>
-                    item.firstName.toLowerCase().includes(search.toLowerCase()) ||
-                    item.lastName.toLowerCase().includes(search.toLowerCase()) ||
-                    item.email.toLowerCase().includes(search.toLowerCase()) ||
-                    item.phone.toLowerCase().includes(search.toLowerCase())
+                filteredRecords = filteredRecords.filter(
+                    (item: any) =>
+                        item.firstName.toLowerCase().includes(search.toLowerCase()) ||
+                        item.lastName.toLowerCase().includes(search.toLowerCase()) ||
+                        item.email.toLowerCase().includes(search.toLowerCase()) ||
+                        item.phone.toLowerCase().includes(search.toLowerCase())
                 );
             }
 
@@ -62,22 +64,15 @@ const AttendeeTable = () => {
         return <div>Error fetching bookings.</div>;
     }
 
-    const handleAction = (id:any)=>{
+    const handleAction = (id: any) => {};
 
-    }
-
+    console.log('RECORDS ============> ', records);
     return (
         <div className="panel mt-6">
             <div className="mb-5 flex flex-col gap-5 md:flex-row md:items-center">
                 <h5 className="text-lg font-semibold dark:text-white-light">Order Sorting</h5>
                 <div className="ltr:ml-auto rtl:mr-auto">
-                    <input
-                        type="text"
-                        className="form-input w-auto"
-                        placeholder="Search..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
+                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
             </div>
             <div className="datatables">
@@ -86,27 +81,74 @@ const AttendeeTable = () => {
                     className={`${isRtl ? 'table-hover whitespace-nowrap' : 'table-hover whitespace-nowrap'}`}
                     records={records}
                     columns={[
-                        { accessor: 'firstName', title: 'Name', sortable: true ,render:(record) => `${record.firstName} ${record.lastName}`},
-                        { accessor: 'createdAt', title: 'Date', sortable: true ,render:(record:any) => formatDate(record.createdAt)},
+                        { accessor: 'firstName', title: 'Name', sortable: true, render: (record) => `${record.firstName} ${record.lastName}` },
+                        { accessor: 'createdAt', title: 'Date', sortable: true, render: (record: any) => formatDate(record.createdAt) },
                         { accessor: 'mobile', title: 'Phone No.', sortable: true },
-                        { accessor: 'mobile', title: 'Member Type', sortable: true,  render:(record:any) =><div>member type</div> },
-                        { accessor: 'regFee', title: 'Reg. fee', sortable: true, render:(record:any) => 2500 }, // Assuming real data fields
-                        { accessor: 'accommodation', title: 'Accommodation', sortable: true,render:(record:any) => <div className='flex items-center gap-x-2 cursor-pointer'>Yes<IconEye/> </div> }, // Assuming real data fields
-                        { accessor: 'designation', title: 'Occupancy', sortable: true }, // Assuming real data fields
-                        { accessor: 'accPrice', title: 'Accomodoation Price', sortable: true, render:(record:any) => 1500 }, // Assuming real data fields
-                        { accessor: 'paymentAmount', title: 'Payment Amount', sortable: true,render:(record:any) => 3500 }, // Assuming real data fields
-                        { accessor: 'paymentStatus', title: 'Payment Status', sortable: true,render:(record:any) => record?.payments?.length > 0 ? record?.payment?.[0]?.paymentStatus : "Payment not initiated" }, // Assuming real data fields
+                        {
+                            accessor: 'mobile',
+                            title: 'Member Type',
+                            sortable: true,
+                            render: (record: any) => <div>{record.memberType === 'IIA_MEMBER' ? 'IIA Member' : record.memberType === 'NON_IIA_MEMBER' ? 'Non IIA Member' : 'Student'}</div>,
+                        },
+                        {
+                            accessor: 'regfee',
+                            title: 'Reg. fee',
+                            sortable: true,
+                            render: (record: any) => {
+                                return record.memberType === 'IIA_MEMBER' ? '3500' : record.memberType === 'NON_IIA_MEMBER' ? '4500' : record.isStudentAffiliatedToIia ? '1000' : '1500';
+                            },
+                        },
+                        {
+                            accessor: 'accommodation',
+                            title: 'Accommodation',
+                            sortable: true,
+                            render: (record: any) => (
+                                // <button className="btn btn-primary" onClick={() => handleAction(record.id)}>
+                                //     View Details
+                                // </button>
+                                <div className="cursor-pointer">
+                                    {record.memberType === 'IIA_MEMBER' && record.payments.length > 0 ? (
+                                        <AccomodationModal users={record?.groupMmebers?.[0]?.group.GroupMember} />
+                                    ) : (
+                                        <p className="ms-10">---</p>
+                                    )}
+                                </div>
+                            ),
+                        },
+                        {
+                            accessor: 'designation',
+                            title: 'Occupancy',
+                            sortable: true,
+                            render: (row: any) => (row.designation ? row.designation : '---'),
+                        },
+                        {
+                            accessor: 'collegeName',
+                            title: 'College',
+                            sortable: true,
+                            render: (row: any) => (row.collegeName ? row.collegeName : '---'),
+                        },
+
+                        { accessor: 'accPrice', title: 'Accomodoation Price', sortable: true, render: (record: any) => 4000 },
+                        { accessor: 'paymentAmount', title: 'Payment Amount', sortable: true, render: (record: any) => 3500 },
+                        {
+                            accessor: 'paymentStatus',
+                            title: 'Payment Status',
+                            sortable: true,
+                            render: (record: any) => (record?.payments?.length > 0 ? record?.payments?.[0]?.paymentStatus : 'Payment not initiated'),
+                        },
+                        {
+                            accessor: 'transactionId',
+                            title: 'Transactin ID',
+                            sortable: true,
+                            render: (record: any) => (record?.payments?.length > 0 ? record?.payments?.[0]?.transactionId : '---'),
+                        },
                         {
                             accessor: 'action',
                             title: 'Action',
                             render: (record) => (
-                                // <button className="btn btn-primary" onClick={() => handleAction(record.id)}>
-                                //     View Details
-                                // </button>
-                               <div className='cursor-pointer'>
-
-                                <Modal/>
-                               </div>
+                                <div className="cursor-pointer">
+                                    <Modal />
+                                </div>
                             ),
                         },
                     ]}
@@ -119,9 +161,7 @@ const AttendeeTable = () => {
                     sortStatus={sortStatus}
                     onSortStatusChange={setSortStatus}
                     minHeight={200}
-                    paginationText={({ from, to, totalRecords }) =>
-                        `Showing ${from} to ${to} of ${totalRecords} entries`
-                    }
+                    paginationText={({ from, to, totalRecords }) => `Showing ${from} to ${to} of ${totalRecords} entries`}
                 />
             </div>
         </div>
