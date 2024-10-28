@@ -663,6 +663,7 @@ function RegistrationForm() {
                     <button type="submit" className="bg-[#E5E52E] font-mono text-[#16616E] font-bold px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                         {loading ? 'Submiting...' : ' Continue to pay'}
                     </button>
+                    
                 </div>
             </form>
         </div>
