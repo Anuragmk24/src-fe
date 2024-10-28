@@ -1,17 +1,43 @@
 import IconX from '@/components/icon/icon-x';
-import { IRootState } from '@/store';
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useState } from 'react';
-import { useSelector } from 'react-redux';
 import IconEye from '../icon/icon-eye';
-function Modal() {
+import { useSelector } from 'react-redux';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { toggleAttendeeStatus } from '@/data/admin/registration';
+
+function Modal({ record }: { record: any }) {
+    console.log('record in modal ', record);
     const [modal10, setModal10] = useState(false);
+    const [isAttended, setIsAttended] = useState(record.attended || false); // assuming record has isAttended field
+    const { token } = useSelector((state: any) => state.admin);
+    const mutation = useMutation({
+        mutationFn: async (newAttendanceStatus) => {
+            const response:any = await toggleAttendeeStatus(token)
+            console.log("Response ===========> ",response)
+            return response.data; // Return the response data for further use
+        },
+        onSuccess: (data) => {
+            console.log('Attendance updated:', data);
+            // Optionally, you can update the local state if needed
+        },
+        onError: (error) => {
+            console.error('Error updating attendance:', error);
+            // Optionally, handle the error (e.g., show a notification)
+        },
+    });
+    const toggleAttendance = () => {
+        const newAttendanceStatus = !isAttended; // Calculate new status
+        setIsAttended(newAttendanceStatus); // Update local state
+
+        // Trigger the mutation to update the attendance status in the backend
+        mutation.mutate(newAttendanceStatus);
+    };
 
     return (
         <div>
-            <div  onClick={() => setModal10(true)}>
-
-            <IconEye />
+            <div onClick={() => setModal10(true)}>
+                <IconEye />
             </div>
             <Transition appear show={modal10} as={Fragment}>
                 <Dialog as="div" open={modal10} onClose={() => setModal10(false)}>
@@ -22,22 +48,100 @@ function Modal() {
                         <div className="flex items-start justify-center min-h-screen px-4">
                             <Dialog.Panel className="panel border-0 p-0 rounded-lg overflow-hidden w-full max-w-lg my-8 text-black dark:text-white-dark animate__animated animate__slideInDown">
                                 <div className="flex bg-[#fbfbfb] dark:bg-[#121c2c] items-center justify-between px-5 py-3">
-                                    <h5 className="font-bold text-lg">Modal Title</h5>
+                                    <h5 className="font-bold text-lg">User Details</h5>
                                     <button onClick={() => setModal10(false)} type="button" className="text-white-dark hover:text-dark">
-                                        <svg>...</svg>
+                                        <IconX />
                                     </button>
                                 </div>
                                 <div className="p-5">
-                                    <p>
-                                        Mauris mi tellus, pharetra vel mattis sed, tempus ultrices eros. Phasellus egestas sit amet velit sed luctus. Orci varius natoque penatibus et magnis dis
-                                        parturient montes, nascetur ridiculus mus. Suspendisse potenti. Vivamus ultrices sed urna ac pulvinar. Ut sit amet ullamcorper mi.
-                                    </p>
+                                    <div className="space-y-2">
+                                        <div>
+                                            <p>
+                                                <strong>First Name:</strong> {record.firstName}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Last Name:</strong> {record.lastName}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Email:</strong> {record.email}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Mobile:</strong> {record.mobile}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Company Name:</strong> {record.companyName}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Designation:</strong> {record.designation}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Country:</strong> {record.country}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>State:</strong> {record.state}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>City:</strong> {record.city}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Pin Code:</strong> {record.pinCode}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Booking Type:</strong> {record.bookingType}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Group Size:</strong> {record.groupSize}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Is Bringing Spouse:</strong> {record.isBringingSpouse ? 'Yes' : 'No'}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <strong>Member Type:</strong> {record.memberType}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-x-3">
+                                            <strong>Status:</strong>
+                                            <label className="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" checked={isAttended} onChange={toggleAttendance} className="sr-only" />
+                                                <div className={`w-10 h-4 rounded-full shadow-inner transition duration-300 ease-in-out ${isAttended ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                                                <div
+                                                    className={`dot absolute w-6 h-6 bg-white rounded-full shadow transition-all duration-300 ease-in-out ${
+                                                        isAttended ? 'translate-x-6' : 'translate-x-0'
+                                                    }`}
+                                                ></div>
+                                            </label>
+                                            {isAttended && <span className="text-green-500 font-bold">Attended</span>}
+                                        </div>
+                                    </div>
                                     <div className="flex justify-end items-center mt-8">
                                         <button onClick={() => setModal10(false)} type="button" className="btn btn-outline-danger">
-                                            Discard
-                                        </button>
-                                        <button onClick={() => setModal10(false)} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                            Save
+                                            Close
                                         </button>
                                     </div>
                                 </div>

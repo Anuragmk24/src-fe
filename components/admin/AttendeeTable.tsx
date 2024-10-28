@@ -147,7 +147,7 @@ const AttendeeTable = () => {
                             title: 'Action',
                             render: (record) => (
                                 <div className="cursor-pointer">
-                                    <Modal />
+                                    <Modal record={record} />
                                 </div>
                             ),
                         },

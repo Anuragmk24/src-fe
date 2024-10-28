@@ -20,3 +20,25 @@ export const fetchBookings = async (token:string,start:number,limit:number) => {
         throw err;
     }
 };
+
+export const toggleAttendeeStatus = async (token:string) => {
+    try {
+        const res = await clientFetch(`admin/toggle-attendee-status`, {
+            method: 'PUT',
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        });
+
+        console.log("res from data ",res )
+        // Check if the response is ok (status in the range 200-299)
+        if (res.statusCode !== 200) {
+            throw res;
+        }
+        return res;
+    } catch (err) {
+        console.log('error fetching booking ', err);
+        throw err;
+    }
+};
+
