@@ -7,14 +7,12 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { toggleAttendeeStatus } from '@/data/admin/registration';
 
 function Modal({ record }: { record: any }) {
-    console.log('record in modal ', record);
     const [modal10, setModal10] = useState(false);
-    const [isAttended, setIsAttended] = useState(record.attended || false); // assuming record has isAttended field
+    const [isAttended, setIsAttended] = useState(record?.attended); // assuming record has isAttended field
     const { token } = useSelector((state: any) => state.admin);
     const mutation = useMutation({
         mutationFn: async (newAttendanceStatus:any) => {
-            const response:any = await toggleAttendeeStatus(token)
-            console.log("Response ===========> ",response)
+            const response:any = await toggleAttendeeStatus(token,record.id)
             return response.data; // Return the response data for further use
         },
         onSuccess: (data) => {

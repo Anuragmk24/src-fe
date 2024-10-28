@@ -21,9 +21,9 @@ export const fetchBookings = async (token:string,start:number,limit:number) => {
     }
 };
 
-export const toggleAttendeeStatus = async (token:string) => {
+export const toggleAttendeeStatus = async (token:string,userId:string) => {
     try {
-        const res = await clientFetch(`admin/toggle-attendee-status`, {
+        const res = await clientFetch(`admin/toggle-attendee-status/${userId}`, {
             method: 'PUT',
             headers:{
                 Authorization:`Bearer ${token}`

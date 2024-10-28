@@ -150,7 +150,7 @@ function RegistrationForm() {
                     description: 'payment for src',
                     email: bookingResult?.data?.[0]?.email,
                     hash: '',
-                    mode: 'LIVE',
+                    mode: process.env.NEXT_PUBLIC_PAYMENT_STATUS,
                     name: bookingResult?.data?.[0]?.firstName,
                     order_id: `AMK${orderUuid}`,
                     // order_id: '2a00s02603' + bookingResult?.data?.[0]?.id + '5647',
@@ -189,7 +189,7 @@ function RegistrationForm() {
                         { name: 'currency', value: 'INR' },
                         { name: 'description', value: 'payment for src' },
                         { name: 'email', value: bookingResult?.data?.[0]?.email },
-                        { name: 'mode', value: 'LIVE' },
+                        { name: 'mode', value: process.env.NEXT_PUBLIC_PAYMENT_STATUS },
                         { name: 'name', value: bookingResult?.data?.[0]?.firstName },
                         { name: 'order_id', value: `AMK${orderUuid}` }, // Example order id, can be dynamic
                         { name: 'phone', value: Number(bookingResult?.data?.[0]?.mobile) },
@@ -467,18 +467,17 @@ function RegistrationForm() {
                                 <input type="radio" {...register('definition', { required: true })} value="NON_IIA_MEMBER" className="mr-2" />
                                 Non IIA Member
                             </label>
-                            <div className='flex itemse-center flex-col gap-x-3'>
-
-                            <label className='text-gray-400'>
-                                {data && data.count < 100 ? (
-                                    <input type="radio" disabled {...register('definition', { required: true })} value="STUDENT" className="mr-2" />
-                                ) : (
-                                    <input type="radio" disabled={true} value="student" className="mr-2" />
-                                )}
-                                Student
-                            </label>
-                            <small> *Student registration will be opening soon.</small>
-                                </div>
+                            <div className="flex itemse-center flex-col gap-x-3">
+                                <label className="text-gray-400">
+                                    {data && data.count < 100 ? (
+                                        <input type="radio" disabled {...register('definition', { required: true })} value="STUDENT" className="mr-2" />
+                                    ) : (
+                                        <input type="radio" disabled={true} value="student" className="mr-2" />
+                                    )}
+                                    Student
+                                </label>
+                                <small> *Student registration will be opening soon.</small>
+                            </div>
                         </div>
                     </div>
                     {/* <NewAccomodationAdding/> */}
