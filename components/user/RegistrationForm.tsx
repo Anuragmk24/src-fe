@@ -17,6 +17,7 @@ import Points from './Points';
 import imageCompression from 'browser-image-compression';
 import { registrationSchema, registrationSchemaForIiaMembers, registrationSchemaWithSpouse } from './Schema';
 import Image from 'next/image';
+import { v4 as uuidv4 } from 'uuid';
 
 function RegistrationForm() {
     const [countryid, setCountryid] = useState(0);
@@ -47,7 +48,6 @@ function RegistrationForm() {
     const isBringingSpouse = watch('bringingSpouse');
     const accomodation = watch('accomodation');
     const isStudentAffiliatedToIia = watch('isStudentAffiliatedToIia');
-
     useEffect(() => {
         if (memberType === 'IIA_MEMBER' && isBringingSpouse === 'Yes') {
             setSchema(registrationSchemaWithSpouse);
@@ -66,6 +66,7 @@ function RegistrationForm() {
 
     const onSubmit = async (data: any) => {
         console.log('Daata ==========> ', data);
+
         if (data.definition === 'IIA_MEMBER') {
             if (data.group[0].iia === '' && (!data.group[0].iiaReceipt || data.group[0].iiaReceipt.length === 0)) {
                 setCustomError('Please provide either IIA number or upload the IIA receipt.');
@@ -133,6 +134,7 @@ function RegistrationForm() {
             amount: priceData,
             uploadedMembers, // Add the uploaded members info to the payload
         };
+        const orderUuid = uuidv4().split('-')[0];
 
         try {
             const bookingResult = await booking(payload);
@@ -149,7 +151,8 @@ function RegistrationForm() {
                     hash: '',
                     mode: 'TEST',
                     name: bookingResult?.data?.[0]?.firstName,
-                    order_id: '2a00s02603' + bookingResult?.data?.[0]?.id + '5647',
+                    order_id: `AMK${orderUuid}`,
+                    // order_id: '2a00s02603' + bookingResult?.data?.[0]?.id + '5647',
                     phone: Number(bookingResult?.data?.[0]?.mobile),
                     return_url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/payment/response`,
                     // return_url: `http://localhost:8888/paymentResponse`,
@@ -186,13 +189,14 @@ function RegistrationForm() {
                         { name: 'email', value: bookingResult?.data?.[0]?.email },
                         { name: 'mode', value: 'TEST' },
                         { name: 'name', value: bookingResult?.data?.[0]?.firstName },
-                        { name: 'order_id', value: '2a00s02603' + bookingResult?.data?.[0]?.id + '5647' }, // Example order id, can be dynamic
+                        { name: 'order_id', value: `AMK${orderUuid}` }, // Example order id, can be dynamic
                         { name: 'phone', value: Number(bookingResult?.data?.[0]?.mobile) },
                         { name: 'return_url', value: `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/payment/response` },
                         // { name: 'return_url', value: `http://localhost:8888/paymentResponse` },
                         { name: 'state', value: bookingResult?.data?.[0]?.state },
                         { name: 'zip_code', value: bookingResult?.data?.[0]?.pinCode },
                     ];
+                    console.log('inputs ', inputs);
 
                     inputs.forEach((inputData) => {
                         const input = document.createElement('input');
@@ -288,7 +292,7 @@ function RegistrationForm() {
     console.log('errors ', errors);
     const renderContactInfoFields = (size: number) => {
         return Array.from({ length: size }, (_, i) => (
-            <div  key={i}>
+            <div key={i}>
                 <h2 className="text-lg font-semibold mb-2">{i === 0 ? 'Contact Info' : `Contact Info  ${i + 1}`}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -515,11 +519,10 @@ function RegistrationForm() {
                                 <h2 className="text-lg font-semibold mb-2">Select Group Size</h2>
                                 <Controller
                                     name="groupSize"
-                                    
                                     control={control}
                                     render={({ field }) => (
                                         <Select
-                                        className='dark:text-black g-white dark:bg-white bg-white text-black dark:text-black'
+                                            className="dark:text-black g-white dark:bg-white bg-white text-black dark:text-black"
                                             {...field}
                                             options={
                                                 isBringingSpouse === 'Yes'
@@ -614,27 +617,37 @@ function RegistrationForm() {
                         <h2 className="text-lg font-semibold mb-2">GST Included</h2>
                         <div className="flex gap-y-2 flex-col">
                             <label>
-                                <input
-                                    type="checkbox"
-                                    {...register('gstBill')} // No need for {required: true} here
-                                    value={watch('gstBill') === true ? 'true' : 'false'}
-                                    className="mr-2 dark:bg-white bg-white"
-                                />
+                                <input type="checkbox" {...register('gstBill')} className="mr-2 dark:bg-white bg-white" />
                                 Do you want GST bill?
                             </label>
 
+                            {/* Conditionally show GST fields if gstBill is true */}
                             {watch('gstBill') && (
-                                <div>
-                                    <label className="block mb-1">GST Number</label>
-                                    <input type="text" {...register('gstNumber', { required: watch('gstBill') })} className="border rounded px-2 py-1 w-1/2 dark:bg-white bg-white" />
-                                </div>
-                            )}
+                                <>
+                                    <div>
+                                        <label className="block mb-1">GST Number</label>
+                                        <input
+                                            type="text"
+                                            {...register('gstNumber', {
+                                                required: watch('gstBill') ? 'GST Number is required' : false,
+                                            })}
+                                            className="border rounded px-2 py-1 w-1/2 dark:bg-white bg-white"
+                                        />
+                                        {errors.gstNumber && typeof errors.gstNumber.message === 'string' && <p className="text-red-500">{errors.gstNumber.message}</p>}
+                                    </div>
 
-                            {watch('gstBill') && (
-                                <div>
-                                    <label className="block mb-1">GST Billing Address</label>
-                                    <input type="text" {...register('gstBillingAddress', { required: watch('gstBill') })} className="border rounded px-2 py-1 w-1/2 dark:bg-white bg-white" />
-                                </div>
+                                    <div>
+                                        <label className="block mb-1">GST Billing Address</label>
+                                        <input
+                                            type="text"
+                                            {...register('gstBillingAddress', {
+                                                required: watch('gstBill') ? 'GST Billing Address is required' : false,
+                                            })}
+                                            className="border rounded px-2 py-1 w-1/2 dark:bg-white bg-white"
+                                        />
+                                        {errors.gstBillingAddress && typeof errors.gstBillingAddress.message === 'string' && <p className="text-red-500">{errors.gstBillingAddress.message}</p>}
+                                    </div>
+                                </>
                             )}
                         </div>
                     </div>
