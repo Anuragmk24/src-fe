@@ -12,7 +12,7 @@ function Modal({ record }: { record: any }) {
     const [isAttended, setIsAttended] = useState(record.attended || false); // assuming record has isAttended field
     const { token } = useSelector((state: any) => state.admin);
     const mutation = useMutation({
-        mutationFn: async (newAttendanceStatus) => {
+        mutationFn: async (newAttendanceStatus:any) => {
             const response:any = await toggleAttendeeStatus(token)
             console.log("Response ===========> ",response)
             return response.data; // Return the response data for further use
