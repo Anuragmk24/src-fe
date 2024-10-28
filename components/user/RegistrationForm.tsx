@@ -36,6 +36,7 @@ function RegistrationForm() {
         watch,
         reset,
         setValue,
+        trigger,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(schema),
@@ -369,13 +370,15 @@ function RegistrationForm() {
                         <Controller
                             name={`group[${i}].country`}
                             control={control}
-                            defaultValue={'india'}
+                            rules={{ required: 'Country is required' }}
                             render={({ field }) => (
                                 <CountrySelect
                                     {...field}
                                     onChange={(e: any) => {
                                         setCountryid(e.id);
                                         setValue(`group[${i}].country`, e.name); // Set country name in form data
+                                        trigger(`group[${i}].country`); // Trigger validation after setting value
+
                                     }}
                                     placeHolder="Select Country"
                                 />
@@ -389,6 +392,7 @@ function RegistrationForm() {
                         <Controller
                             name={`group[${i}].state`}
                             control={control}
+                            rules={{ required: 'State is required' }}
                             render={({ field }) => (
                                 <StateSelect
                                     {...field}
@@ -396,6 +400,8 @@ function RegistrationForm() {
                                     onChange={(e: any) => {
                                         setstateid(e.id);
                                         setValue(`group[${i}].state`, e.name); // Set state name in form data
+                                        trigger(`group[${i}].state`); // Trigger validation after setting value
+
                                     }}
                                     placeHolder="Select State"
                                 />
@@ -487,7 +493,7 @@ function RegistrationForm() {
                 {memberType === 'IIA_MEMBER' && (
                     <>
                         <div>
-                            <Points points="Early Bird Offer: Register for SRC and book your accommodation together for just ₹7500. Offer valid only until November 5th." />
+                            <Points points="Early Bird Offer: Register for SRC and book your accommodation together for just ₹7500. Offer valid only until November 5th."  classNames={'bg-violet-200'} />
                             <Questions register={register} question="Are you bringing your spouse" name="bringingSpouse" />
                             {isBringingSpouse === 'Yes' ? (
                                 <div>
@@ -663,7 +669,6 @@ function RegistrationForm() {
                     <button type="submit" className="bg-[#E5E52E] font-mono text-[#16616E] font-bold px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                         {loading ? 'Submiting...' : ' Continue to pay'}
                     </button>
-                    
                 </div>
             </form>
         </div>
