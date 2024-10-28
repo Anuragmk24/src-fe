@@ -1,7 +1,7 @@
 import React from 'react';
 import { HiOutlineLightBulb } from 'react-icons/hi';
 
-function Points({ points,classNames }: { points: string, classNames:string }) {
+function Points({ points,classNames }: { points: string, classNames?:string }) {
     return (
         <>
             {points !== '' && (

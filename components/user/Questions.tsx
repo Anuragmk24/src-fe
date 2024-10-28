@@ -19,7 +19,7 @@ function Questions({ register, question, name }: { register: any; question: stri
             </div>
             {question === 'Do you want accomodation' && (
                 <Points points='Please note that room-sharing arrangements will depend on the type of booking. Group bookings are more likely to result in rooms being allocated together.
-                    For individual bookings, room sharing will be arranged based on availability.'/>
+                    For individual bookings, room sharing will be arranged based on availability.' classNames=""/>
             )}
         </div>
     );
