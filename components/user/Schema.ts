@@ -27,14 +27,14 @@ export const registrationSchemaWithSpouse = z
                     mobile: z.string().min(10, 'Mobile number should be at least 10 digits'),
                     companyName: z.string().optional(),
                     designation: z.string().optional(),
-                    iia: z.string().optional(),
+                    iia: z.string().min(3, 'Iia number should be at least 3 characters').optional(),
                     iiaReceipt: z.any().optional(), // Add this for file upload
                     collegeName: z.string().optional(),
                     country: z.string().nonempty('Country is required'),
                     state: z.string().nonempty('State is required'),
                     city: z.string().nonempty('City is required'),
                     pinCode: z.string().min(5, 'Pin code should be at least 5 digits'),
-                    center: z.string().optional(),
+                    center: z.string().nonempty('Center is mandatory field'),
                     coaNumber: z.string().nullable().optional(),
                 })
             )
@@ -42,26 +42,26 @@ export const registrationSchemaWithSpouse = z
     })
     .refine(
         (data) => {
-          // Conditionally require gstNumber and gstBillingAddress if gstBill is true
-          if (data.gstBill) {
-            return data.gstNumber && data.gstBillingAddress;
-          }
-          return true;
+            // Conditionally require gstNumber and gstBillingAddress if gstBill is true
+            if (data.gstBill) {
+                return data.gstNumber && data.gstBillingAddress;
+            }
+            return true;
         },
         {
-          message: 'GST number required when opting for GST bill',
-          path: ['gstNumber'], // Only apply the error to gstNumber here for now
+            message: 'GST number required when opting for GST bill',
+            path: ['gstNumber'], // Only apply the error to gstNumber here for now
         }
-      )
-      .superRefine((data, ctx) => {
+    )
+    .superRefine((data, ctx) => {
         if (data.gstBill && !data.gstBillingAddress) {
-          ctx.addIssue({
-            code: 'custom',
-            message: 'GST Billing Address is required when opting for GST bill',
-            path: ['gstBillingAddress'],
-          });
+            ctx.addIssue({
+                code: 'custom',
+                message: 'GST Billing Address is required when opting for GST bill',
+                path: ['gstBillingAddress'],
+            });
         }
-      });
+    });
 export const registrationSchema = z
     .object({
         definition: z.string().optional(),
@@ -90,13 +90,13 @@ export const registrationSchema = z
                     mobile: z.string().min(10, 'Mobile number should be at least 10 digits'),
                     companyName: z.string().optional(),
                     designation: z.string().optional(),
-                    iia: z.string().optional(),
+                    iia: z.string().min(3, 'Iia number should be at least 3 characters').optional(),
                     collegeName: z.string().optional(),
                     country: z.string().nonempty('Country is required'),
                     state: z.string().nonempty('State is required'),
                     city: z.string().nonempty('City is required'),
                     pinCode: z.string().min(5, 'Pin code should be at least 5 digits'),
-                    center: z.string().optional(),
+                    center: z.string().nonempty('Center is mandatory field'),
                     coaNumber: z.string().nullable().optional(),
                 })
             )
@@ -104,26 +104,26 @@ export const registrationSchema = z
     })
     .refine(
         (data) => {
-          // Conditionally require gstNumber and gstBillingAddress if gstBill is true
-          if (data.gstBill) {
-            return data.gstNumber && data.gstBillingAddress;
-          }
-          return true;
+            // Conditionally require gstNumber and gstBillingAddress if gstBill is true
+            if (data.gstBill) {
+                return data.gstNumber && data.gstBillingAddress;
+            }
+            return true;
         },
         {
-          message: 'GST number required when opting for GST bill',
-          path: ['gstNumber'], // Only apply the error to gstNumber here for now
+            message: 'GST number required when opting for GST bill',
+            path: ['gstNumber'], // Only apply the error to gstNumber here for now
         }
-      )
-      .superRefine((data, ctx) => {
+    )
+    .superRefine((data, ctx) => {
         if (data.gstBill && !data.gstBillingAddress) {
-          ctx.addIssue({
-            code: 'custom',
-            message: 'GST Billing Address is required when opting for GST bill',
-            path: ['gstBillingAddress'],
-          });
+            ctx.addIssue({
+                code: 'custom',
+                message: 'GST Billing Address is required when opting for GST bill',
+                path: ['gstBillingAddress'],
+            });
         }
-      });
+    });
 export const registrationSchemaForIiaMembers = z
     .object({
         definition: z.string().optional(),
@@ -152,7 +152,7 @@ export const registrationSchemaForIiaMembers = z
                     companyName: z.string().optional(),
                     designation: z.string().optional(),
                     // iia: z.string().nonempty('Iia number is required'),
-                    iia: z.string().optional(),
+                    iia: z.string().min(3, 'Iia number should be at least 3 characters').optional(),
                     iiaReceipt: z.any().optional(), // Add this for file upload
 
                     collegeName: z.string().optional(),
@@ -160,7 +160,7 @@ export const registrationSchemaForIiaMembers = z
                     state: z.string().nonempty('State is required'),
                     city: z.string().nonempty('City is required'),
                     pinCode: z.string().min(5, 'Pin code should be at least 5 digits'),
-                    center: z.string().optional(),
+                    center: z.string().nonempty('Center is mandatory field'),
                     coaNumber: z.string().nullable().optional(),
                 })
             )
@@ -168,23 +168,23 @@ export const registrationSchemaForIiaMembers = z
     })
     .refine(
         (data) => {
-          // Conditionally require gstNumber and gstBillingAddress if gstBill is true
-          if (data.gstBill) {
-            return data.gstNumber && data.gstBillingAddress;
-          }
-          return true;
+            // Conditionally require gstNumber and gstBillingAddress if gstBill is true
+            if (data.gstBill) {
+                return data.gstNumber && data.gstBillingAddress;
+            }
+            return true;
         },
         {
-          message: 'GST number required when opting for GST bill',
-          path: ['gstNumber'], // Only apply the error to gstNumber here for now
+            message: 'GST number required when opting for GST bill',
+            path: ['gstNumber'], // Only apply the error to gstNumber here for now
         }
-      )
-      .superRefine((data, ctx) => {
+    )
+    .superRefine((data, ctx) => {
         if (data.gstBill && !data.gstBillingAddress) {
-          ctx.addIssue({
-            code: 'custom',
-            message: 'GST Billing Address is required when opting for GST bill',
-            path: ['gstBillingAddress'],
-          });
+            ctx.addIssue({
+                code: 'custom',
+                message: 'GST Billing Address is required when opting for GST bill',
+                path: ['gstBillingAddress'],
+            });
         }
-      });
+    });
