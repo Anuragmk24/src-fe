@@ -174,7 +174,7 @@ const ResidencyHeader = () => {
     const [search, setSearch] = useState(false);
 
     const handleLogout = () => {
-        console.log('logout');
+        console.log('logout from residency');
 
         // Remove token from localStorage
         localStorage.removeItem('residencyAccessToken');
@@ -182,7 +182,7 @@ const ResidencyHeader = () => {
         // Remove token from cookies by setting expiration to the past
         setCookie('residencyAccessToken', '', {
             maxAge: -1, // Expire immediately
-            path: '/', // Match the cookie path
+            path: '/residency', // Match the cookie path
         });
 
         // Reset authentication in your global state (if applicable)

@@ -46,7 +46,10 @@ const AttendeeTable = () => {
                         item.firstName.toLowerCase().includes(search.toLowerCase()) ||
                         item.lastName.toLowerCase().includes(search.toLowerCase()) ||
                         item.email.toLowerCase().includes(search.toLowerCase()) ||
-                        item.phone.toLowerCase().includes(search.toLowerCase())
+                        item.mobile.toLowerCase().includes(search.toLowerCase()) ||
+                        item.memberType.toLowerCase().includes(search.toLowerCase()) ||
+                        item.payments[0].transactionId.toLowerCase().includes(search.toLowerCase()) ||
+                        item.payments[0].paymentStatus.toLowerCase().includes(search.toLowerCase())
                 );
             }
 
