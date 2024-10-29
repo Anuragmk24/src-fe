@@ -300,7 +300,7 @@ function RegistrationForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label className="block mb-1">First Name</label>
-                        <input type="text" {...register(`group[${i}].firstName`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
+                        <input type="text" {...register(`group[${i}].firstName`)} className="border rounded px-2 py-1  w-full dark:bg-white bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.firstName && <p className="text-red-600">{errors.group[i].firstName.message}</p>}
                     </div>
 
@@ -374,6 +374,7 @@ function RegistrationForm() {
                             render={({ field }) => (
                                 <CountrySelect
                                     {...field}
+                                    className="form-select text-white-dark"
                                     onChange={(e: any) => {
                                         setCountryid(e.id);
                                         setValue(`group[${i}].country`, e.name); // Set country name in form data
@@ -441,7 +442,6 @@ function RegistrationForm() {
         }
     }, [isBringingSpouse, setValue]);
 
-    console.log("process.env.NEXT_PUBLIC_PAYMENT_STATUS",process.env.NEXT_PUBLIC_PAYMENT_STATUS)
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             <div className="flex flex-col items-center justify-center">
@@ -466,26 +466,30 @@ function RegistrationForm() {
                     <div>
                         <h2 className="text-lg font-semibold mb-2">What best defines you? *</h2>
                         <div className="flex gap-y-2 flex flex-col">
-                            <label>
-                                <input type="radio" {...register('definition', { required: true })} value="IIA_MEMBER" className="mr-2" />
+                            <label className=''>
+                                <input type="radio" {...register('definition', { required: true })} value="IIA_MEMBER" className="mr-2 form-radio w-4 h-4" />
                                 IIA Member
                             </label>
                             <label>
-                                <input type="radio" {...register('definition', { required: true })} value="NON_IIA_MEMBER" className="mr-2" />
+                                <input type="radio" {...register('definition', { required: true })} value="NON_IIA_MEMBER" className="mr-2 form-radio w-4 h-4" />
                                 Non IIA Member
                             </label>
-                            <div className="flex itemse-center flex-col gap-x-3">
-                                <label className="text-gray-400">
+                            <div  className="flex itemse-center flex-col gap-x-3">
+                                <label className="text-gray-400 line-through grascale">
                                     {data && data.count < 100 ? (
-                                        <input type="radio" disabled {...register('definition', { required: true })} value="STUDENT" className="mr-2" />
+                                        <input type="radio" disabled  {...register('definition', { required: true })} value="STUDENT" className="mr-2  form-radio w-4 h-4" />
                                     ) : (
-                                        <input type="radio" disabled={true} value="student" className="mr-2" />
+                                        <input type="radio" disabled={true} value="student" className="mr-2 form-radio w-4 h-4" />
                                     )}
                                     Student
                                 </label>
                                 <small> *Student registration will be opening soon.</small>
                             </div>
-                        </div>
+                        </div> 
+                        {/* <label className="inline-flex mt-1 cursor-pointer">
+                    <input type="radio" name="segements" className="form-radio" />
+                    <span className="text-white-dark">Segements 1</span>
+                </label> */}
                     </div>
                     {/* <NewAccomodationAdding/> */}
                 </div>
@@ -501,11 +505,11 @@ function RegistrationForm() {
                                     <h2 className="text-lg font-semibold mb-2">Booking Type *</h2>
                                     <div className="flex gap-y-2 flex-col">
                                         <label className="line-through">
-                                            <input disabled type="radio" {...register('bookingType', { required: true })} value="Individual" className="mr-2  line-through" />
+                                            <input disabled type="radio" {...register('bookingType', { required: true })} value="Individual" className="mr-2  line-through form-radio w-4 h-4" />
                                             Individual
                                         </label>
                                         <label>
-                                            <input type="radio" {...register('bookingType', { required: true })} value="Group" className="mr-2" />
+                                            <input type="radio" {...register('bookingType', { required: true })} value="Group" className="mr-2 form-radio w-4 h-4" />
                                             Group
                                         </label>
                                     </div>
@@ -515,11 +519,11 @@ function RegistrationForm() {
                                     <h2 className="text-lg font-semibold mb-2">Booking Type *</h2>
                                     <div className="flex gap-y-2 flex-col">
                                         <label>
-                                            <input type="radio" {...register('bookingType', { required: true })} value="Individual" className="mr-2" />
+                                            <input type="radio" {...register('bookingType', { required: true })} value="Individual" className="mr-2 form-radio w-4 h-4" />
                                             Individual
                                         </label>
                                         <label>
-                                            <input type="radio" {...register('bookingType', { required: true })} value="Group" className="mr-2" />
+                                            <input type="radio" {...register('bookingType', { required: true })} value="Group" className="mr-2 form-radio  w-4 h-4 " />
                                             Group
                                         </label>
                                     </div>
@@ -629,7 +633,7 @@ function RegistrationForm() {
                         <h2 className="text-lg font-semibold mb-2">GST Included</h2>
                         <div className="flex gap-y-2 flex-col">
                             <label>
-                                <input type="checkbox" {...register('gstBill')} className="mr-2 dark:bg-white bg-white" />
+                                <input type="checkbox" {...register('gstBill')} className="mr-2 dark:bg-white bg-white form-checkbox w-4 h-4" />
                                 Do you want GST bill?
                             </label>
 
