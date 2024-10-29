@@ -441,6 +441,7 @@ function RegistrationForm() {
         }
     }, [isBringingSpouse, setValue]);
 
+    console.log("process.env.NEXT_PUBLIC_PAYMENT_STATUS",process.env.NEXT_PUBLIC_PAYMENT_STATUS)
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             <div className="flex flex-col items-center justify-center">
