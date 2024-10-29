@@ -35,11 +35,11 @@ const AppUserLogin = () => {
                                 <p className="text-base font-bold leading-normal text-white-dark">Enter your email and password to login</p>
                             </div>
                             <AdminLoginForm />
-                            <div className="relative my-7 text-center md:mb-9">
+                            {/* <div className="relative my-7 text-center md:mb-9">
                                 <span className="absolute inset-x-0 top-1/2 h-px w-full -translate-y-1/2 bg-white-light dark:bg-white-dark"></span>
                                 <span className="relative bg-white px-2 font-bold uppercase text-white-dark dark:bg-dark dark:text-white-light">or</span>
-                            </div>
-                            <div className="mb-10 md:mb-[60px]">
+                            </div> */}
+                            {/* <div className="mb-10 md:mb-[60px]">
                                 <ul className="flex justify-center gap-3.5 text-white">
                                     <li>
                                         <Link
@@ -78,13 +78,8 @@ const AppUserLogin = () => {
                                         </Link>
                                     </li>
                                 </ul>
-                            </div>
-                            <div className="text-center dark:text-white">
-                                Don&apos;t have an account ?&nbsp;
-                                <Link href="/auth/boxed-signup" className="uppercase text-primary underline transition hover:text-black dark:hover:text-white">
-                                    SIGN UP
-                                </Link>
-                            </div>
+                            </div> */}
+                          
                         </div>
                     </div>
                 </div>

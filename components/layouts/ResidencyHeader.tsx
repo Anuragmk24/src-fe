@@ -479,12 +479,12 @@ const ResidencyHeader = () => {
                                             Profile
                                         </Link> */}
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <Link href="/apps/mailbox" className="dark:hover:text-white">
                                             <IconLockDots className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
                                             Change Password
                                         </Link>
-                                    </li>
+                                    </li> */}
                                     {/* <li>
                                         <Link href="/auth/boxed-lockscreen" className="dark:hover:text-white">
                                             <IconLockDots className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
