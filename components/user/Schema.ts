@@ -86,7 +86,7 @@ export const registrationSchemaWithSpouse = z
                         .transform((val) => val?.trim()),
                     iia: z
                         .string()
-                        .min(3, 'Iia number should be at least 3 characters')
+                        // .min(3, 'Iia number should be at least 3 characters')
                         .optional()
                         .transform((val) => val?.trim()),
                     iiaReceipt: z.any().optional(), // Add this for file upload
@@ -232,7 +232,7 @@ export const registrationSchema = z
                         .transform((val) => val?.trim()),
                     iia: z
                         .string()
-                        .min(3, 'Iia number should be at least 3 characters')
+                        // .min(3, 'Iia number should be at least 3 characters')
                         .optional()
                         .transform((val) => val?.trim()),
                     collegeName: z
@@ -377,7 +377,7 @@ export const registrationSchemaForIiaMembers = z
                     // iia: z.string().nonempty('Iia number is required'),
                     iia: z
                         .string()
-                        .min(3, 'Iia number should be at least 3 characters')
+                        // .min(3, 'Iia number should be at least 3 characters')
                         .optional()
                         .transform((val) => val?.trim()),
                     iiaReceipt: z.any().optional(), // Add this for file upload
