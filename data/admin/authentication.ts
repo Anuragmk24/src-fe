@@ -1,8 +1,8 @@
 import { clientFetch } from '@/lib/api';
 
-export const signIn = async (username: any, password: string) => {
+export const signIn = async (username: any, password: string,role:string) => {
     try {
-        const res = await clientFetch(`auth/admin/login`, {
+        const res = await clientFetch(`auth/${role}/login`, {
             method: 'POST',
             body: { username, password },
         });

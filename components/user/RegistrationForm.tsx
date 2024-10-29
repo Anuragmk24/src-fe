@@ -374,12 +374,11 @@ function RegistrationForm() {
                             render={({ field }) => (
                                 <CountrySelect
                                     {...field}
-                                    className="form-select text-white-dark"
+                                    className="text-white-dark "
                                     onChange={(e: any) => {
                                         setCountryid(e.id);
                                         setValue(`group[${i}].country`, e.name); // Set country name in form data
                                         trigger(`group[${i}].country`); // Trigger validation after setting value
-
                                     }}
                                     placeHolder="Select Country"
                                 />

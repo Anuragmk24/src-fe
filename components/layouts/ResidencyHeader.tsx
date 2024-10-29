@@ -33,11 +33,11 @@ import IconMenuPages from '@/components/icon/menu/icon-menu-pages';
 import IconMenuMore from '@/components/icon/menu/icon-menu-more';
 import { usePathname, useRouter } from 'next/navigation';
 import { getTranslation } from '@/i18n';
-import { resetAuth } from '@/store/adminSlice';
 import { setCookie } from 'cookies-next';
 import { jwtDecode } from 'jwt-decode';
+import { resetAuth } from '@/store/residencyAdminSlice';
 
-const Header = () => {
+const ResidencyHeader = () => {
     const pathname = usePathname();
     const dispatch = useDispatch();
     const router = useRouter();
@@ -45,17 +45,18 @@ const Header = () => {
     const [role, setRole] = useState<string | null>(null);
 
     useEffect(() => {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem('residencyAccessToken');
         if (token) {
             try {
                 const decodedToken: any = jwtDecode(token);
                 console.log('decodedtoken ', decodedToken);
                 const { role } = decodedToken;
-                if (role === 'RECIDENCYADMIN' || role === 'ADMIN') {
+                console.log('role ===========> ', role);
+                if (role === 'RESIDENCYADMIN' || role === 'ADMIN') {
                     localStorage.setItem('role', role);
                     setRole(role);
                 } else {
-                    router.push('/admin/login');
+                    router.push('/residency/login');
                     throw new Error('invalid role');
                 }
 
@@ -176,10 +177,10 @@ const Header = () => {
         console.log('logout');
 
         // Remove token from localStorage
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('residencyAccessToken');
 
         // Remove token from cookies by setting expiration to the past
-        setCookie('accessToken', '', {
+        setCookie('residencyAccessToken', '', {
             maxAge: -1, // Expire immediately
             path: '/', // Match the cookie path
         });
@@ -188,7 +189,7 @@ const Header = () => {
         dispatch(resetAuth());
         window.location.reload();
         // Redirect to login page
-        router.push('/admin/login');
+        router.push('/residency/login');
     };
 
     return (
@@ -1025,4 +1026,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default ResidencyHeader;

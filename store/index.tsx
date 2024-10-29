@@ -3,6 +3,7 @@ import themeConfigSlice from '@/store/themeConfigSlice';
 import adminSlice from '@/store/adminSlice'
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import { persistStore, persistReducer } from 'redux-persist';
+import residencyAdminSlice from '@/store/residencyAdminSlice'
 
 
 // Define a persist config
@@ -14,7 +15,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     themeConfig: themeConfigSlice,
-    admin:adminSlice
+    admin:adminSlice,
+    residencyAdmin:residencyAdminSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

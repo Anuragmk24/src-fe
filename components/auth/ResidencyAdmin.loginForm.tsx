@@ -11,9 +11,9 @@ import { setCookie } from 'cookies-next';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { signIn } from '@/data/admin/authentication';
-import { setAdminData, setToken } from '@/store/adminSlice';
+import { setResidencyAdminData, setToken } from '@/store/residencyAdminSlice';
 
-const ComponentsAuthLoginForm = () => {
+const ResidencyAdminLoginForm = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const loginSchema = z.object({
@@ -32,20 +32,20 @@ const ComponentsAuthLoginForm = () => {
     });
 
     const mutation = useMutation({
-        mutationFn: (data: LoginFormData) => signIn(data.email, data.password,'admin'),
+        mutationFn: (data: LoginFormData) => signIn(data.email, data.password,'residencyadmin'),
 
         onSuccess: (data: any) => {
             if (data.token === undefined) return;
-            localStorage.setItem('accessToken', data.token);
+            localStorage.setItem('residencyAccessToken', data.token);
             dispatch(setToken(data?.token));
-            dispatch(setAdminData(data?.admin));
-            setCookie('accessToken', data.token, {
+            dispatch(setResidencyAdminData(data?.admin));
+            setCookie('residencyAccessToken', data.token, {
                 maxAge: 60 * 60 * 24 * 365,
                 httpOnly: false, //When set to true, the cookie is not accessible via JavaScript
                 secure: false, //This flag means the cookie will only be sent over HTTPS. If you're testing locally using HTTP (without SSL), the cookie will not be set. You can remove this attribute during local testing.
                 path: '/',
             });
-            router.push('/admin');
+            router.push('/residency');
             mutation.isPending = false;
         },
         onError: (error: any) => {
@@ -101,4 +101,4 @@ const ComponentsAuthLoginForm = () => {
     );
 };
 
-export default ComponentsAuthLoginForm;
+export default ResidencyAdminLoginForm;

@@ -34,7 +34,7 @@ import IconMenuDocumentation from '@/components/icon/menu/icon-menu-documentatio
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 
-const Sidebar = () => {
+const ResidencySidebar = () => {
     const dispatch = useDispatch();
     const { t } = getTranslation();
     const pathname = usePathname();
@@ -723,4 +723,4 @@ const Sidebar = () => {
     );
 };
 
-export default Sidebar;
+export default ResidencySidebar;

@@ -19,7 +19,7 @@ function CountDetails() {
     });
     console.log('data ============> ', data);
     return (
-        <div className="grid grid-cols-4 gap-x-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:grid-cols-4 gap-x-3">
             <div className="panel ">
                 <div className="flex justify-between">
                     <div className="ltr:mr-1 rtl:ml-1 text-md font-semibold">Total Registration</div>
