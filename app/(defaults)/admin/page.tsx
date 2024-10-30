@@ -11,6 +11,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import CountDetails from './CountDetails';
+import BreadCrumbs from '@/components/BreadCrumbs';
 
 export const metadata: Metadata = {
     title: 'Sales Admin',
@@ -20,6 +21,10 @@ const Sales = () => {
     return (
         <>
             <CountDetails />
+            {/* <div className='my-4'>
+
+            <BreadCrumbs title1='Dashbord' title2='Registration'/>
+            </div> */}
             <AttendeeTable />
         </>
     );

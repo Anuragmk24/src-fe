@@ -1,11 +1,14 @@
-import React from 'react'
+import BreadCrumbs from '@/components/BreadCrumbs';
+import React from 'react';
+import AccomodationTable from './AccomodationTable';
 
 function page() {
-  return (
-    <div>
-      Residency
-    </div>
-  )
+    return (
+        <div>
+            <BreadCrumbs title1="Dashbord" title2="Accomodation" />
+            <AccomodationTable/>
+        </div>
+    );
 }
 
-export default page
+export default page;
