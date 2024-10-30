@@ -449,7 +449,7 @@ function RegistrationForm() {
                 </div>
                 <img src="/assets/sponsors/jidal-sml-logo-black.svg" alt="Logo" className="w-24 h-18 md:w-28 md:h-20" />
                 <img src="/assets/images/SRC-logo-black.svg" alt="Logo" className="w-60 h-20 md:w-72 mb-5 md:h-20" />
-                <img src="/assets/sponsors/Black_Simpolo_Logo__Vertical.png" alt="Logo" className="w-16 h-14 md:w-20 md:h-16" />
+                <img src="/assets/sponsors/Black_Simpolo_Logo__Vertical.png" alt="Logo" className="w-16 h-14 -mt-4 md:w-20 md:h-16" />
             </div>
             {/* <h1 className="text-2xl font-bold mb-4 text-3xl text-center mt-4">Southern Regional Conference</h1> */}
             <div className="flex flex-col sm:flex-row gap-2 items-center justify-center  gap-x-4 text-[#16616E] sm:text-xl mb-8">

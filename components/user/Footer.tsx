@@ -7,16 +7,17 @@ function Footer() {
         <>
             <div id='footer' className="relative">
                 {/* Background image */}
-                <img className="w-full h-[400px] sm:h-96 md:h-[500px] lg:h-[600px] md:object-cover" src="/assets/images/footerImg.jpg" alt="Footer Background" />
+                <img className="w-full h-[700px] sm:h-96 md:h-[500px] lg:h-[600px] md:object-cover" src="/assets/images/footerImg.jpg" alt="Footer Background" />
 
                 {/* Overlay content */}
                 <div className="absolute inset-0 flex flex-col justify-start md:justify-center items-start md:items-center">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-center w-full max-w-6xl px-6">
                         {/* Logo and Register Now Button */}
-                        <div className="flex sm:gap-8 sm:flex-col gap-3 mt-2 sm:mt-0 items-center sm:items-center sm:space-y-0 justify-center sm:space-x-4">
-                            <img src="/assets/sponsors/jidal-sml-logo.svg" alt="Logo" className="w-14 h-12 md:w-20 md:h-20" />
-                            <img src="/assets/images/logoIcon.svg" alt="Logo" className="w-14 h-12 md:w-60" />
-                            <button className="text-[153A40] bg-[#E5E52E] text-[12px] md:text-2xl px-2 py-1 sm:px-4 sm:py-3 rounded-md hover:bg-[#E5E52E]">
+                        <div className="flex sm:gap-8 flex-col gap-3 mt-2 sm:mt-0 items-center sm:items-center sm:space-y-0 justify-center sm:space-x-4">
+                            <img src="/assets/sponsors/jidal-sml-logo.svg" alt="Logo" className="w-66 h-18 md:w-36 md:h-36" />
+                            <img src="/assets/images/logoIcon.svg" alt="Logo" className="w-full h-18 md:w-72" />
+                            <img src="/assets/sponsors/White_Simpolo_Logo.svg" alt="Logo" className="w-66 h-18 md:w-36" />
+                            <button className="text-white bg-[#E5E52E] text-[12px] md:text-2xl px-2 py-1 sm:px-4 sm:py-3 rounded-md hover:bg-[#E5E52E]">
                                 Register Now
                             </button>
                         </div>
