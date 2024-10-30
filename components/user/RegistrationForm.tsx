@@ -142,8 +142,8 @@ function RegistrationForm() {
             if (bookingResult.statusCode === 201) {
                 const payload = {
                     address_line_1: bookingResult?.data?.[0]?.city,
-                    amount: 10,
-                    // amount: priceData.regFee + priceData.accFee || 0,
+                    // amount: 10,
+                    amount: priceData.regFee + priceData.accFee || 0,
                     api_key: process.env.NEXT_PUBLIC_OMNIWARE_API_KEY,
                     city: bookingResult?.data?.[0]?.city,
                     country: bookingResult?.data?.[0]?.country,
@@ -180,8 +180,8 @@ function RegistrationForm() {
                         { name: 'address_line_1', value: bookingResult?.data?.[0]?.city },
                         {
                             name: 'amount',
-                            value: 10,
-                            // value: priceData.regFee + priceData.accFee || 0,
+                            // value: 10,
+                            value: priceData.regFee + priceData.accFee || 0,
                         },
 
                         { name: 'api_key', value: process.env.NEXT_PUBLIC_OMNIWARE_API_KEY },
