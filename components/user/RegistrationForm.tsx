@@ -444,7 +444,11 @@ function RegistrationForm() {
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             <div className="flex flex-col items-center justify-center">
-                <img src="/assets/sponsors/jidal-sml-logo-black.svg" alt="Logo" className="w-36 h-16 md:w-20 md:h-20" />
+                <div className='flex flex-col sm:flex-row'>
+
+                <img src="/assets/sponsors/Black_Simpolo_Logo__Vertical.png" alt="Logo" className="w-18 h-16 md:w-20 md:h-20" />
+                <img src="/assets/sponsors/jidal-sml-logo-black.svg" alt="Logo" className="w-20 h-16 md:w-20 md:h-20" />
+                </div>
                 <img src="/assets/images/SRC-logo-black.svg" alt="Logo" className="w-60 h-20 md:w-72 mb-5 md:h-20" />
             </div>
             {/* <h1 className="text-2xl font-bold mb-4 text-3xl text-center mt-4">Southern Regional Conference</h1> */}

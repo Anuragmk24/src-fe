@@ -19,9 +19,9 @@ function Carousal() {
             </div>
 
             {/* Centered Text */}
-            <h2 className="absolute inset-0 flex items-center justify-center text-white text-xl md:text-3xl font-bold">
+            {/* <h2 className="absolute inset-0 flex items-center justify-center text-white text-xl md:text-3xl font-bold">
                 Register Now
-            </h2>
+            </h2> */}
         </div>
     );
 }

@@ -30,6 +30,9 @@ function Header() {
                     <Link href="https://src2024.in/index.html?section=#committee" className="text-white hover:text-yellow-400">
                         Committee
                     </Link>
+                    <Link href="#footer" className="text-white hover:text-yellow-400">
+                        Contact Us
+                    </Link>
                     <Link href="/" className="bg-[#E5E52E] font-mono text-[#16616E] font-bold px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                         Register Now
                     </Link>
@@ -55,18 +58,21 @@ function Header() {
                         <Link href="https://src2024.in/index.html" className="block text-white hover:text-yellow-400">
                             Home
                         </Link>
-                        <Link href="https://src2024.in/about_us.html" className="block text-white hover:text-blue-600">
+                        <Link href="https://src2024.in/about_us.html" className="block text-white ">
                             About Event
                         </Link>
                        
                       
-                        <Link href="https://src2024.in/index.html?section=#committee" className="block text-white hover:text-blue-600">
+                        <Link href="https://src2024.in/index.html?section=#committee" className="block text-white ">
                             Committee
                         </Link>
-                        <Link href="/" className="block  text-white bg-[#E5E52E] text-green-500 px-4 py-2 rounded-md hover:bg-[#E5E52E]">
+                        <Link href="#footer" className="block text-white ">
+                        Contact Us
+                    </Link>
+                        <Link href="/" className="block  text-white bg-[#E5E52E] px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                             Register Now
                         </Link>
-                        <Link href="/add-accomodation" className="block  text-white bg-[#E5E52E] text-green-500 px-4 py-2 rounded-md hover:bg-[#E5E52E]">
+                        <Link href="/add-accomodation" className="block  text-white bg-[#E5E52E] px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                            Accomodation
                         </Link>
                     </div>
