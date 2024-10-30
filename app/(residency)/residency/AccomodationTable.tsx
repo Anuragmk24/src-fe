@@ -90,15 +90,8 @@ const AccomodationTable = () => {
                             sortable: true,
                             render: (record: any) => <div>{record.memberType === 'IIA_MEMBER' ? 'IIA Member' : record.memberType === 'NON_IIA_MEMBER' ? 'Non IIA Member' : 'Student'}</div>,
                         },
-                        {
-                            accessor: 'regfee',
-                            title: 'Reg. fee',
-                            sortable: true,
-                            render: (record: any) => {
-                                return record.memberType === 'IIA_MEMBER' ? '3500' : record.memberType === 'NON_IIA_MEMBER' ? '4500' : record.isStudentAffiliatedToIia ? '1000' : '1500';
-                            },
-                        },
-                        
+                    
+
                         {
                             accessor: 'designation',
                             title: 'Occupancy',
@@ -126,7 +119,6 @@ const AccomodationTable = () => {
                             sortable: true,
                             render: (record: any) => (record?.payments?.length > 0 ? record?.payments?.[0]?.transactionId : '---'),
                         },
-                       
                     ]}
                     totalRecords={data?.data?.totalCount}
                     recordsPerPage={pageSize}

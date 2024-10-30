@@ -12,7 +12,7 @@ import IconEye from '../icon/icon-eye';
 import Modal from './Modal';
 import AccomodationModal from './AccomodationModal';
 
-const AttendeeTable = () => {
+const   AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const { token } = useSelector((state: any) => state.admin);
 
@@ -43,13 +43,13 @@ const AttendeeTable = () => {
             if (search) {
                 filteredRecords = filteredRecords.filter(
                     (item: any) =>
-                        item.firstName.toLowerCase().includes(search.toLowerCase()) ||
-                        item.lastName.toLowerCase().includes(search.toLowerCase()) ||
-                        item.email.toLowerCase().includes(search.toLowerCase()) ||
-                        item.mobile.toLowerCase().includes(search.toLowerCase()) ||
-                        item.memberType.toLowerCase().includes(search.toLowerCase()) ||
-                        item.payments[0].transactionId.toLowerCase().includes(search.toLowerCase()) ||
-                        item.payments[0].paymentStatus.toLowerCase().includes(search.toLowerCase())
+                        item?.firstName?.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.lastName?.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.email?.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.mobile?.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.memberType?.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.payments?.[0]?.transactionId.toLowerCase().includes(search.toLowerCase()) ||
+                        item?.payments?.[0]?.paymentStatus.toLowerCase().includes(search.toLowerCase())
                 );
             }
 
@@ -111,7 +111,7 @@ const AttendeeTable = () => {
                                 // </button>
                                 <div className="cursor-pointer">
                                     {record.memberType === 'IIA_MEMBER' && record.payments.length > 0 ? (
-                                        <AccomodationModal users={record?.groupMmebers?.[0]?.group.GroupMember} />
+                                        <AccomodationModal users={record?.groupMmebers?.[0]?.group.GroupMember} spouse={record?.spouse} />
                                     ) : (
                                         <p className="ms-10">---</p>
                                     )}
@@ -131,8 +131,8 @@ const AttendeeTable = () => {
                             render: (row: any) => (row.collegeName ? row.collegeName : '---'),
                         },
 
-                        { accessor: 'accPrice', title: 'Accomodoation Price', sortable: true, render: (record: any) => 4000 },
-                        { accessor: 'paymentAmount', title: 'Payment Amount', sortable: true, render: (record: any) => 3500 },
+                        // { accessor: 'accPrice', title: 'Accomodoation Price', sortable: true, render: (record: any) => 4000 },
+                        // { accessor: 'paymentAmount', title: 'Payment Amount', sortable: true, render: (record: any) => 3500 },
                         {
                             accessor: 'paymentStatus',
                             title: 'Payment Status',

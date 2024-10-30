@@ -9,7 +9,6 @@ export const fetchBookings = async (token:string,start:number,limit:number) => {
             }
         });
 
-        console.log("res from data ",res )
         // Check if the response is ok (status in the range 200-299)
         if (res.statusCode !== 200) {
             throw res;
@@ -30,7 +29,6 @@ export const toggleAttendeeStatus = async (token:string,userId:string) => {
             }
         });
 
-        console.log("res from data ",res )
         // Check if the response is ok (status in the range 200-299)
         if (res.statusCode !== 200) {
             throw res;
