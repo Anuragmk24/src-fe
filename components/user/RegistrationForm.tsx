@@ -333,7 +333,7 @@ function RegistrationForm() {
                     {/* File Upload for new IIA members without IIA Number */}
                     {memberType === 'IIA_MEMBER' && !watch(`group[${i}].iia`) && (
                         <div>
-                            <label className="block mb-1">Upload IIA Membership Receipt (Newly registerd)</label>
+                            <label className="block mb-1">Upload IIA Membership Receipt (Newly registered)</label>
                             <input type="file" {...register(`group[${i}].iiaReceipt`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" accept=".pdf,.jpg,.png" />
                             {Array.isArray(errors?.group) && errors.group[i]?.iiaReceipt && <p className="text-red-600">{errors.group[i].iiaReceipt.message}</p>}
                         </div>
@@ -416,7 +416,7 @@ function RegistrationForm() {
                         {Array.isArray(errors?.group) && errors.group[i]?.city && <p className="text-red-600">{errors.group[i].city.message}</p>}
                     </div>
                     <div>
-                        <label className="block mb-1">Center</label>
+                        <label className="block mb-1">Centre</label>
                         <input type="text" {...register(`group[${i}].center`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.center && <p className="text-red-600">{errors.group[i].center.message}</p>}
                     </div>
@@ -501,7 +501,7 @@ function RegistrationForm() {
                 {memberType === 'IIA_MEMBER' && (
                     <>
                         <div>
-                            <Points points="Early Bird Offer: Register for SRC and book your accommodation together for just ₹7500. Offer valid only until November 5th."  classNames="bg-violet-200" />
+                            <Points points="Early Bird Offer: Register for SRC and book your accommodation together for just ₹7500. Offer valid only until November 10th."  classNames="bg-violet-200" />
                             <Questions register={register} question="Are you bringing your spouse" name="bringingSpouse" />
                             {isBringingSpouse === 'Yes' ? (
                                 <div>

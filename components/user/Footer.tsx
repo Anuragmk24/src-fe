@@ -7,7 +7,7 @@ function Footer() {
         <>
             <div id='footer' className="relative">
                 {/* Background image */}
-                <img className="w-full h-[700px] sm:h-96 md:h-[500px] lg:h-[600px] md:object-cover" src="/assets/images/footerImg.jpg" alt="Footer Background" />
+                <img className="w-full h-[800px] sm:h-96 md:h-[500px] lg:h-[600px] md:object-cover" src="/assets/images/footerImg.jpg" alt="Footer Background" />
 
                 {/* Overlay content */}
                 <div className="absolute inset-0 flex flex-col justify-start md:justify-center items-start md:items-center">
@@ -17,46 +17,51 @@ function Footer() {
                             <img src="/assets/sponsors/jidal-sml-logo.svg" alt="Logo" className="w-66 h-18 md:w-36 md:h-36" />
                             <img src="/assets/images/logoIcon.svg" alt="Logo" className="w-full h-18 md:w-72" />
                             <img src="/assets/sponsors/White_Simpolo_Logo.svg" alt="Logo" className="w-66 h-18 md:w-36" />
-                            <button className="text-white bg-[#E5E52E] text-[12px] md:text-2xl px-2 py-1 sm:px-4 sm:py-3 rounded-md hover:bg-[#E5E52E]">
+                            <button className="text-[#16616E] font-bold py-2 px-2 bg-[#E5E52E] text-[12px] md:text-2xl sm:px-4 sm:py-3 rounded-md hover:bg-[#E5E52E]">
                                 Register Now
                             </button>
                         </div>
 
                         {/* Contact Information */}
-                        <div className="flex flex-col items-center md:items-center text-center text-white space-y-0 sm:space-y-4">
-                            <h1 className="font-bold text-sm sm:text-3xl">Contact Us</h1>
+                        <div className="flex flex-col items-start md:items-center text-center text-white space-y-0 sm:space-y-4">
+                            <h1 className="font-bold text-2xl sm:text-3xl my-5 sm:my-0">Contact Us</h1>
                             {/* <div className="font-bold sm:text-base flex items-center gap-x-2 text-[10px]">
                                 <CiLocationOn size={20} className="text-yellow-400 text-[10px]" />
                                 Vythiri Village Resort, Wayanad
                             </div> */}
 
                             {/* Contact Sections */}
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm sm:text-base">
+                            <div className="grid grid-cols-1 w-full sm:grid-cols-3 gap-6 text-sm sm:text-base">
                                 {/* Registration Section */}
-                                <div className="space-y-2">
-                                    <h2 className="font-bold underline text-yellow-400 text-[10px]">Registration</h2>
-                                    <div className="flex items-center justify-center gap-x-2 text-[10px] sm:text-sm">
+                                <div className="space-y-2 w-full">
+                                    <h2 className="font-bold  text-start text-[15px] uppercase text-yellow-400">Registration</h2>
+                                    <hr className='w-full border-t-2 border-green-400' />
+                                    <div className="flex items-center justify-start gap-x-2 text-[15px] sm:text-sm">
                                         Ar. Amit Kamal
                                     </div>
-                                    <p>+91 9511771463</p>
+                                    <p className='text-start'>+91 9511771463</p>
                                 </div>
 
                                 {/* Hospitality Section */}
                                 <div className="space-y-2">
-                                    <h2 className="font-bold underline text-[10px] text-yellow-400 sm:text-sm">Hospitality</h2>
-                                    <div className="flex items-center justify-center gap-x-2 text-[10px] sm:text-sm">
+                                    <h2 className="font-bold  text-[15px] mt-5 sm:mt-0 text-start uppercase text-yellow-400 sm:text-sm">Hospitality</h2>
+                                    <hr className='w-full border-t-2 border-green-400' />
+
+                                    <div className="flex items-start justify-start gap-x-2 text-[15px] sm:text-sm">
                                         Ar. Shyam
                                     </div>
-                                    <p>+91 9895404502</p>
+                                    <p className='text-start'>+91 9895404502</p>
                                 </div>
 
                                 {/* General Section */}
                                 <div className="space-y-2">
-                                    <h2 className="font-bold underline text-[10px] text-yellow-400 sm:text-sm">General</h2>
-                                    <div className="flex items-center justify-center gap-x-2 text-[10px] sm:text-sm">
+                                    <h2 className="font-bold  text-[15px] mt-5 sm:mt-0 text-start uppercase text-yellow-400 sm:text-sm">General</h2>
+                                    <hr className='w-full border-t-2 border-green-400' />
+
+                                    <div className="flex items-center justify-start gap-x-2 text-[15px] sm:text-sm">
                                         Ar. Lookman
                                     </div>
-                                    <p>+91 9048614309</p>
+                                    <p className='text-start'>+91 9048614309</p>
                                 </div>
                             </div>
                         </div>
