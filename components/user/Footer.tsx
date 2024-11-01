@@ -48,7 +48,7 @@ function Footer() {
                                     <hr className='w-full border-t-2 border-green-400' />
 
                                     <div className="flex items-start justify-start gap-x-2 text-[15px] sm:text-sm">
-                                        Ar. Shyam Kumar
+                                        Ar. ShyamKumar P
                                     </div>
                                     <p className='text-start'>+91 9895404502</p>
                                 </div>
