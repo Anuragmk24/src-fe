@@ -86,12 +86,74 @@ const AttendeeTable = () => {
                     columns={[
                         { accessor: 'firstName', title: 'Name', sortable: true, render: (record) => `${record.firstName} ${record.lastName}` },
                         { accessor: 'createdAt', title: 'Date', sortable: true, render: (record: any) => formatDate(record.createdAt) },
+
+                        {
+                            accessor: 'transactionId',
+                            title: 'Transactin ID',
+                            sortable: true,
+                            render: (record: any) => record?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId ?? '---',
+                        },
+                        {
+                            accessor: 'regFee',
+                            title: 'Registration Fee',
+                            sortable: true,
+                            render: (record: any) => {
+                                const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
+                                const memberType = record?.memberType;
+
+                                if (paymentStatus === 'SUCCESS') {
+                                    if (memberType === 'IIA_MEMBER') {
+                                        return record.isBringingSpouse ? '7000' : '3500';
+                                    } else if (memberType === 'NON_IIA_MEMBER') {
+                                        return '4500';
+                                    }
+                                }
+
+                                return null;
+                            },
+                        },
+                        {
+                            accessor: 'accommodation',
+                            title: 'Accommodation',
+                            sortable: true,
+                            render: (record: any) => (
+                                <div className="cursor-pointer">
+                                    {record.memberType === 'IIA_MEMBER' && record?.accomodations?.length > 0 ? (
+                                        <div className='text-center'>
+                                        <p >{record.isBringingSpouse ? "8000" : record?.groupMmebers?.[0]?.group?.numberOfMembers * 4000}</p>
+                                        <AccomodationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
+                                        </div>
+                                    ) : (
+                                        <p className="ms-10">---</p>
+                                    )}
+                                </div>
+                            ),
+                        },
+                        {
+                            accessor: 'total',
+                            title: 'Total Amount',
+                            sortable: true,
+                            render: (record: any) => {
+                                const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
+                                const amount = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.amount;
+                                const numberOfMembers = record?.groupMmebers?.[0]?.group?.numberOfMembers;
+                            
+                                if (paymentStatus === 'SUCCESS') {
+                                    // Check if it's a group (more than one member)
+                                    const groupLabel = numberOfMembers > 1 ? ' (Group)' : '';
+                                    return `${amount}${groupLabel}`;
+                                }
+                            
+                                // Default case when payment is not successful
+                                return '---';
+                            }
+                                                    },
                         { accessor: 'mobile', title: 'Phone No.', sortable: true },
                         {
                             accessor: 'paymentStatus',
                             title: 'Payment Status',
                             sortable: true,
-                            render: (record: any) => (record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus ?? 'Payment not initiated'),
+                            render: (record: any) => record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus ?? 'Payment not initiated',
                         },
                         {
                             accessor: 'iia',
@@ -113,23 +175,7 @@ const AttendeeTable = () => {
                         //         return record.memberType === 'IIA_MEMBER' ? '3500' : record.memberType === 'NON_IIA_MEMBER' ? '4500' : record.isStudentAffiliatedToIia ? '1000' : '1500';
                         //     },
                         // },
-                        {
-                            accessor: 'accommodation',
-                            title: 'Accommodation',
-                            sortable: true,
-                            render: (record: any) => (
-                                // <button className="btn btn-primary" onClick={() => handleAction(record.id)}>
-                                //     View Details
-                                // </button>
-                                <div className="cursor-pointer">
-                                    {record.memberType === 'IIA_MEMBER' && record?.accomodations?.length > 0 ? (
-                                        <AccomodationModal users={record?.groupMmebers?.[0]?.group.GroupMember} spouse={record?.spouse} />
-                                    ) : (
-                                        <p className="ms-10">---</p>
-                                    )}
-                                </div>
-                            ),
-                        },
+
                         {
                             accessor: 'designation',
                             title: 'Occupancy',
@@ -142,16 +188,22 @@ const AttendeeTable = () => {
                             sortable: true,
                             render: (row: any) => (row.collegeName ? row.collegeName : '---'),
                         },
+                        {
+                            accessor: 'center',
+                            title: 'Centre',
+                            sortable: true,
+                            render: (row: any) => (row.center ? row.center : '---'),
+                        },
+                        {
+                            accessor: 'state',
+                            title: 'State',
+                            sortable: true,
+                            render: (row: any) => (row.state ? row.state : '---'),
+                        },
 
                         // { accessor: 'accPrice', title: 'Accomodoation Price', sortable: true, render: (record: any) => 4000 },
                         // { accessor: 'paymentAmount', title: 'Payment Amount', sortable: true, render: (record: any) => 3500 },
 
-                        {
-                            accessor: 'transactionId',
-                            title: 'Transactin ID',
-                            sortable: true,
-                            render: (record: any) => (record?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId ?? '---'),
-                        },
                         {
                             accessor: 'action',
                             title: 'Action',

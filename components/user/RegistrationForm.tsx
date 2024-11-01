@@ -280,7 +280,7 @@ function RegistrationForm() {
         }
 
         setPriceData({ regFee, accFee });
-    }, [memberType, isBringingSpouse, groupSize, accomodation, bookingType, isStudentAffiliatedToIia]);
+    }, [memberType, isBringingSpouse, groupSize?.value, accomodation, bookingType, isStudentAffiliatedToIia]);
 
     useEffect(() => {
         const details = [{ name: 'Registration Fee', value: priceData.regFee }];

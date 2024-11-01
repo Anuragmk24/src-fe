@@ -112,7 +112,7 @@ export const registrationSchemaWithSpouse = z
                         .transform((val) => val?.trim()),
                     center: z
                         .string()
-                        .nonempty('Center is mandatory field')
+                        .nonempty('Centre is mandatory field')
                         .transform((val) => val?.trim()),
                     coaNumber: z
                         .string()
@@ -257,7 +257,7 @@ export const registrationSchema = z
                         .transform((val) => val?.trim()),
                     center: z
                         .string()
-                        .nonempty('Center is mandatory field')
+                        .nonempty('Centre is mandatory field')
                         .transform((val) => val?.trim()),
                     coaNumber: z
                         .string()
@@ -404,7 +404,7 @@ export const registrationSchemaForIiaMembers = z
                         .transform((val) => val?.trim()),
                     center: z
                         .string()
-                        .nonempty('Center is mandatory field')
+                        .nonempty('Centre is mandatory field')
                         .transform((val) => val?.trim()),
                     coaNumber: z
                         .string()
