@@ -37,7 +37,7 @@ function Footer() {
                                     <h2 className="font-bold  text-start text-[15px] uppercase text-yellow-400">Registration</h2>
                                     <hr className='w-full border-t-2 border-green-400' />
                                     <div className="flex items-center justify-start gap-x-2 text-[15px] sm:text-sm">
-                                        Ar. Amit Kamal
+                                        Ar. Amith Kamal
                                     </div>
                                     <p className='text-start'>+91 9511771463</p>
                                 </div>
