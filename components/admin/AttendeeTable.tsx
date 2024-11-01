@@ -91,7 +91,7 @@ const AttendeeTable = () => {
                             accessor: 'paymentStatus',
                             title: 'Payment Status',
                             sortable: true,
-                            render: (record: any) => (record?.payments?.length > 0 ? record?.payments?.[0]?.paymentStatus : 'Payment not initiated'),
+                            render: (record: any) => (record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus ?? 'Payment not initiated'),
                         },
                         {
                             accessor: 'iia',
@@ -105,14 +105,14 @@ const AttendeeTable = () => {
                             sortable: true,
                             render: (record: any) => <div>{record.memberType === 'IIA_MEMBER' ? 'IIA Member' : record.memberType === 'NON_IIA_MEMBER' ? 'Non IIA Member' : 'Student'}</div>,
                         },
-                        {
-                            accessor: 'regfee',
-                            title: 'Amount',
-                            sortable: true,
-                            render: (record: any) => {
-                                return record.memberType === 'IIA_MEMBER' ? '3500' : record.memberType === 'NON_IIA_MEMBER' ? '4500' : record.isStudentAffiliatedToIia ? '1000' : '1500';
-                            },
-                        },
+                        // {
+                        //     accessor: 'regfee',
+                        //     title: 'Amount',
+                        //     sortable: true,
+                        //     render: (record: any) => {
+                        //         return record.memberType === 'IIA_MEMBER' ? '3500' : record.memberType === 'NON_IIA_MEMBER' ? '4500' : record.isStudentAffiliatedToIia ? '1000' : '1500';
+                        //     },
+                        // },
                         {
                             accessor: 'accommodation',
                             title: 'Accommodation',
@@ -122,7 +122,7 @@ const AttendeeTable = () => {
                                 //     View Details
                                 // </button>
                                 <div className="cursor-pointer">
-                                    {record.memberType === 'IIA_MEMBER' && record.payments.length > 0 ? (
+                                    {record.memberType === 'IIA_MEMBER' && record?.accomodations?.length > 0 ? (
                                         <AccomodationModal users={record?.groupMmebers?.[0]?.group.GroupMember} spouse={record?.spouse} />
                                     ) : (
                                         <p className="ms-10">---</p>
@@ -150,7 +150,7 @@ const AttendeeTable = () => {
                             accessor: 'transactionId',
                             title: 'Transactin ID',
                             sortable: true,
-                            render: (record: any) => (record?.payments?.length > 0 ? record?.payments?.[0]?.transactionId : '---'),
+                            render: (record: any) => (record?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId ?? '---'),
                         },
                         {
                             accessor: 'action',
