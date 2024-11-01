@@ -50,7 +50,7 @@ function Modal({ uniqueUsers }: { uniqueUsers: any }) {
             }
             setModal10(false);
             setLoading(false);
-            window.location.reload();
+            // window.location.reload();
         } catch (error) {
             setLoading(false);
             console.log('error while adding accomodation reciept', error);

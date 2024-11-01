@@ -12,7 +12,7 @@ import IconEye from '../icon/icon-eye';
 import Modal from './Modal';
 import AccomodationModal from './AccomodationModal';
 
-const   AttendeeTable = () => {
+const AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const { token } = useSelector((state: any) => state.admin);
 
@@ -88,14 +88,26 @@ const   AttendeeTable = () => {
                         { accessor: 'createdAt', title: 'Date', sortable: true, render: (record: any) => formatDate(record.createdAt) },
                         { accessor: 'mobile', title: 'Phone No.', sortable: true },
                         {
-                            accessor: 'mobile',
+                            accessor: 'paymentStatus',
+                            title: 'Payment Status',
+                            sortable: true,
+                            render: (record: any) => (record?.payments?.length > 0 ? record?.payments?.[0]?.paymentStatus : 'Payment not initiated'),
+                        },
+                        {
+                            accessor: 'iia',
+                            title: 'IIA Number',
+                            sortable: true,
+                            render: (record: any) => record?.iia,
+                        },
+                        {
+                            accessor: 'memberType',
                             title: 'Member Type',
                             sortable: true,
                             render: (record: any) => <div>{record.memberType === 'IIA_MEMBER' ? 'IIA Member' : record.memberType === 'NON_IIA_MEMBER' ? 'Non IIA Member' : 'Student'}</div>,
                         },
                         {
                             accessor: 'regfee',
-                            title: 'Reg. fee',
+                            title: 'Amount',
                             sortable: true,
                             render: (record: any) => {
                                 return record.memberType === 'IIA_MEMBER' ? '3500' : record.memberType === 'NON_IIA_MEMBER' ? '4500' : record.isStudentAffiliatedToIia ? '1000' : '1500';
@@ -133,12 +145,7 @@ const   AttendeeTable = () => {
 
                         // { accessor: 'accPrice', title: 'Accomodoation Price', sortable: true, render: (record: any) => 4000 },
                         // { accessor: 'paymentAmount', title: 'Payment Amount', sortable: true, render: (record: any) => 3500 },
-                        {
-                            accessor: 'paymentStatus',
-                            title: 'Payment Status',
-                            sortable: true,
-                            render: (record: any) => (record?.payments?.length > 0 ? record?.payments?.[0]?.paymentStatus : 'Payment not initiated'),
-                        },
+
                         {
                             accessor: 'transactionId',
                             title: 'Transactin ID',
