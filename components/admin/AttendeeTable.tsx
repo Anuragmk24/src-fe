@@ -11,6 +11,7 @@ import { formatDate } from '@/utils/common';
 import IconEye from '../icon/icon-eye';
 import Modal from './Modal';
 import AccomodationModal from './AccomodationModal';
+import RegistrationModal from './RegistrationModal';
 
 const AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
@@ -85,42 +86,53 @@ const AttendeeTable = () => {
                     records={records}
                     columns={[
                         { accessor: 'firstName', title: 'Name', sortable: true, render: (record) => `${record.firstName} ${record.lastName}` },
-                        { accessor: 'createdAt', title: 'Date', sortable: true, render: (record: any) => formatDate(record.createdAt) },
+                        { accessor: 'mobile', title: 'Phone', sortable: true },
 
+                        { accessor: 'createdAt', title: 'Date', sortable: true, render: (record: any) => formatDate(record.createdAt) },
                         {
-                            accessor: 'transactionId',
-                            title: 'Transactin ID',
+                            accessor: 'memberType',
+                            title: 'Member Type',
                             sortable: true,
-                            render: (record: any) => record?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId ?? '---',
+                            render: (record: any) => <div>{record.memberType === 'IIA_MEMBER' ? 'IIA Member' : record.memberType === 'NON_IIA_MEMBER' ? 'Non IIA Member' : 'Student'}</div>,
                         },
                         {
                             accessor: 'regFee',
-                            title: 'Registration Fee',
+                            title: 'Reg',
                             sortable: true,
                             render: (record: any) => {
                                 const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
                                 const memberType = record?.memberType;
-
+                                let feeDisplay = null;
+                        
+                                // Determine the registration fee display based on conditions
                                 if (paymentStatus === 'SUCCESS') {
                                     if (memberType === 'IIA_MEMBER') {
-                                        return record.isBringingSpouse ? '7000' : '3500';
+                                        feeDisplay = record.isBringingSpouse ? '7000 (with Spouse)' : record.groupSize * 3500;
                                     } else if (memberType === 'NON_IIA_MEMBER') {
-                                        return '4500';
+                                        feeDisplay = '4500';
                                     }
                                 }
-
-                                return null;
+                        
+                                return (
+                                    <div className='text-center'>
+                                        {feeDisplay || '---'} {/* Show fee or '---' if not applicable */}
+                                        {feeDisplay && (
+                                            <RegistrationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
+                                        )}
+                                    </div>
+                                );
                             },
                         },
+                        
                         {
                             accessor: 'accommodation',
-                            title: 'Accommodation',
+                            title: 'Acc',
                             sortable: true,
                             render: (record: any) => (
                                 <div className="cursor-pointer">
-                                    {record.memberType === 'IIA_MEMBER' && record?.accomodations?.length > 0 ? (
+                                    {record.memberType === 'IIA_MEMBER' && record?.accomodations?.length > 0 && record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus==='SUCCESS' ? (
                                         <div className='text-center'>
-                                        <p >{record.isBringingSpouse ? "8000" : record?.groupMmebers?.[0]?.group?.numberOfMembers * 4000}</p>
+                                        <p >{  record.isBringingSpouse ? "8000" : record?.groupMmebers?.[0]?.group?.numberOfMembers * 4000}</p>
                                         <AccomodationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
                                         </div>
                                     ) : (
@@ -131,7 +143,7 @@ const AttendeeTable = () => {
                         },
                         {
                             accessor: 'total',
-                            title: 'Total Amount',
+                            title: 'Total',
                             sortable: true,
                             render: (record: any) => {
                                 const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
@@ -148,7 +160,14 @@ const AttendeeTable = () => {
                                 return '---';
                             }
                                                     },
-                        { accessor: 'mobile', title: 'Phone No.', sortable: true },
+
+                        {
+                            accessor: 'transactionId',
+                            title: 'Transactin ID',
+                            sortable: true,
+                            render: (record: any) => record?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId ?? '---',
+                        },
+                       
                         {
                             accessor: 'paymentStatus',
                             title: 'Payment Status',
@@ -161,21 +180,7 @@ const AttendeeTable = () => {
                             sortable: true,
                             render: (record: any) => record?.iia,
                         },
-                        {
-                            accessor: 'memberType',
-                            title: 'Member Type',
-                            sortable: true,
-                            render: (record: any) => <div>{record.memberType === 'IIA_MEMBER' ? 'IIA Member' : record.memberType === 'NON_IIA_MEMBER' ? 'Non IIA Member' : 'Student'}</div>,
-                        },
-                        // {
-                        //     accessor: 'regfee',
-                        //     title: 'Amount',
-                        //     sortable: true,
-                        //     render: (record: any) => {
-                        //         return record.memberType === 'IIA_MEMBER' ? '3500' : record.memberType === 'NON_IIA_MEMBER' ? '4500' : record.isStudentAffiliatedToIia ? '1000' : '1500';
-                        //     },
-                        // },
-
+                      
                         {
                             accessor: 'designation',
                             title: 'Occupancy',

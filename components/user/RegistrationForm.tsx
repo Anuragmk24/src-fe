@@ -243,6 +243,8 @@ function RegistrationForm() {
             regFee = 3500;
             if (isBringingSpouse === 'Yes') {
                 regFee = 7000;
+            }else if( bookingType === 'Individual'){
+                regFee=3500;
             } else if (groupSize?.value === 2) {
                 regFee = 7000;
             } else if (groupSize?.value === 3) {
@@ -259,12 +261,13 @@ function RegistrationForm() {
             } else if (groupSize?.value === 3 && accomodation === 'Yes') {
                 regFee = 10500;
             } else if (groupSize?.value === 4 && accomodation === 'Yes') {
-                regFee = 14000;
+                regFee = 14000; 
             }
         }
 
         // Check for accommodation
-        if (accomodation === 'Yes') {
+
+        if (memberType==='IIA_MEMBER' &&     accomodation === 'Yes') {
             accFee = 4000; // Accommodation fee
             if (bookingType === 'Individual') {
                 accFee = 4000;
@@ -285,7 +288,7 @@ function RegistrationForm() {
     useEffect(() => {
         const details = [{ name: 'Registration Fee', value: priceData.regFee }];
 
-        if (accomodation === 'Yes') {
+        if (memberType==='IIA_MEMBER' && accomodation === 'Yes') {
             details.push({ name: 'Accommodation Fee', value: priceData.accFee });
         }
 
