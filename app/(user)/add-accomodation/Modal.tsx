@@ -6,49 +6,51 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form'; // Import useForm from react-hook-form
 import imageCompression from 'browser-image-compression';
 import toast from 'react-hot-toast';
+import { uniq } from 'lodash';
 
 function Modal({ uniqueUsers }: { uniqueUsers: any }) {
     const [modal10, setModal10] = useState(false);
     const { register, handleSubmit, reset } = useForm(); // Initialize react-hook-form
     const [loading, setLoading] = useState(false);
 
+    console.log("uniquesusers ===============> ",uniq)
     const onSubmit = async (data: any) => {
         try {
             setLoading(true);
 
-            const file = data.accomodationReciept[0];
-            if (!file) {
-                throw new Error('No file uploaded');
-            }
+            // const file = data.accomodationReciept[0];
+            // if (!file) {
+            //     throw new Error('No file uploaded');
+            // }
 
-            //compression options
-            const options = {
-                maxSizeMB: 1,
-                maxWidthOeHeight: 1024,
-                useWebWorker: true,
-            };
-            const compressedFile = await imageCompression(file, options);
+            // //compression options
+            // const options = {
+            //     maxSizeMB: 1,
+            //     maxWidthOeHeight: 1024,
+            //     useWebWorker: true,
+            // };
+            // const compressedFile = await imageCompression(file, options);
 
-            const formData = new FormData();
-            formData.append('files', compressedFile, file.name);
-            formData.append('users', JSON.stringify(uniqueUsers));
+            // const formData = new FormData();
+            // formData.append('files', compressedFile, file.name);
+            // formData.append('users', JSON.stringify(uniqueUsers));
 
-            const fileUploadResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/booking/accomodation-reciept`, {
-                method: 'POST',
-                body: formData,
-            });
-            // Handle the response if needed
-            const response = await fileUploadResponse.json();
-            console.log('File upload response: ', response);
+            // const fileUploadResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/booking/accomodation-reciept`, {
+            //     method: 'POST',
+            //     body: formData,
+            // });
+            // // Handle the response if needed
+            // const response = await fileUploadResponse.json();
+            // console.log('File upload response: ', response);
 
-            // Reset form and stop loading
-            reset(); // Reset the form fields after submission
-            if (response.ok) {
-                toast.success(response?.message);
-            } else {
-                toast.error(response?.message);
-            }
-            setModal10(false);
+            // // Reset form and stop loading
+            // reset(); // Reset the form fields after submission
+            // if (response.ok) {
+            //     toast.success(response?.message);
+            // } else {
+            //     toast.error(response?.message);
+            // }
+            // setModal10(false);
             setLoading(false);
             // window.location.reload();
         } catch (error) {

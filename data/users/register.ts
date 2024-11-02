@@ -95,3 +95,17 @@ export const fetchUserWithTransactionId = async (transactionId: string) => {
         throw err;
     }
 };
+
+
+export const addNewAccomodation = async (payload: any,amount:any) => {
+    try {
+        const res = await clientFetch(`accomodation/create`, {
+            method: 'POST',
+            body: {payload,amount},
+        });
+        return res;
+    } catch (err) {
+        console.log('error  ', err);
+        throw err;
+    }
+};

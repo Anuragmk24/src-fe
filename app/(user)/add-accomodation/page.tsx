@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { MdCurrencyRupee } from 'react-icons/md';
+import SubmitButton from './SubmitButton';
 
 type FormData = {
     referenceNumbers: { referenceNumber: string }[]; // Array of reference numbers
@@ -41,7 +42,7 @@ function NewAccomodationAdding() {
     });
 
     const onSubmit = (data: FormData) => {
-        console.log("Data ",data)
+        console.log('Data ', data);
         const transactionIds = data.referenceNumbers.map((item) => item.referenceNumber);
         if (transactionIds.length <= 4) {
             setReferenceNumbers(transactionIds); // Set reference numbers for fetching users
@@ -84,6 +85,7 @@ function NewAccomodationAdding() {
         setAmount(uniqueUsers.length * 4000);
     }, [uniqueUsers]);
 
+    console.log('uniqueusers ========> ', uniqueUsers);
     return (
         <div className="max-w-5xl mx-auto p-4  panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             <h2 className="text-lg font-bold mb-4">Already Registered? Want to book accommodation?</h2>
@@ -134,7 +136,10 @@ function NewAccomodationAdding() {
                                 (
                                     user: any // Removed slicing to show all unique users
                                 ) => (
-                                    <li key={user.id} className="p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition duration-200 g-white dark:bg-white bg-white text-black dark:text-black">
+                                    <li
+                                        key={user.id}
+                                        className="p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition duration-200 g-white dark:bg-white bg-white text-black dark:text-black"
+                                    >
                                         <p className="text-gray-900 text-lg font-medium dark:text-black">
                                             <span className="font-semibold text-[#16616E]  dark:text-black">Name:</span> {user?.firstName} {user?.lastName}
                                         </p>
@@ -151,7 +156,8 @@ function NewAccomodationAdding() {
                                         {amount}
                                     </span>
                                 )}
-                                <Modal uniqueUsers={uniqueUsers} />
+                                <SubmitButton  uniqueUsers={uniqueUsers} amount={amount}/>
+                                {/* <Modal uniqueUsers={uniqueUsers} /> */}
                             </div>
                         </ul>
                     </div>
