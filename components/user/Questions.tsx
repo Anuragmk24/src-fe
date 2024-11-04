@@ -18,8 +18,14 @@ function Questions({ register, question, name }: { register: any; question: stri
                 </label>
             </div>
             {question === 'Do you want accomodation' && (
-                <Points points='Please note that room-sharing arrangements will depend on the type of booking. Group bookings are more likely to result in rooms being allocated together.
-                    For individual bookings, room sharing will be arranged based on availability.' classNames=""/>
+                <Points
+                    points="Please note that roomRoom sharing arrangements will be based on the type of booking and group size. For group bookings, rooms are more likely to be allocated according to the number of participants: groups of two will receive double occupancy rooms (with couples receiving first preference), groups of three will be placed in triple occupancy rooms, and groups of four in quadruple occupancy rooms.
+
+Please consider your group size carefully, as changes to room assignments may not be possible once allocated.
+
+For individual bookings, room sharing will be arranged based on availability."
+                    classNames=""
+                />
             )}
         </div>
     );
