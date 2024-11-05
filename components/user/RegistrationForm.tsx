@@ -68,18 +68,18 @@ function RegistrationForm() {
     const onSubmit = async (data: any) => {
         console.log('Daata ==========> ', data);
 
-        if (data.definition === 'IIA_MEMBER') {
-            if (data.group[0].iia === '' && (!data.group[0].iiaReceipt || data.group[0].iiaReceipt.length === 0)) {
+        if (data?.definition === 'IIA_MEMBER') {
+            if (data?.group?.[0]?.iia === '' && (!data?.group?.[0]?.iiaReceipt || data?.group?.[0]?.iiaReceipt?.length === 0)) {
                 setCustomError('Please provide either IIA number or upload the IIA receipt.');
                 return;
             }
         }
         setLoading(true);
-        const uploadPromises = data.group.map(async (member: any) => {
+        const uploadPromises = data?.group?.map(async (member: any) => {
             // Assign the filename to the member before uploading
             member.fileName = member?.iiaReceipt?.[0]?.name;
 
-            if (member.iiaReceipt && member.iiaReceipt.length > 0) {
+            if (member?.iiaReceipt && member?.iiaReceipt?.length > 0) {
                 const originalFile = member.iiaReceipt[0];
 
                 //compression options
@@ -243,8 +243,8 @@ function RegistrationForm() {
             regFee = 3500;
             if (isBringingSpouse === 'Yes') {
                 regFee = 7000;
-            }else if( bookingType === 'Individual'){
-                regFee=3500;
+            } else if (bookingType === 'Individual') {
+                regFee = 3500;
             } else if (groupSize?.value === 2) {
                 regFee = 7000;
             } else if (groupSize?.value === 3) {
@@ -261,15 +261,16 @@ function RegistrationForm() {
             } else if (groupSize?.value === 3 && accomodation === 'Yes') {
                 regFee = 10500;
             } else if (groupSize?.value === 4 && accomodation === 'Yes') {
-                regFee = 14000; 
-            }
+                regFee = 14000;
+            } 
         }
 
         // Check for accommodation
 
-        if (memberType==='IIA_MEMBER' &&     accomodation === 'Yes') {
+        if (memberType === 'IIA_MEMBER' && accomodation === 'Yes') {
             accFee = 4000; // Accommodation fee
             if (bookingType === 'Individual') {
+                regFee = 3500;
                 accFee = 4000;
             } else if (groupSize?.value === 2) {
                 accFee = 8000;
@@ -288,7 +289,7 @@ function RegistrationForm() {
     useEffect(() => {
         const details = [{ name: 'Registration Fee', value: priceData.regFee }];
 
-        if (memberType==='IIA_MEMBER' && accomodation === 'Yes') {
+        if (memberType === 'IIA_MEMBER' && accomodation === 'Yes') {
             details.push({ name: 'Accommodation Fee', value: priceData.accFee });
         }
 
@@ -359,6 +360,8 @@ function RegistrationForm() {
                         <div>
                             <label className="block mb-1">COA Number</label>
                             <input type="text" {...register(`group[${i}].coaNumber`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
+                            {Array.isArray(errors?.group) && errors.group[i]?.coaNumber && <p className="text-red-600">{errors.group[i].coaNumber.message}</p>}
+
                         </div>
                     )}
                     {memberType === 'STUDENT' && (
@@ -404,7 +407,6 @@ function RegistrationForm() {
                                         setstateid(e.id);
                                         setValue(`group[${i}].state`, e.name); // Set state name in form data
                                         trigger(`group[${i}].state`); // Trigger validation after setting value
-
                                     }}
                                     placeHolder="Select State"
                                 />
@@ -447,9 +449,7 @@ function RegistrationForm() {
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             <div className="flex flex-col items-center justify-center">
-                <div className='flex flex-col sm:flex-row'>
-
-                </div>
+                <div className="flex flex-col sm:flex-row"></div>
                 <img src="/assets/sponsors/jidal-sml-logo-black.svg" alt="Logo" className="w-24 h-18 md:w-28 md:h-20" />
                 <img src="/assets/images/SRC-logo-black.svg" alt="Logo" className="w-60 h-20 md:w-72 mb-5 md:h-20" />
                 <img src="/assets/sponsors/Black_Simpolo_Logo__Vertical.png" alt="Logo" className="w-16 h-14 -mt-4 md:w-20 md:h-16" />
@@ -472,7 +472,7 @@ function RegistrationForm() {
                     <div>
                         <h2 className="text-lg font-semibold mb-2">What best defines you? *</h2>
                         <div className="flex gap-y-2 flex flex-col">
-                            <label className=''>
+                            <label className="">
                                 <input type="radio" {...register('definition', { required: true })} value="IIA_MEMBER" className="mr-2 form-radio w-4 h-4" />
                                 IIA Member
                             </label>
@@ -480,10 +480,10 @@ function RegistrationForm() {
                                 <input type="radio" {...register('definition', { required: true })} value="NON_IIA_MEMBER" className="mr-2 form-radio w-4 h-4" />
                                 Non IIA Member
                             </label>
-                            <div  className="flex itemse-center flex-col gap-x-3">
+                            <div className="flex itemse-center flex-col gap-x-3">
                                 <label className="text-gray-400 line-through grascale">
                                     {data && data.count < 100 ? (
-                                        <input type="radio" disabled  {...register('definition', { required: true })} value="STUDENT" className="mr-2  form-radio w-4 h-4" />
+                                        <input type="radio" disabled {...register('definition', { required: true })} value="STUDENT" className="mr-2  form-radio w-4 h-4" />
                                     ) : (
                                         <input type="radio" disabled={true} value="student" className="mr-2 form-radio w-4 h-4" />
                                     )}
@@ -491,7 +491,7 @@ function RegistrationForm() {
                                 </label>
                                 <small> *Student registration will be opening soon.</small>
                             </div>
-                        </div> 
+                        </div>
                         {/* <label className="inline-flex mt-1 cursor-pointer">
                     <input type="radio" name="segements" className="form-radio" />
                     <span className="text-white-dark">Segements 1</span>
@@ -504,7 +504,7 @@ function RegistrationForm() {
                 {memberType === 'IIA_MEMBER' && (
                     <>
                         <div>
-                            <Points points="Early Bird Offer: Register for SRC and book your accommodation together for just ₹7500. Offer valid only until November 10th."  classNames="bg-violet-200" />
+                            <Points points="Early Bird Offer: Register for SRC and book your accommodation together for just ₹7500. Offer valid only until November 10th." classNames="bg-violet-200" />
                             <Questions register={register} question="Are you bringing your spouse" name="bringingSpouse" />
                             {isBringingSpouse === 'Yes' ? (
                                 <div>

@@ -1,8 +1,8 @@
 import { clientFetch } from '@/lib/api';
 
-export const fetchBookings = async (token:string,start:number,limit:number) => {
+export const fetchBookings = async (token:string,start:number,limit:number,search:string) => {
     try {
-        const res = await clientFetch(`booking/fetch?start=${start}&limit=${limit}`, {
+        const res = await clientFetch(`booking/fetch?start=${start}&limit=${limit}&search=${search}`, {
             method: 'GET',
             headers:{
                 Authorization:`Bearer ${token}`

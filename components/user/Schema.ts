@@ -261,8 +261,7 @@ export const registrationSchema = z
                         .transform((val) => val?.trim()),
                     coaNumber: z
                         .string()
-                        .nullable()
-                        .optional()
+                        .nonempty('COA number is required')
                         .transform((val) => val?.trim()),
                 })
             )

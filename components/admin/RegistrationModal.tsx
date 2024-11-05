@@ -4,7 +4,6 @@ import { Fragment } from 'react';
 import IconEye from '../icon/icon-eye';
 
 function RegistrationModal({ users, spouse }: { users: any; spouse?: any }) {
-    console.log('spouse ===============> ', spouse);
     const [isOpen, setIsOpen] = useState(false);
     console.log('users =============> ', users);
 
@@ -25,7 +24,7 @@ function RegistrationModal({ users, spouse }: { users: any; spouse?: any }) {
         if (memberType === 'IIA_MEMBER') {
             return 3500 * users.length;
         } else if (memberType === 'NON_IIA_MEMBER') {
-            return 4000 * users.length;
+            return 4500 * users.length;
         }
         return null;
     };
