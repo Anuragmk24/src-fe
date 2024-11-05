@@ -22,10 +22,11 @@ const AccomodationTable = () => {
         direction: 'asc',
     });
 
+
     // Fetch bookings with pagination and token
     const { data, isLoading, isError } = useQuery({
         queryKey: ['bookings', page, pageSize],
-        queryFn: () => fetchBookings(token, (page - 1) * pageSize, pageSize),
+        queryFn: () => fetchBookings(token, (page - 1) * pageSize, pageSize,""),
         // keepPreviousData: true, // Keeps previous data while fetching new page data
     });
 
