@@ -631,7 +631,7 @@ function RegistrationForm() {
                 {(memberType === 'IIA_MEMBER' || memberType === 'NON_IIA_MEMBER') && (
                     <>
                         <div>
-                            <Points points="Early Bird Offer: Register for SRC and book your accommodation together for just ₹7500. Offer valid only until November 10th." classNames="bg-violet-200" />
+                            <Points points={`Early Bird Offer: Register for SRC and book your accommodation together for just  ${memberType === 'IIA_MEMBER' ? '₹7500' : "₹9000" } . Offer valid only until November 10th.`} classNames="bg-violet-200" />
                             {memberType === 'IIA_MEMBER' && <Questions register={register} question="Are you bringing your spouse" name="bringingSpouse" />}
                             {isBringingSpouse === 'Yes' ? (
                                 <div>
