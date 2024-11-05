@@ -3,30 +3,26 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import IconEye from '../icon/icon-eye';
 
-function AccomodationModal({ users, spouse,amount }: { users: any; spouse?: any; amount?:any }) {
+function AccomodationModal({ users, spouse }: { users: any; spouse?: any }) {
     console.log('spouse ===============> ', spouse);
     const [isOpen, setIsOpen] = useState(false);
     console.log('users =============> ', users);
+
+    const memberTypes = users.map((user:any) => user.user.memberType);
+    console.log("membertypes",memberTypes)
 
     const calculateAccommodationAmount = () => {
         if (!users || users.length === 0) return null;
 
         const firstUser = users[0];
         const isBringingSpouse = firstUser?.user?.isBringingSpouse;
+        const memberType = firstUser?.user?.memberType;
 
-        if (isBringingSpouse) {
-            return 8000;
-        }
-
-        switch (users.length) {
-            case 1:
-                return 4000;
-            case 2:
-                return 8000;
-            case 3:
-                return 12000;
-            default:
-                return 16000;
+        // Calculate based on member type and spouse status
+        if (memberType === "IIA_MEMBER") {
+            return isBringingSpouse ? 8000 : 4000* users?.length ;
+        } else if (memberType === "NON_IIA_MEMBER") {
+            return 4500 * users?.length;
         }
     };
 
@@ -81,7 +77,7 @@ function AccomodationModal({ users, spouse,amount }: { users: any; spouse?: any;
                                             <div className="text-sm text-gray-500">Mobile: {spouse[0].mobile}</div>
                                         </div>
                                     ) : null}
-                                    <p className="my-6 font-medium text-sm">Accommodation Amount: {amount} INR</p>
+                                    <p className="my-6 font-medium text-sm">Accommodation Amount: {calculateAccommodationAmount()} INR</p>
 
                                     <div className="mt-6 flex justify-end">
                                         <button type="button" className="btn btn-primary" onClick={() => setIsOpen(false)}>

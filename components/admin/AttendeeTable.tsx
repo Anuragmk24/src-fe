@@ -40,28 +40,20 @@ const AttendeeTable = () => {
             refetch(); // Refetch when there is a search term
         }
     }, [search, refetch]);
-    // Set records and apply sorting/filtering
     useEffect(() => {
         if (data?.data?.bookings) {
             let filteredRecords = data.data.bookings;
-
-            // Apply search filter
-            // if (search) {
-            //     filteredRecords = filteredRecords.filter(
-            //         (item: any) =>
-            //             item?.firstName?.toLowerCase().includes(search.toLowerCase()) ||
-            //             item?.lastName?.toLowerCase().includes(search.toLowerCase()) ||
-            //             item?.email?.toLowerCase().includes(search.toLowerCase()) ||
-            //             item?.mobile?.toLowerCase().includes(search.toLowerCase()) ||
-            //             item?.memberType?.toLowerCase().includes(search.toLowerCase()) ||
-            //             item?.payments?.[0]?.transactionId.toLowerCase().includes(search.toLowerCase()) ||
-            //             item?.payments?.[0]?.paymentStatus.toLowerCase().includes(search.toLowerCase())
-            //     );
-            // }
-
+            // Filter for unique users by group
+            const uniqueGroups:any = {}
+    data.data.bookings.forEach((booking:any) => {
+        const groupId = booking.groupMmebers[0]?.groupId;
+        if (!uniqueGroups[groupId]) {
+            uniqueGroups[groupId] = booking; // Save the first user of the group
+        }
+    });
             // Apply sorting
-            const sortedRecords = sortBy(filteredRecords, sortStatus.columnAccessor);
-            setRecords(sortedRecords);
+            const sortedRecords = sortBy(Object.values(uniqueGroups), (record:any) => -new Date(record.createdAt).getTime());
+            setRecords(Object.values(sortedRecords));
         }
     }, [data, search, sortStatus]);
 
@@ -75,8 +67,8 @@ const AttendeeTable = () => {
 
     console.log('RECORDS ============> ', records);
     return (
-        <div className="panel mt-6">
-            <div className="mb-5 flex flex-col gap-5 md:flex-row md:items-center">
+        <div className="sm:panel mt-6">
+            <div className="mb-5 flex flex-col sm:gap-5 md:flex-row md:items-center">
                 <h5 className="text-lg font-semibold dark:text-white-light">Registration Details</h5>
                 <div className="ltr:ml-auto rtl:mr-auto">
                     <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -141,13 +133,11 @@ const AttendeeTable = () => {
                                 // const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
                                 // console.log("paymentstatus =======> ",paymentStatus)
                                 const successfulPayments = record.groupMmebers?.flatMap((member: any) => member.group?.Payment?.filter((payment: any) => payment.paymentStatus === 'SUCCESS') || []);
-                                console.log('successfulPayments', successfulPayments);
                                 const amount = successfulPayments
                                     ?.filter((payment: any) => payment.paymentStatus === 'SUCCESS')
                                     .reduce((sum: any, payment: any) => Number(sum) + Number(payment.amount), 0);
                                 const formattedAmount = amount.toLocaleString();
 
-                                console.log('formattedAmount ', formattedAmount);
 
                                 const numberOfMembers = record?.groupMmebers?.[0]?.group?.numberOfMembers;
 
@@ -241,6 +231,8 @@ const AttendeeTable = () => {
 export default AttendeeTable;
 
 const RenderAccomodation = ({ record }: { record: any }) => {
+
+    
     const [accomodationdetails, setAccomodationdetails] = useState<any[]>([]);
 
     useEffect(() => {
@@ -249,7 +241,6 @@ const RenderAccomodation = ({ record }: { record: any }) => {
         const accomodationExists = successfulPayments?.filter((item: any) => item.type === 'BOTH');
         const accomodationExits2 = successfulPayments?.filter((item: any) => item.type === 'ACCOMMODATION');
 
-        console.log('successfulPayments', successfulPayments);
         // Combine both arrays and update state without re-adding existing items
         if (accomodationExists?.length > 0 || accomodationExits2?.length > 0) {
             setAccomodationdetails([...accomodationExists, ...accomodationExits2]);
@@ -258,14 +249,13 @@ const RenderAccomodation = ({ record }: { record: any }) => {
 
     // Filter out only successful payments
     const accomodationPayment = accomodationdetails.filter((item: any) => item.paymentStatus === 'SUCCESS');
-    console.log('accomodationpayment ', accomodationPayment);
 
     return (
         <div className="text-center">
             {accomodationPayment.length > 0 ? (
                 <>
-                    <p>{record.isBringingSpouse ? '8000' : accomodationPayment?.[0]?.amount}</p>
-                    <AccomodationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} amount={accomodationPayment?.[0]?.amount}/>
+                    <p>{record.isBringingSpouse ? '8000' : record.memberType ==='IIA_MEMBER' ? record.groupSize * 4000 : record.memberType === 'NON_IIA_MEMBER' ? record.groupSize * 4500 : null}</p>
+                    <AccomodationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
                 </>
             ) : (
                 <p className="ms-10">---</p>
