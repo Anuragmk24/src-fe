@@ -488,6 +488,7 @@ function RegistrationForm() {
         }
     }, [isBringingSpouse, setValue]);
 
+    console.log("groupsize",groupSize)
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 mb-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             {/* <div className="flex flex-col items-center justify-center">
@@ -618,8 +619,8 @@ function RegistrationForm() {
                 {/* Dynamic Contact Info */}
                 {bookingType === 'Individual' && renderContactInfoFields(1)}
                 {bookingType === 'Group' && groupSize && isBringingSpouse === 'No' && renderContactInfoFields(groupSize.value)}
-                {bookingType === 'Group' && groupSize && renderContactInfoFields(groupSize.value)}
                 {bookingType === 'Group' && groupSize && isBringingSpouse === 'Yes' && renderContactInfoFields(1)}
+                {memberType==='NON_IIA_MEMBER' && bookingType === 'Group' && groupSize && renderContactInfoFields(groupSize.value)}
 
                 {/* Spouse Form for Group Booking */}
                 {/* {isBringingSpouse === 'Yes' && bookingType === 'Group' && groupSize?.value === 2 && (
