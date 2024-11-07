@@ -93,6 +93,18 @@ const AttendeeTable = () => {
                             render: (record: any) => <div>{record.memberType === 'IIA_MEMBER' ? 'IIA Member' : record.memberType === 'NON_IIA_MEMBER' ? 'Non IIA Member' : 'Student'}</div>,
                         },
                         {
+                            accessor: 'center',
+                            title: 'Centre',
+                            sortable: true,
+                            render: (row: any) => (row.center ? row.center : '---'),
+                        },
+                        {
+                            accessor: 'state',
+                            title: 'State',
+                            sortable: true,
+                            render: (row: any) => (row.state ? row.state : '---'),
+                        },
+                        {
                             accessor: 'regFee',
                             title: 'Reg',
                             sortable: true,
@@ -189,18 +201,7 @@ const AttendeeTable = () => {
                             sortable: true,
                             render: (row: any) => (row.collegeName ? row.collegeName : '---'),
                         },
-                        {
-                            accessor: 'center',
-                            title: 'Centre',
-                            sortable: true,
-                            render: (row: any) => (row.center ? row.center : '---'),
-                        },
-                        {
-                            accessor: 'state',
-                            title: 'State',
-                            sortable: true,
-                            render: (row: any) => (row.state ? row.state : '---'),
-                        },
+                    
 
                         {
                             accessor: 'action',

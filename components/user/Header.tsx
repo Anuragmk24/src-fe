@@ -23,7 +23,7 @@ function Header() {
                         Home
                     </Link>
                     <Link href="https://src2024.in/about_us.html" className="text-white hover:text-yellow-400">
-                        About Event
+                        About The Event
                     </Link>
                   
                  
@@ -59,7 +59,7 @@ function Header() {
                             Home
                         </Link>
                         <Link href="https://src2024.in/about_us.html" className="block text-white ">
-                            About Event
+                            About The Event
                         </Link>
                        
                       
