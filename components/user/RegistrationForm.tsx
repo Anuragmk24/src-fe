@@ -489,7 +489,7 @@ function RegistrationForm() {
     }, [isBringingSpouse, setValue]);
 
     return (
-        <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
+        <div className="max-w-5xl mx-auto p-4 mt-5 mb-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             {/* <div className="flex flex-col items-center justify-center">
                 <div className="flex flex-col sm:flex-row"></div>
                 <img src="/assets/sponsors/jidal-sml-logo-black.svg" alt="Logo" className="w-24 h-18 md:w-28 md:h-20" />
