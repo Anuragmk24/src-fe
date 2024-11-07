@@ -6,8 +6,8 @@ function Carousal() {
             {/* Image */}
             <div className="relative">
                 <img
-                    src="/assets/images/carousal2.jpg"
-                    className="w-full h-44 md:h-80 object-cover"
+                    src="/assets/images/intro-bg.jpg"
+                    className="w-full h-44 md:h-[100vh] object-cover  overflow-hidden relative before:absolute before:inset-0 before:bg-[rgba(22,81,91,0.9)]  "
                     alt="Carousal"
                 />
                 

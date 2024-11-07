@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import React from 'react';
 import { CiLocationOn } from 'react-icons/ci';
+import { Rajdhani } from '@next/font/google';
+
+// Load the font with specific weights
+const rajdhani = Rajdhani({
+    subsets: ['latin'], // Choose your subsets here
+    weight: ['400', '700'], // Choose weights if needed
+});
 
 function Footer() {
     return (
@@ -17,7 +24,7 @@ function Footer() {
                             <img src="/assets/sponsors/jidal-sml-logo.svg" alt="Logo" className="w-66 h-18 md:w-36 md:h-36" />
                             <img src="/assets/images/logoIcon.svg" alt="Logo" className="w-full h-18 md:w-72" />
                             <img src="/assets/sponsors/White_Simpolo_Logo.svg" alt="Logo" className="w-66 h-18 md:w-36" />
-                            <button className="text-[#16616E] font-bold py-2 px-2 bg-[#E5E52E] text-[12px] md:text-2xl sm:px-4 sm:py-3 rounded-md hover:bg-[#E5E52E]">
+                            <button className={`${rajdhani.className} mt-4 bg-[#E5E52E] hover:bg-[#E5E52E]  text-[#16616E] font-semibold px-4 py-2 rounded-md`}>
                                 Register Now
                             </button>
                         </div>

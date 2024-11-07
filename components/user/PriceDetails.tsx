@@ -5,7 +5,7 @@ function PriceDetails({ fee, price }: { fee: any, price: any }) {
     const totalPrice = fee.reduce((total: number, item: any) => total + item.value, 0);
 
     return (
-        <div className="border rounded-t-xl md:w-1/3 g-white dark:bg-white text-black dark:text-black ">
+        <div id='pricedetails' className="border rounded-t-xl md:w-1/3 g-white dark:bg-white text-black dark:text-black ">
             <div className="rounded-full">
                 <h1 className="border-b bg-[#29C192] text-white px-4 py-3 rounded-t-xl">Price Detail</h1>
             </div>

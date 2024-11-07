@@ -18,6 +18,13 @@ import imageCompression from 'browser-image-compression';
 import { registrationSchema, registrationSchemaForIiaMembers, registrationSchemaWithSpouse } from './Schema';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
+import { Rajdhani } from '@next/font/google';
+
+// Load the font with specific weights
+const rajdhani = Rajdhani({
+    subsets: ['latin'], // Choose your subsets here
+    weight: ['400', '700'], // Choose weights if needed
+});
 
 function RegistrationForm() {
     const [countryid, setCountryid] = useState(0);
@@ -229,101 +236,9 @@ function RegistrationForm() {
         }
     };
 
-    // useEffect(() => {
-    //     let regFee = 0;
-    //     let accFee = 0;
-
-    //     if (memberType === 'STUDENT') {
-    //         if (isStudentAffiliatedToIia === 'Yes') {
-    //             regFee = 1000;
-    //         } else {
-    //             console.log('in else condition ');
-    //             regFee = 1500;
-    //         }
-    //     } else if (memberType === 'NON_IIA_MEMBER') {
-    //         regFee = 4500;
-    //         if (bookingType === 'Individual') {
-    //             regFee = 4500;
-            
-    //         } else if (groupSize?.value === 2) {
-    //             regFee = 9000;
-    //         } else if (groupSize?.value === 3) {
-    //             regFee = 13500;
-    //         } else if (groupSize?.value === 4) {
-    //             regFee = 18000;
-    //         }
-
-    //         // Adjust for group size with accommodation
-           
-    //         if (groupSize?.value === 2 && accomodation === 'Yes') {
-    //             regFee = 9000;
-    //         } else if (groupSize?.value === 3 && accomodation === 'Yes') {
-    //             regFee = 13500;
-    //         } else if (groupSize?.value === 4 && accomodation === 'Yes') {
-    //             regFee = 18000;
-    //         }
-    //     } else if (memberType === 'IIA_MEMBER') {
-    //         regFee = 3500;
-    //         if (isBringingSpouse === 'Yes') {
-    //             regFee = 7000;
-    //         } else if (bookingType === 'Individual') {
-    //             regFee = 3500;
-    //         } else if (groupSize?.value === 2) {
-    //             regFee = 7000;
-    //         } else if (groupSize?.value === 3) {
-    //             regFee = 10500;
-    //         } else if (groupSize?.value === 4) {
-    //             regFee = 14000;
-    //         } else if (isBringingSpouse === 'No' && bookingType === 'Individual') {
-    //             regFee = 3500;
-    //         }
-
-    //         // Adjust for group size with accommodation
-    //         if (groupSize?.value === 2 && accomodation === 'Yes') {
-    //             regFee = 7000;
-    //         } else if (groupSize?.value === 3 && accomodation === 'Yes') {
-    //             regFee = 10500;
-    //         } else if (groupSize?.value === 4 && accomodation === 'Yes') {
-    //             regFee = 14000;
-    //         }
-    //     }
-
-    //     // Check for accommodation
-
-    //     if (memberType === 'IIA_MEMBER' && accomodation === 'Yes') {
-    //         accFee = 4000; // Accommodation fee
-    //         if (bookingType === 'Individual') {
-    //             regFee = 3500;
-    //             accFee = 4000;
-    //         } else if (groupSize?.value === 2) {
-    //             accFee = 8000;
-    //         } else if (groupSize?.value === 3) {
-    //             accFee = 12000;
-    //         } else if (groupSize?.value === 4) {
-    //             accFee = 16000;
-    //         } else if (isBringingSpouse === 'Yes') {
-    //             accFee = 8000;
-    //         }
-    //     }
-    //     if (memberType === 'NON_IIA_MEMBER' && accomodation === 'Yes') {
-    //         accFee = 4500;
-    //         if (bookingType === 'Individual') {
-    //             regFee = 4000;
-    //             accFee = 4500;
-    //         } else if (groupSize?.value === 2) {
-    //             accFee = 9000;
-    //         } else if (groupSize?.value === 3) {
-    //             accFee = 13500;
-    //         } else if (groupSize?.value === 4) {
-    //             accFee = 18000;
-    //         }
-    //     }
-
-    //     setPriceData({ regFee, accFee });
-    // }, [memberType, isBringingSpouse, groupSize?.value, accomodation, bookingType, isStudentAffiliatedToIia]);
+  
 
 
-    console.log("Accomodation",accomodation)
     useEffect(() => {
         let regFee = 0;
         let accFee = 0;
@@ -575,14 +490,14 @@ function RegistrationForm() {
 
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
-            <div className="flex flex-col items-center justify-center">
+            {/* <div className="flex flex-col items-center justify-center">
                 <div className="flex flex-col sm:flex-row"></div>
                 <img src="/assets/sponsors/jidal-sml-logo-black.svg" alt="Logo" className="w-24 h-18 md:w-28 md:h-20" />
                 <img src="/assets/images/SRC-logo-black.svg" alt="Logo" className="w-60 h-20 md:w-72 mb-5 md:h-20" />
                 <img src="/assets/sponsors/Black_Simpolo_Logo__Vertical.png" alt="Logo" className="w-16 h-14 -mt-4 md:w-20 md:h-16" />
-            </div>
+            </div> */}
             {/* <h1 className="text-2xl font-bold mb-4 text-3xl text-center mt-4">Southern Regional Conference</h1> */}
-            <div className="flex flex-col sm:flex-row gap-2 items-center justify-center  gap-x-4 text-[#16616E] sm:text-xl mb-8">
+            {/* <div className={`${rajdhani.className} flex flex-col sm:flex-row gap-2 items-center justify-center  gap-x-4 text-[#16616E] sm:text-xl mb-8`}>
                 <div className="flex items-center gap-x-2">
                     <SlCalender />
                     <h3>29, 30 NOVEMBER 2024</h3>
@@ -592,11 +507,11 @@ function RegistrationForm() {
                     <CiLocationOn />
                     <h3>Vythiri Village Resort, Wayanad</h3>
                 </div>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            </div> */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-5">
                 {/* Best Defines You */}
                 <div className="flex">
-                    <div>
+                    <div id='definition'>
                         <h2 className="text-lg font-semibold mb-2">What best defines you? *</h2>
                         <div className="flex gap-y-2 flex flex-col">
                             <label className="">
@@ -805,7 +720,7 @@ function RegistrationForm() {
 
                 <PriceDetails fee={priceDetails} price={priceData.regFee + priceData.accFee} />
                 <div className="text-center">
-                    <button type="submit" className="bg-[#E5E52E] font-mono text-[#16616E] font-bold px-4 py-2 rounded-md hover:bg-[#E5E52E]">
+                    <button type="submit" className={`${rajdhani.className} mt-4 bg-[#E5E52E] hover:bg-[#E5E52E]  text-[#16616E] font-semibold px-4 py-2 rounded-md`}>
                         {loading ? 'Submiting...' : ' Continue to pay'}
                     </button>
                 </div>
