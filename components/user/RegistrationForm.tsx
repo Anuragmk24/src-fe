@@ -8,7 +8,7 @@ import { CountrySelect, StateSelect } from 'react-country-state-city';
 import 'react-country-state-city/dist/react-country-state-city.css';
 import PriceDetails from './PriceDetails';
 import { useQuery } from '@tanstack/react-query';
-import { booking, fetchTotalStudentsCount, fileUpload, payment } from '@/data/users/register';
+import { booking, fetchTotalAccomodationCount, fetchTotalStudentsCount, fileUpload, payment } from '@/data/users/register';
 import { z, ZodType } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
@@ -34,6 +34,10 @@ function RegistrationForm() {
         queryKey: ['count-student'],
         queryFn: () => fetchTotalStudentsCount(),
     });
+    const { data: accomodationCount, isError: accomodationCountError } = useQuery({
+        queryKey: ['total-numbers'],
+        queryFn: () => fetchTotalAccomodationCount(),
+    });
 
     const [schema, setSchema] = useState<ZodType<any>>(registrationSchema);
     const {
@@ -51,7 +55,7 @@ function RegistrationForm() {
     const memberType = watch('definition');
     const bookingType = watch('bookingType');
     const [customError, setCustomError] = useState('');
-    console.log("bookingType ",bookingType)
+    
 
     const groupSize = watch('groupSize');
     const isBringingSpouse = watch('bringingSpouse');
@@ -74,9 +78,8 @@ function RegistrationForm() {
     const [priceDetails, setPriceDetails] = useState<any>([]);
 
     const onSubmit = async (data: any) => {
-
-        if(bookingType===null){
-            return toast.error("Please fill required fields...")
+        if (bookingType === null) {
+            return toast.error('Please fill required fields...');
         }
         if (data?.definition === 'IIA_MEMBER') {
             if (data?.group?.[0]?.iia === '' && (!data?.group?.[0]?.iiaReceipt || data?.group?.[0]?.iiaReceipt?.length === 0)) {
@@ -209,7 +212,7 @@ function RegistrationForm() {
                         { name: 'state', value: bookingResult?.data?.[0]?.state },
                         { name: 'zip_code', value: bookingResult?.data?.[0]?.pinCode },
                     ];
-                    console.log('inputs ', inputs);
+                   
 
                     inputs.forEach((inputData) => {
                         const input = document.createElement('input');
@@ -236,13 +239,10 @@ function RegistrationForm() {
         }
     };
 
-  
-
-
     useEffect(() => {
         let regFee = 0;
         let accFee = 0;
-    
+
         if (memberType === 'STUDENT') {
             if (isStudentAffiliatedToIia === 'Yes') {
                 regFee = 1000;
@@ -260,7 +260,7 @@ function RegistrationForm() {
             } else if (groupSize?.value === 4) {
                 regFee = 18000;
             }
-    
+
             // Adjust for group size with accommodation
             if (groupSize?.value === 2 && accomodation === 'Yes') {
                 regFee = 9000;
@@ -284,7 +284,7 @@ function RegistrationForm() {
             } else if (isBringingSpouse === 'No' && bookingType === 'Individual') {
                 regFee = 3500;
             }
-    
+
             // Adjust for group size with accommodation
             if (groupSize?.value === 2 && accomodation === 'Yes') {
                 regFee = 7000;
@@ -294,7 +294,7 @@ function RegistrationForm() {
                 regFee = 14000;
             }
         }
-    
+
         // Set accommodation fees for IIA and Non-IIA members (excluding spouse for Non-IIA)
         if (memberType === 'IIA_MEMBER' && accomodation === 'Yes') {
             accFee = 4000;
@@ -324,15 +324,15 @@ function RegistrationForm() {
                 accFee = 18000;
             }
         }
-    
+
         // Set the final price data
         setPriceData({ regFee, accFee });
     }, [memberType, isBringingSpouse, groupSize?.value, accomodation, bookingType, isStudentAffiliatedToIia]);
-    
+
     useEffect(() => {
         const details = [{ name: 'Registration Fee', value: priceData.regFee }];
 
-        if ((memberType === 'IIA_MEMBER' || memberType ==='NON_IIA_MEMBER') && accomodation === 'Yes') {
+        if ((memberType === 'IIA_MEMBER' || memberType === 'NON_IIA_MEMBER') && accomodation === 'Yes') {
             details.push({ name: 'Accommodation Fee', value: priceData.accFee });
         }
 
@@ -488,7 +488,6 @@ function RegistrationForm() {
         }
     }, [isBringingSpouse, setValue]);
 
-    console.log("groupsize",groupSize)
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 mb-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             {/* <div className="flex flex-col items-center justify-center">
@@ -512,7 +511,7 @@ function RegistrationForm() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-5">
                 {/* Best Defines You */}
                 <div className="flex">
-                    <div id='definition'>
+                    <div id="definition">
                         <h2 className="text-lg font-semibold mb-2">What best defines you? *</h2>
                         <div className="flex gap-y-2 flex flex-col">
                             <label className="">
@@ -547,7 +546,12 @@ function RegistrationForm() {
                 {(memberType === 'IIA_MEMBER' || memberType === 'NON_IIA_MEMBER') && (
                     <>
                         <div>
-                            <Points points={`Early Bird Offer: Register for SRC and book your accommodation together for just  ${memberType === 'IIA_MEMBER' ? '₹7500' : "₹9000" } . Offer valid only until November 10th.`} classNames="bg-violet-200" />
+                            <Points
+                                points={`Early Bird Offer: Register for SRC and book your accommodation together for just  ${
+                                    memberType === 'IIA_MEMBER' ? '₹7500' : '₹9000'
+                                } . Offer valid only until November 10th.`}
+                                classNames="bg-violet-200"
+                            />
                             {memberType === 'IIA_MEMBER' && <Questions register={register} question="Are you bringing your spouse" name="bringingSpouse" />}
                             {isBringingSpouse === 'Yes' ? (
                                 <div>
@@ -604,7 +608,7 @@ function RegistrationForm() {
                                 />
                             </div>
                         )}
-                        <Questions register={register} question="Do you want accomodation" name="accomodation" />
+                        {accomodationCount?.count <= 420 && <Questions register={register} question="Do you want accomodation" name="accomodation" />}
                     </>
                 )}
 
@@ -620,7 +624,7 @@ function RegistrationForm() {
                 {bookingType === 'Individual' && renderContactInfoFields(1)}
                 {bookingType === 'Group' && groupSize && isBringingSpouse === 'No' && renderContactInfoFields(groupSize.value)}
                 {bookingType === 'Group' && groupSize && isBringingSpouse === 'Yes' && renderContactInfoFields(1)}
-                {memberType==='NON_IIA_MEMBER' && bookingType === 'Group' && groupSize && renderContactInfoFields(groupSize.value)}
+                {memberType === 'NON_IIA_MEMBER' && bookingType === 'Group' && groupSize && renderContactInfoFields(groupSize.value)}
 
                 {/* Spouse Form for Group Booking */}
                 {/* {isBringingSpouse === 'Yes' && bookingType === 'Group' && groupSize?.value === 2 && (

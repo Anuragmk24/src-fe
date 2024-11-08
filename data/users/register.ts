@@ -109,3 +109,21 @@ export const addNewAccomodation = async (payload: any,amount:any) => {
         throw err;
     }
 };
+
+export const fetchTotalAccomodationCount = async () => {
+    try {
+        const res = await clientFetch(`accomodation/total-numbers`, {
+            method: 'GET',
+        });
+        console.log('Res from data ', res);
+
+        // Check if the response is ok (status in the range 200-299)
+        // if (!res.ok) {
+        //     throw res;
+        // }
+        return res;
+    } catch (err) {
+        console.log('error  ', err);
+        throw err;
+    }
+};

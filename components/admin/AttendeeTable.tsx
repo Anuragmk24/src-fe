@@ -44,15 +44,15 @@ const AttendeeTable = () => {
         if (data?.data?.bookings) {
             let filteredRecords = data.data.bookings;
             // Filter for unique users by group
-            const uniqueGroups:any = {}
-    data.data.bookings.forEach((booking:any) => {
-        const groupId = booking.groupMmebers[0]?.groupId;
-        if (!uniqueGroups[groupId]) {
-            uniqueGroups[groupId] = booking; // Save the first user of the group
-        }
-    });
+            const uniqueGroups: any = {};
+            data.data.bookings.forEach((booking: any) => {
+                const groupId = booking.groupMmebers[0]?.groupId;
+                if (!uniqueGroups[groupId]) {
+                    uniqueGroups[groupId] = booking; // Save the first user of the group
+                }
+            });
             // Apply sorting
-            const sortedRecords = sortBy(Object.values(uniqueGroups), (record:any) => -new Date(record.createdAt).getTime());
+            const sortedRecords = sortBy(Object.values(uniqueGroups), (record: any) => -new Date(record.createdAt).getTime());
             setRecords(Object.values(sortedRecords));
         }
     }, [data, search, sortStatus]);
@@ -65,7 +65,6 @@ const AttendeeTable = () => {
         return <div>Error fetching bookings.</div>;
     }
 
-    console.log('RECORDS ============> ', records);
     return (
         <div className="sm:panel mt-6">
             <div className="mb-5 flex flex-col sm:gap-5 md:flex-row md:items-center">
@@ -150,7 +149,6 @@ const AttendeeTable = () => {
                                     .reduce((sum: any, payment: any) => Number(sum) + Number(payment.amount), 0);
                                 const formattedAmount = amount.toLocaleString();
 
-
                                 const numberOfMembers = record?.groupMmebers?.[0]?.group?.numberOfMembers;
 
                                 // if (paymentStatus == 'SUCCESS') {
@@ -201,7 +199,6 @@ const AttendeeTable = () => {
                             sortable: true,
                             render: (row: any) => (row.collegeName ? row.collegeName : '---'),
                         },
-                    
 
                         {
                             accessor: 'action',
@@ -232,8 +229,6 @@ const AttendeeTable = () => {
 export default AttendeeTable;
 
 const RenderAccomodation = ({ record }: { record: any }) => {
-
-    
     const [accomodationdetails, setAccomodationdetails] = useState<any[]>([]);
 
     useEffect(() => {
@@ -255,7 +250,7 @@ const RenderAccomodation = ({ record }: { record: any }) => {
         <div className="text-center">
             {accomodationPayment.length > 0 ? (
                 <>
-                    <p>{record.isBringingSpouse ? '8000' : record.memberType ==='IIA_MEMBER' ? record.groupSize * 4000 : record.memberType === 'NON_IIA_MEMBER' ? record.groupSize * 4500 : null}</p>
+                    <p>{record.isBringingSpouse ? '8000' : record.memberType === 'IIA_MEMBER' ? record.groupSize * 4000 : record.memberType === 'NON_IIA_MEMBER' ? record.groupSize * 4500 : null}</p>
                     <AccomodationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
                 </>
             ) : (
