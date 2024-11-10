@@ -117,7 +117,7 @@ const AttendeeTable = () => {
                                     if (memberType === 'IIA_MEMBER') {
                                         feeDisplay = record.isBringingSpouse ? '7000 (with Spouse)' : record.groupSize * 3500;
                                     } else if (memberType === 'NON_IIA_MEMBER') {
-                                        feeDisplay = '4500';
+                                        feeDisplay = record.groupSize * 4500;
                                     }
                                 }
 
