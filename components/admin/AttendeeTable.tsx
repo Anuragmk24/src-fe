@@ -12,6 +12,7 @@ import IconEye from '../icon/icon-eye';
 import Modal from './Modal';
 import AccomodationModal from './AccomodationModal';
 import RegistrationModal from './RegistrationModal';
+import GroupModal from './GroupModal';
 
 const AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
@@ -151,13 +152,18 @@ const AttendeeTable = () => {
 
                                 const numberOfMembers = record?.groupMmebers?.[0]?.group?.numberOfMembers;
 
-                                // if (paymentStatus == 'SUCCESS') {
-                                // Check if it's a group (more than one member)
+                         
                                 const groupLabel = numberOfMembers > 1 ? ' (Group)' : '';
-                                return `${formattedAmount}${groupLabel}`;
-                                // }
+                                return (
 
-                                // return '---';
+                                    <div className='flex justify-center flex-col items-center'>
+                                    <span>{`${formattedAmount}${groupLabel}`}</span>
+                                    <GroupModal
+                                      users={record?.groupMmebers?.[0]?.group?.GroupMember}
+                                      spouse={record?.spouse}
+                                    />
+                                  </div>                                )
+                           
                             },
                         },
 
