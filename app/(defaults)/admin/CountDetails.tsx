@@ -20,10 +20,11 @@ function CountDetails() {
         queryKey: ['total-counts'],
         queryFn: () => fetchDashbordDataCounts(token),
     });
-    const { data: accomodationCount, isError: accomodationCountError } = useQuery({
+    const { data: countData, isError: accomodationCountError } = useQuery({
         queryKey: ['total-numbers'],
         queryFn: () => fetchTotalAccomodationCount(),
     });
+    console.log('accomodationCount', countData);
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:grid-cols-4 gap-x-3">
@@ -44,10 +45,12 @@ function CountDetails() {
                             button={<IconHorizontalDots className="text-black/70 hover:!text-primary dark:text-white/70" />}
                         >
                             <ul>
-                                <li className='w-full min-w-44'>
-                                    <button type="button">Accomodation  : {accomodationCount?.count}</button>
+                                <li className="w-full min-w-44">
+                                    <button type="button">Accomodation : {countData?.count?.totalAccomodation}</button>
                                 </li>
-                               
+                                <li className="w-full min-w-44">
+                                    <button type="button">Registration : {countData?.count?.totalRegistration}</button>
+                                </li>
                             </ul>
                         </Dropdown>
                     </div>

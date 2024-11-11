@@ -34,7 +34,7 @@ function RegistrationForm() {
         queryKey: ['count-student'],
         queryFn: () => fetchTotalStudentsCount(),
     });
-    const { data: accomodationCount, isError: accomodationCountError } = useQuery({
+    const { data: countData, isError: accomodationCountError } = useQuery({
         queryKey: ['total-numbers'],
         queryFn: () => fetchTotalAccomodationCount(),
     });
@@ -608,7 +608,7 @@ function RegistrationForm() {
                                 />
                             </div>
                         )}
-                        {accomodationCount?.count <= 420 && <Questions register={register} question="Do you want accomodation" name="accomodation" />}
+                        {countData?.count.totalAccomodation <= 420 && <Questions register={register} question="Do you want accomodation" name="accomodation" />}
                     </>
                 )}
 
