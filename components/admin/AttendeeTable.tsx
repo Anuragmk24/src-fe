@@ -15,6 +15,7 @@ import RegistrationModal from './RegistrationModal';
 import GroupModal from './GroupModal';
 import { resendEmail } from '@/data/admin/dashbord';
 import toast, { Toaster } from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
@@ -68,17 +69,42 @@ const AttendeeTable = () => {
         return <div>Error fetching bookings.</div>;
     }
 
+    // const handleResendEmail = async (row: any) => {
+    //     const response: any = await resendEmail(token, {
+    //         name: row.firstName,
+    //         email: row.email,
+    //         transactionId: row?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId,
+    //     });
+    //     if (response.success) {
+    //         toast.success('Email resent successfully!');
+    //     } else {
+    //         toast.error('Failed to resend email.');
+    //     }
+    // };
     const handleResendEmail = async (row: any) => {
-        const response: any = await resendEmail(token, {
-            name: row.firstName,
-            email: row.email,
-            transactionId: row?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId,
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to resend the email?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, resend it!',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                // If user confirms, call the resendEmail function
+                const response: any = await resendEmail(token, {
+                    name: row.firstName,
+                    email: row.email,
+                    transactionId: row?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId,
+                });
+                if (response.success) {
+                    toast.success('Email resent successfully!');
+                } else {
+                    toast.error('Failed to resend email.');
+                }
+            }
         });
-        if (response.success) {
-            toast.success('Email resent successfully!');
-        } else {
-            toast.error('Failed to resend email.');
-        }
     };
 
     return (

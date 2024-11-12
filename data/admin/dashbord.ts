@@ -42,3 +42,25 @@ export const resendEmail = async (token:string,payload:any) => {
         throw err;
     }
 };
+
+
+export const fetchCenters = async (token:string,state:string) => {
+    console.log("state")
+    try {
+        const res = await clientFetch(`admin/center?state=${state}`, {
+            method: 'GET',
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        });
+
+        // Check if the response is ok (status in the range 200-299)
+        if (res.statusCode !== 200) {
+            throw res;
+        }
+        return res;
+    } catch (err) {
+        console.log('error fetching booking ', err);
+        throw err;
+    }
+};

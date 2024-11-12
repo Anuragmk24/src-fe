@@ -16,7 +16,9 @@ const ChaptersTable = () => {
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
+    const [modalOpen, setModalOpen] = useState('');
     const [search, setSearch] = useState('');
+    const [modal10, setModal10] = useState(false);
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
         columnAccessor: 'date',
         direction: 'asc',
@@ -30,7 +32,6 @@ const ChaptersTable = () => {
         // keepPreviousData: true, // Keeps previous data while fetching new page data
     });
 
-    console.log('Data ', data);
     const [records, setRecords] = useState<any[]>([]);
     useEffect(() => {
         if (search !== '') {
@@ -51,12 +52,10 @@ const ChaptersTable = () => {
         return <div>Error fetching bookings.</div>;
     }
 
-    console.log('Records ', records);
-
     return (
         <div className="sm:panel mt-6">
             <div className="mb-5 flex flex-col sm:gap-5 md:flex-row md:items-center">
-                <h5 className="text-lg font-semibold dark:text-white-light">Registration Details</h5>
+                <h5 className="text-lg font-semibold dark:text-white-light">Chapter Details</h5>
                 <div className="ltr:ml-auto rtl:mr-auto">
                     <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
@@ -71,7 +70,16 @@ const ChaptersTable = () => {
                             accessor: 'state',
                             title: 'State',
                             sortable: true,
-                            render: (row: any) => <CenterModal state={row.state}/>,
+                            render: (row: any) => (
+                                <h1 className='cursor-pointer'
+                                    onClick={() => {
+                                        setModalOpen(row.state); // Set the state for the selected row
+                                        setModal10(true); // Open the modal
+                                    }}
+                                >
+                                    {row?.state}
+                                </h1>
+                            ),
                         },
                         {
                             accessor: 'userCount',
@@ -93,6 +101,7 @@ const ChaptersTable = () => {
                 />
             </div>
             <Toaster position="bottom-right" />
+            {modalOpen !== '' && <CenterModal state={modalOpen} setModal10={setModal10} modal10={modal10} />}
         </div>
     );
 };
