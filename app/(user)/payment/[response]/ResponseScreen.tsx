@@ -8,10 +8,10 @@ const ResponseScreen = () => {
     const searchParams = useSearchParams();
     const transactionId = searchParams?.get('transaction_id');
 
-    const {data,isLoading,error} = useQuery({
-        queryKey:['verify-payment'],
-        queryFn:()=>verifyResponse(transactionId)
-    })
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['verify-payment'],
+        queryFn: () => verifyResponse(transactionId),
+    });
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 via-white to-purple-100">
@@ -45,7 +45,7 @@ const ResponseScreen = () => {
                             Go to Register
                         </a>
                     </>
-                ) : (
+                ) : data?.paymentStatus === 'FAILED' ? (
                     <>
                         {/* Failure Icon */}
                         <div className="mx-auto mb-6 p-6 bg-red-200 rounded-full w-32 h-32 flex items-center justify-center shadow-lg animate-pulse">
@@ -64,6 +64,35 @@ const ResponseScreen = () => {
                         <a href="/" className="inline-block px-6 py-3 mt-4 text-lg font-semibold text-white bg-red-500 rounded-full hover:bg-red-600 transition duration-300">
                             Try Again
                         </a>
+                    </>
+                ) : (
+                    <>
+                        {/* Icon for Pending Status */}
+                        <div className="mx-auto mb-6 p-6 bg-yellow-100 rounded-full w-32 h-32 flex items-center justify-center shadow-lg animate-bounce">
+                            <svg className="w-16 h-16 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                            </svg>
+                        </div>
+
+                        {/* Main Message */}
+                        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center">Payment Pending</h1>
+
+                        {/* Additional Details */}
+                        <p className="text-md md:text-lg text-gray-600 mb-6 text-center max-w-lg mx-auto">Your payment is currently pending. For assistance, feel free to contact our support team.</p>
+
+                        {/* Contact Information */}
+                        <div className="bg-yellow-50 p-4 rounded-lg shadow-md mb-6 text-center">
+                            <p className="text-gray-700 font-semibold">
+                                <span className="font-bold">Contact Support:</span> +91 9632587412
+                            </p>
+                        </div>
+
+                        {/* Action Button */}
+                        <div className="flex justify-center">
+                            <a href="/" className="px-8 py-3 text-lg font-medium text-white bg-yellow-500 rounded-full shadow hover:bg-yellow-600 transition duration-300 ease-in-out">
+                                Try Again
+                            </a>
+                        </div>
                     </>
                 )}
             </div>
