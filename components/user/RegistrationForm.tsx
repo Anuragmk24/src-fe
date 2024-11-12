@@ -222,6 +222,7 @@ function RegistrationForm() {
                         form.appendChild(input);
                     });
 
+                    console.log("inputs ",inputs)
                     document.body.appendChild(form);
                     form.submit();
                 } else {
