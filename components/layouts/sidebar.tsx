@@ -114,14 +114,14 @@ const Sidebar = () => {
                                     </Link>
                                 </button>
                             </li>
-                            <li className="menu nav-item">
+                            {/* <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'chapters' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('Chapters')}>
                                     <Link href={'/chapters'} className="flex items-center">
                                         <IconUsersGroup className="shrink-0 group-hover:!text-primary" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Chapters')}</span>
                                     </Link>
                                 </button>
-                            </li>
+                            </li> */}
 
                          
                         </ul>
