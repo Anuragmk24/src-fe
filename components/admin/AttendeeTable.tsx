@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import sortBy from 'lodash/sortBy';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import { fetchBookings } from '@/data/admin/registration';
 import { Loader } from '@mantine/core'; // Assuming you are using Mantine loader
 import { formatDate } from '@/utils/common';
@@ -13,6 +13,8 @@ import Modal from './Modal';
 import AccomodationModal from './AccomodationModal';
 import RegistrationModal from './RegistrationModal';
 import GroupModal from './GroupModal';
+import { resendEmail } from '@/data/admin/dashbord';
+import toast, { Toaster } from 'react-hot-toast';
 
 const AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
@@ -26,7 +28,7 @@ const AttendeeTable = () => {
         columnAccessor: 'date',
         direction: 'asc',
     });
-    // const [debouncedSearch] = useDebouncedValue(search, 300); // Debounce the search input by 300ms
+    // const [debouncedSearch] = useDebouncedValue(search, 300); // Debo    unce the search input by 300ms
 
     // Fetch bookings with pagination and token
     const { data, isLoading, isError, refetch } = useQuery({
@@ -65,6 +67,19 @@ const AttendeeTable = () => {
     if (isError) {
         return <div>Error fetching bookings.</div>;
     }
+
+    const handleResendEmail = async (row: any) => {
+        const response: any = await resendEmail(token, {
+            name: row.firstName,
+            email: row.email,
+            transactionId: row?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId,
+        });
+        if (response.success) {
+            toast.success('Email resent successfully!');
+        } else {
+            toast.error('Failed to resend email.');
+        }
+    };
 
     return (
         <div className="sm:panel mt-6">
@@ -152,18 +167,13 @@ const AttendeeTable = () => {
 
                                 const numberOfMembers = record?.groupMmebers?.[0]?.group?.numberOfMembers;
 
-                         
                                 const groupLabel = numberOfMembers > 1 ? ' (Group)' : '';
                                 return (
-
-                                    <div className='flex justify-center flex-col items-center'>
-                                    <span>{`${formattedAmount}${groupLabel}`}</span>
-                                    <GroupModal
-                                      users={record?.groupMmebers?.[0]?.group?.GroupMember}
-                                      spouse={record?.spouse}
-                                    />
-                                  </div>                                )
-                           
+                                    <div className="flex justify-center flex-col items-center">
+                                        <span>{`${formattedAmount}${groupLabel}`}</span>
+                                        <GroupModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
+                                    </div>
+                                );
                             },
                         },
 
@@ -205,6 +215,16 @@ const AttendeeTable = () => {
                             sortable: true,
                             render: (row: any) => (row.collegeName ? row.collegeName : '---'),
                         },
+                        {
+                            accessor: '',
+                            title: 'Resend Email',
+                            sortable: true,
+                            render: (row: any) => (
+                                <h1 className="cursor-pointer" onClick={() => handleResendEmail(row)}>
+                                    {'Send'}
+                                </h1>
+                            ),
+                        },
 
                         {
                             accessor: 'action',
@@ -228,6 +248,7 @@ const AttendeeTable = () => {
                     paginationText={({ from, to, totalRecords }) => `Showing ${from} to ${to} of ${totalRecords} entries`}
                 />
             </div>
+            <Toaster position="bottom-right" />
         </div>
     );
 };
