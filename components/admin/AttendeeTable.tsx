@@ -220,12 +220,14 @@ const AttendeeTable = () => {
                             title: 'Resend Email',
                             sortable: true,
                             render: (row: any) => (
+                              row?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus === 'SUCCESS' && (
                                 <h1 className="cursor-pointer" onClick={() => handleResendEmail(row)}>
-                                    {'Send'}
+                                  {'Send'}
                                 </h1>
+                              )
                             ),
-                        },
-
+                          },
+                          
                         {
                             accessor: 'action',
                             title: 'Action',
