@@ -1,24 +1,21 @@
 import { addNewAccomodation } from '@/data/users/register';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 
 function SubmitButton({ uniqueUsers, amount }: { uniqueUsers: any; amount: any }) {
     const [loading, setLoading] = useState(false);
 
-    console.log('uniquesusers from button modal =======> ', uniqueUsers);
-    console.log('amount  in modal ==============> ', amount);
     const onSubmit = async () => {
+        if (uniqueUsers?.length === 2) {
+            return toast.error('Double rooms are fully booked!!!');
+        }
         setLoading(true);
         try {
             const orderUuid = uuidv4().split('-')[0];
 
-            //make group with users
-            // add group members into member table
-            // initiate paymet with pending statue
-            //create accomodation with pending status
 
             const addAccomodation = await addNewAccomodation(uniqueUsers, amount);
-            console.log('addaccomodation ===============>', addAccomodation);
 
             //only works addaccomodation res is success or display proper error messages
             const payload = {
@@ -48,7 +45,6 @@ function SubmitButton({ uniqueUsers, amount }: { uniqueUsers: any; amount: any }
                 body: JSON.stringify(payload),
             });
             const result = await response.json();
-            console.log('Result ', result);
 
             if (result.hash) {
                 const form = document.createElement('form');
@@ -76,7 +72,6 @@ function SubmitButton({ uniqueUsers, amount }: { uniqueUsers: any; amount: any }
                     { name: 'zip_code', value: addAccomodation?.data?.groupMembers?.[0]?.user?.pinCode || '' },
                 ];
 
-                console.log('inputs ', inputs);
                 inputs.forEach((inputData) => {
                     const input = document.createElement('input');
                     input.type = 'hidden';
