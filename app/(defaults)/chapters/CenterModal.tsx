@@ -15,6 +15,7 @@ function CenterModal({ state, setModal10, modal10 }: { state: any; setModal10: a
         enabled: Boolean(state) && modal10, // Ensure modal10 is open and state is valid
     });
 
+    console.log('data in centre modal ', data);
     if (isLoading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -31,29 +32,14 @@ function CenterModal({ state, setModal10, modal10 }: { state: any; setModal10: a
         <div>
             <Transition appear show={modal10} as={Fragment}>
                 <Dialog as="div" open={modal10} onClose={() => setModal10(false)}>
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
+                    <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
                         <div className="fixed inset-0" />
                     </Transition.Child>
-                    <div
-                        id="slideIn_down_modal"
-                        className="fixed inset-0 bg-gray-800/50 z-[999] overflow-y-auto flex items-center justify-center"
-                    >
+                    <div id="slideIn_down_modal" className="fixed inset-0 bg-gray-800/50 z-[999] overflow-y-auto flex items-center justify-center">
                         <div className="w-full max-w-lg bg-white dark:bg-[#121c2c] rounded-lg shadow-lg p-6 animate__animated animate__slideInDown">
                             <div className="flex items-center justify-between border-b pb-3 mb-4">
                                 <h5 className="font-semibold text-lg text-gray-800 dark:text-white">Centre Details</h5>
-                                <button
-                                    onClick={() => setModal10(false)}
-                                    type="button"
-                                    className="text-gray-500 hover:text-gray-800 dark:hover:text-white"
-                                >
+                                <button onClick={() => setModal10(false)} type="button" className="text-gray-500 hover:text-gray-800 dark:hover:text-white">
                                     <IconX />
                                 </button>
                             </div>
@@ -62,12 +48,9 @@ function CenterModal({ state, setModal10, modal10 }: { state: any; setModal10: a
                             {data?.data?.length > 0 ? (
                                 <div className="space-y-3">
                                     {data.data.map((item: any, index: number) => (
-                                        <div
-                                            key={index}
-                                            className="flex justify-between items-center p-3 bg-gray-100 rounded-lg dark:bg-[#1a202c] shadow-sm hover:bg-gray-200 dark:hover:bg-[#2d3748]"
-                                        >
+                                        <div key={index} className="flex justify-between items-center p-3 bg-gray-100 rounded-lg dark:bg-[#1a202c] shadow-sm hover:bg-gray-200 dark:hover:bg-[#2d3748]">
                                             <h1 className="font-semibold text-gray-800 dark:text-white">{item.center}</h1>
-                                            <span className="text-gray-600 dark:text-gray-400">{item.userCount} Users</span>
+                                            <span className="text-gray-600 dark:text-gray-400">{item.count} </span>
                                         </div>
                                     ))}
                                 </div>

@@ -42,7 +42,7 @@ const ChaptersTable = () => {
         if (data?.data.length > 0) {
             setRecords(data?.data);
         }
-    }, [data, search, sortStatus]);
+    }, [data]);
 
     if (isLoading) {
         return <Loader size="xl" />;
@@ -71,9 +71,10 @@ const ChaptersTable = () => {
                             title: 'State',
                             sortable: true,
                             render: (row: any) => (
-                                <h1 className='cursor-pointer'
+                                <h1
+                                    className="cursor-pointer"
                                     onClick={() => {
-                                        setModalOpen(row.state); // Set the state for the selected row
+                                        setModalOpen(row?.state); // Set the state for the selected row
                                         setModal10(true); // Open the modal
                                     }}
                                 >
@@ -82,10 +83,10 @@ const ChaptersTable = () => {
                             ),
                         },
                         {
-                            accessor: 'userCount',
+                            accessor: 'count',
                             title: 'Count',
                             sortable: true,
-                            render: (row: any) => (row.userCount ? row.userCount : '---'),
+                            render: (row: any) => (row?.count ? row?.count : '---'),
                         },
                     ]}
                     totalRecords={data?.data?.totalCount}
