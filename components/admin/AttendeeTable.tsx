@@ -16,6 +16,7 @@ import GroupModal from './GroupModal';
 import { resendEmail } from '@/data/admin/dashbord';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import ExcelExort from './ExcelExort';
 
 const AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
@@ -37,6 +38,7 @@ const AttendeeTable = () => {
         queryFn: () => fetchBookings(token, (page - 1) * pageSize, pageSize, search),
         // keepPreviousData: true, // Keeps previous data while fetching new page data
     });
+
 
     const [records, setRecords] = useState<any[]>([]);
     useEffect(() => {
@@ -111,7 +113,8 @@ const AttendeeTable = () => {
         <div className="sm:panel mt-6">
             <div className="mb-5 flex flex-col sm:gap-5 md:flex-row md:items-center">
                 <h5 className="text-lg font-semibold dark:text-white-light">Registration Details</h5>
-                <div className="ltr:ml-auto rtl:mr-auto">
+                <div className="ltr:ml-auto rtl:mr-auto flex gap-x-3">
+                    <ExcelExort/>
                     <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
 
                     {/* <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} /> */}
@@ -160,6 +163,11 @@ const AttendeeTable = () => {
                                         feeDisplay = record.isBringingSpouse ? '7000 (with Spouse)' : record.groupSize * 3500;
                                     } else if (memberType === 'NON_IIA_MEMBER') {
                                         feeDisplay = record.groupSize * 4500;
+                                    }else if (memberType === 'STUDENT'){
+                                        feeDisplay = record.groupSize * 1500;
+                                        if(record.isStudentAffiliatedToIia){
+                                            feeDisplay = record.groupSize = 1000
+                                        }
                                     }
                                 }
 
