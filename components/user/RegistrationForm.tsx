@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 import Questions from './Questions';
 import Points from './Points';
 import imageCompression from 'browser-image-compression';
-import { registrationSchema, registrationSchemaForIiaMembers, registrationSchemaWithSpouse } from './Schema';
+import { registrationSchema, registrationSchemaForIiaMembers, registrationSchemaForStudents, registrationSchemaForStudentsWithIia, registrationSchemaWithSpouse } from './Schema';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 import { Rajdhani } from '@next/font/google';
@@ -29,7 +29,9 @@ const rajdhani = Rajdhani({
 function RegistrationForm() {
     const [countryid, setCountryid] = useState(0);
     const [stateid, setstateid] = useState(0);
+    const [studentIdError, setStudentIdError] = useState('');
     const [loading, setLoading] = useState(false);
+
     const { data, isError, isPending } = useQuery({
         queryKey: ['count-student'],
         queryFn: () => fetchTotalStudentsCount(),
@@ -55,7 +57,6 @@ function RegistrationForm() {
     const memberType = watch('definition');
     const bookingType = watch('bookingType');
     const [customError, setCustomError] = useState('');
-    
 
     const groupSize = watch('groupSize');
     const isBringingSpouse = watch('bringingSpouse');
@@ -66,10 +67,15 @@ function RegistrationForm() {
             setSchema(registrationSchemaWithSpouse);
         } else if (memberType === 'IIA_MEMBER') {
             setSchema(registrationSchemaForIiaMembers);
+        } else if (memberType === 'STUDENT') {
+            setSchema(registrationSchemaForStudents);
+            if (isStudentAffiliatedToIia === 'Yes') {
+                setSchema(registrationSchemaForStudentsWithIia);
+            }
         } else {
             setSchema(registrationSchema);
         }
-    }, [memberType, isBringingSpouse]);
+    }, [memberType, isBringingSpouse, isStudentAffiliatedToIia]);
 
     const [priceData, setPriceData] = useState<any>({
         regFee: 0,
@@ -77,7 +83,11 @@ function RegistrationForm() {
     });
     const [priceDetails, setPriceDetails] = useState<any>([]);
 
+    // useEffect(() => {
+    //     reset();  // Reset form on change of these values
+    //   }, [memberType, bookingType, groupSize, isBringingSpouse, reset]);
     const onSubmit = async (data: any) => {
+        console.log('submit data ', data);
         if (bookingType === null) {
             return toast.error('Please fill required fields...');
         }
@@ -87,12 +97,20 @@ function RegistrationForm() {
                 return;
             }
         }
+        if (data?.definition === 'STUDENT') {
+            if (data?.group?.[0]?.studentId?.length === 0) {
+                setStudentIdError('ID card requried');
+                return;
+            }
+        }
         setLoading(true);
         const uploadPromises = data?.group?.map(async (member: any) => {
+            console.log('member ', member);
             // Assign the filename to the member before uploading
-            member.fileName = member?.iiaReceipt?.[0]?.name;
-
+            console.log('in upload promises');
             if (member?.iiaReceipt && member?.iiaReceipt?.length > 0) {
+                member.fileName = member?.iiaReceipt?.[0]?.name;
+                console.log('in if condition');
                 const originalFile = member?.iiaReceipt[0];
 
                 //compression options
@@ -129,7 +147,44 @@ function RegistrationForm() {
                         error,
                     };
                 }
+            } else if (member?.studentId && member?.studentId?.length > 0) {
+                console.log('in else if condition');
+                const originalFile = member?.studentId[0];
+                member.fileName = member?.studentId?.[0]?.name;
+
+                //compression options
+                const options = {
+                    maxSizeMB: 1,
+                    maxWidthOeHeight: 1024,
+                    useWebWorker: true,
+                };
+                try {
+                    const compressedFile = await imageCompression(originalFile, options);
+                    const formData = new FormData();
+                    formData.append('files', compressedFile, originalFile.name);
+                    formData.append('phoneNumber', member.mobile);
+                    const fileUploadResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/booking/file-upload`, {
+                        method: 'POST',
+                        body: formData,
+                    });
+                    const fileUploadData = await fileUploadResponse.json();
+
+                    // Add the uploaded file name or response data to the member object
+                    return {
+                        ...member,
+                        uploadStatus: 'success',
+                        uploadedFileData: fileUploadData,
+                    };
+                } catch (error) {
+                    console.error('File upload failed for member:', member?.mobile, error);
+                    return {
+                        ...member,
+                        uploadStatus: 'failure',
+                        error,
+                    };
+                }
             } else {
+                console.log('in else condition');
                 // If no file is uploaded, still return the member
                 return {
                     ...member,
@@ -212,7 +267,6 @@ function RegistrationForm() {
                         { name: 'state', value: bookingResult?.data?.[0]?.state },
                         { name: 'zip_code', value: bookingResult?.data?.[0]?.pinCode },
                     ];
-                   
 
                     inputs.forEach((inputData) => {
                         const input = document.createElement('input');
@@ -222,7 +276,6 @@ function RegistrationForm() {
                         form.appendChild(input);
                     });
 
-                    console.log("inputs ",inputs)
                     document.body.appendChild(form);
                     form.submit();
                 } else {
@@ -341,6 +394,7 @@ function RegistrationForm() {
     }, [priceData, accomodation]);
 
     console.log('errors ', errors);
+
     const renderContactInfoFields = (size: number) => {
         return Array.from({ length: size }, (_, i) => (
             <div key={i}>
@@ -351,43 +405,48 @@ function RegistrationForm() {
                         <input type="text" {...register(`group[${i}].firstName`)} className="border rounded px-2 py-1  w-full dark:bg-white bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.firstName && <p className="text-red-600">{errors.group[i].firstName.message}</p>}
                     </div>
-
                     <div>
                         <label className="block mb-1">Last Name</label>
                         <input type="text" {...register(`group[${i}].lastName`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.lastName && <p className="text-red-600">{errors.group[i].lastName.message}</p>}
                     </div>
-
                     <div>
                         <label className="block mb-1">Email</label>
                         <input type="email" {...register(`group[${i}].email`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.email && <p className="text-red-600">{errors.group[i].email.message}</p>}
                     </div>
-
                     <div>
                         <label className="block mb-1">Mobile</label>
                         <input type="tel" {...register(`group[${i}].mobile`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.mobile && <p className="text-red-600">{errors.group[i].mobile.message}</p>}
                     </div>
-
-                    {memberType === 'IIA_MEMBER' && (
+                    {(memberType === 'IIA_MEMBER' || isStudentAffiliatedToIia === 'Yes') && (
                         <div>
                             <label className="block mb-1">IIA Number</label>
                             <input type="text" {...register(`group[${i}].iia`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
                             {Array.isArray(errors?.group) && errors.group[i]?.iia && <p className="text-red-600">{errors.group[i].iia.message}</p>}
                         </div>
+                    )}{' '}
+                    {/* File Upload for new IIA members without IIA Number */}
+                    {memberType === 'STUDENT' && (
+                        <div>
+                            <label className="block mb-1">Upload Student ID card</label>
+                            <input type="file" {...register(`group[${i}].studentId`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" accept=".pdf,.jpg,.png" />
+                            {Array.isArray(errors?.group) && errors.group[i]?.studentId && <p className="text-red-600">{errors.group[i].studentId.message}</p>}
+                            {studentIdError && <p className="text-red-600">{studentIdError}</p>}
+                        </div>
                     )}
-
                     {/* File Upload for new IIA members without IIA Number */}
                     {memberType === 'IIA_MEMBER' && !watch(`group[${i}].iia`) && (
                         <div>
                             <label className="block mb-1">Upload IIA Membership Receipt (Newly registered)</label>
-                            <input type="file" {...register(`group[${i}].iiaReceipt`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" accept=".pdf,.jpg,.png" />
-                            {Array.isArray(errors?.group) && errors.group[i]?.iiaReceipt && <p className="text-red-600">{errors.group[i].iiaReceipt.message}</p>}
+                            <div className="flex flex-col">
+                                <input type="file" {...register(`group[${i}].iiaReceipt`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" accept=".pdf,.jpg,.png" />
+                                {Array.isArray(errors?.group) && errors.group[i]?.iiaReceipt && <p className="text-red-600">{errors.group[i].iiaReceipt.message}</p>}
+                                {customError && <p className="text-red-600">{customError}</p>}
+                            </div>
                         </div>
                     )}
-                    {customError && <p className="text-red-600">{customError}</p>}
-
                     {memberType !== 'STUDENT' && (
                         <>
                             <div>
@@ -411,9 +470,10 @@ function RegistrationForm() {
                         <div>
                             <label className="block mb-1">College Name</label>
                             <input type="text" {...register(`group[${i}].collegeName`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
+                            {Array.isArray(errors?.group) && errors.group[i]?.collegeName && <p className="text-red-600">{errors.group[i].collegeName.message}</p>}
+
                         </div>
                     )}
-
                     <div>
                         <label className="block mb-1">Country</label>
                         <Controller
@@ -435,7 +495,6 @@ function RegistrationForm() {
                         />
                         {Array.isArray(errors?.group) && errors.group[i]?.country && <p className="text-red-600">{errors.group[i].country.message}</p>}
                     </div>
-
                     <div>
                         <label className="block mb-1">State</label>
                         <Controller
@@ -457,7 +516,6 @@ function RegistrationForm() {
                         />
                         {Array.isArray(errors?.group) && errors.group[i]?.state && <p className="text-red-600">{errors.group[i].state.message}</p>}
                     </div>
-
                     <div>
                         <label className="block mb-1">City</label>
                         <input type="text" {...register(`group[${i}].city`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
@@ -468,7 +526,6 @@ function RegistrationForm() {
                         <input type="text" {...register(`group[${i}].center`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
                         {Array.isArray(errors?.group) && errors.group[i]?.center && <p className="text-red-600">{errors.group[i].center.message}</p>}
                     </div>
-
                     <div>
                         <label className="block mb-1">Pin Code</label>
                         <input type="text" {...register(`group[${i}].pinCode`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
@@ -491,26 +548,7 @@ function RegistrationForm() {
 
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 mb-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
-            {/* <div className="flex flex-col items-center justify-center">
-                <div className="flex flex-col sm:flex-row"></div>
-                <img src="/assets/sponsors/jidal-sml-logo-black.svg" alt="Logo" className="w-24 h-18 md:w-28 md:h-20" />
-                <img src="/assets/images/SRC-logo-black.svg" alt="Logo" className="w-60 h-20 md:w-72 mb-5 md:h-20" />
-                <img src="/assets/sponsors/Black_Simpolo_Logo__Vertical.png" alt="Logo" className="w-16 h-14 -mt-4 md:w-20 md:h-16" />
-            </div> */}
-            {/* <h1 className="text-2xl font-bold mb-4 text-3xl text-center mt-4">Southern Regional Conference</h1> */}
-            {/* <div className={`${rajdhani.className} flex flex-col sm:flex-row gap-2 items-center justify-center  gap-x-4 text-[#16616E] sm:text-xl mb-8`}>
-                <div className="flex items-center gap-x-2">
-                    <SlCalender />
-                    <h3>29, 30 NOVEMBER 2024</h3>
-                </div>
-
-                <div className="flex items-center gap-x-2">
-                    <CiLocationOn />
-                    <h3>Vythiri Village Resort, Wayanad</h3>
-                </div>
-            </div> */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-5">
-                {/* Best Defines You */}
                 <div className="flex">
                     <div id="definition">
                         <h2 className="text-lg font-semibold mb-2">What best defines you? *</h2>
@@ -524,23 +562,20 @@ function RegistrationForm() {
                                 Non IIA member (COA Registered Architect)
                             </label>
                             <div className="flex itemse-center flex-col gap-x-3">
-                                <label className="text-gray-400 line-through grascale">
-                                    {data && data.count < 100 ? (
-                                        <input type="radio" disabled {...register('definition', { required: true })} value="STUDENT" className="mr-2  form-radio w-4 h-4" />
+                                <label className="">
+                                    {data && data.count < 50 ? (
+                                        <input type="radio" {...register('definition', { required: true })} value="STUDENT" className="mr-2  form-radio w-4 h-4" />
                                     ) : (
                                         <input type="radio" disabled={true} value="student" className="mr-2 form-radio w-4 h-4" />
                                     )}
-                                    Student
+                                    Student (This registration is only for B.arch students)
                                 </label>
-                                <small> *Student registration will be opening soon.</small>
+                                <small className={`text-sm mt-1 font-semibold  ${data && data.count < 50 ? 'text-green-600' : 'text-red-600'}`}>
+                                    {data && data.count < 50 ? `${50 - data.count} Student Tickets Remaining` : 'No Student Tickets Available'}
+                                </small>{' '}
                             </div>
                         </div>
-                        {/* <label className="inline-flex mt-1 cursor-pointer">
-                    <input type="radio" name="segements" className="form-radio" />
-                    <span className="text-white-dark">Segements 1</span>
-                </label> */}
                     </div>
-                    {/* <NewAccomodationAdding/> */}
                 </div>
 
                 {memberType === 'STUDENT' && <Questions register={register} question="Affiliated to IIA" name="isStudentAffiliatedToIia" />}
