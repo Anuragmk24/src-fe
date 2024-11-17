@@ -35,6 +35,7 @@ import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
 import IconBarChart from '../icon/icon-bar-chart';
 import IconUsersGroup from '../icon/icon-users-group';
+import IconHome from '../icon/icon-home';
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -119,6 +120,14 @@ const Sidebar = () => {
                                     <Link href={'/chapters'} className="flex items-center">
                                         <IconUsersGroup className="shrink-0 group-hover:!text-primary" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Chapters')}</span>
+                                    </Link>
+                                </button>
+                            </li>
+                            <li className="menu nav-item">
+                                <button type="button" className={`${currentMenu === 'accomodation' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('accomodation')}>
+                                    <Link href={'/accomodation'} className="flex items-center">
+                                        <IconHome className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Accomodation')}</span>
                                     </Link>
                                 </button>
                             </li>

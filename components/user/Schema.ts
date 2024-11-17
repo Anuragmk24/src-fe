@@ -257,7 +257,7 @@ export const registrationSchema = z
                         .transform((val) => val?.trim()),
                     center: z
                         .string()
-                        .nonempty('Centre is mandatory field')
+                        .optional()
                         .transform((val) => val?.trim()),
                     coaNumber: z
                         .string()
@@ -531,7 +531,7 @@ export const registrationSchemaForStudents = z
                         .transform((val) => val?.trim()),
                     center: z
                         .string()
-                        .nonempty('Centre is mandatory field')
+                        .optional()
                         .transform((val) => val?.trim()),
                 })
             )

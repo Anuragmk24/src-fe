@@ -17,6 +17,7 @@ import { resendEmail } from '@/data/admin/dashbord';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import ExcelExort from './ExcelExort';
+import ImageViewModal from './ImageViewModal';
 
 const AttendeeTable = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
@@ -71,18 +72,7 @@ const AttendeeTable = () => {
         return <div>Error fetching bookings.</div>;
     }
 
-    // const handleResendEmail = async (row: any) => {
-    //     const response: any = await resendEmail(token, {
-    //         name: row.firstName,
-    //         email: row.email,
-    //         transactionId: row?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId,
-    //     });
-    //     if (response.success) {
-    //         toast.success('Email resent successfully!');
-    //     } else {
-    //         toast.error('Failed to resend email.');
-    //     }
-    // };
+
     const handleResendEmail = async (row: any) => {
         Swal.fire({
             title: 'Are you sure?',
@@ -117,7 +107,6 @@ const AttendeeTable = () => {
                     <ExcelExort/>
                     <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
 
-                    {/* <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} /> */}
                 </div>
             </div>
             <div className="datatables">
@@ -258,6 +247,16 @@ const AttendeeTable = () => {
                                 <h1 className="cursor-pointer" onClick={() => handleResendEmail(row)}>
                                   {'Send'}
                                 </h1>
+                              
+                            ),
+                          },
+                        {
+                            accessor: '',
+                            title: 'File',
+                            sortable: true,
+                            render: (row: any) => (
+                              
+                               <ImageViewModal row={row}/>
                               
                             ),
                           },

@@ -398,6 +398,7 @@ function RegistrationForm() {
     const renderContactInfoFields = (size: number) => {
         return Array.from({ length: size }, (_, i) => (
             <div key={i}>
+                {memberType === 'STUDENT' && <Points points="Please keep payment reciept if you are a new member" />}{' '}
                 <h2 className="text-lg font-semibold mb-2">{i === 0 ? 'Contact Info' : `Contact Info  ${i + 1}`}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -471,7 +472,6 @@ function RegistrationForm() {
                             <label className="block mb-1">College Name</label>
                             <input type="text" {...register(`group[${i}].collegeName`)} className="border rounded px-2 py-1 w-full dark:bg-white bg-white" />
                             {Array.isArray(errors?.group) && errors.group[i]?.collegeName && <p className="text-red-600">{errors.group[i].collegeName.message}</p>}
-
                         </div>
                     )}
                     <div>

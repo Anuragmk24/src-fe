@@ -63,4 +63,25 @@ export const fetchCenters = async (token:string,state:string) => {
         console.log('error fetching booking ', err);
         throw err;
     }
+
+};
+
+export const fetchAccomodationData = async (token:string,start:number,limit:number,search:string) => {
+    try {
+        const res = await clientFetch(`accomodation/fetch?start=${start}&limit=${limit}&search=${search}`, {
+            method: 'GET',
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        });
+
+        // Check if the response is ok (status in the range 200-299)
+        if (res.statusCode !== 200) {
+            throw res;
+        }
+        return res;
+    } catch (err) {
+        console.log('error fetching booking ', err);
+        throw err;
+    }
 };
