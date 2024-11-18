@@ -585,7 +585,7 @@ function RegistrationForm() {
                             <Points
                                 points={`Early Bird Offer: Register for SRC and book your accommodation together for just  ${
                                     memberType === 'IIA_MEMBER' ? '₹7500' : '₹9000'
-                                } . Offer valid only until November 10th.`}
+                                } . Offer valid only until November 20th.`}
                                 classNames="bg-violet-200"
                             />
                             {memberType === 'IIA_MEMBER' && <Questions register={register} question="Are you bringing your spouse" name="bringingSpouse" />}
