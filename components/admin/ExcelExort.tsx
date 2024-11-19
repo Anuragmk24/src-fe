@@ -15,7 +15,7 @@ function ExcelExort() {
         worksheet.addRow(['Name', 'Email', 'Mobile', 'Booking Type', 'Transaction ID', 'Registration Amount', 'Accomodation Amount', 'Total Amount', 'Member Type']);
 
         // Fetch all data
-        const pageSize = 100; // Fetch 100 rows per request
+        const pageSize = 1000; // Fetch 100 rows per request
         let currentPage = 1;
         let hasMoreData = true;
         let allBookings: any[] = [];
