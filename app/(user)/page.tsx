@@ -23,14 +23,14 @@ export default function Page() {
 
                     {/* Intro Container */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
-                        <div className="bnr-logo mb-2">
+                        {/* <div className="bnr-logo mb-2">
                             <img className='w-10 sm:w-full'  src="/assets/sponsors/jidal-sml-logo.svg" alt="Jidal Logo" />
                         </div>
                         <div className="bnr-logo  mb-2 w-2/3 sm:w-1/3">
                             <img src="/assets/images/logoIcon.svg" className="w-full" alt="SRC Banner Logo" />
-                        </div>
+                        </div> */}
                         <div className="mb-4">
-                            <img className='w-10 sm:w-full' src="/assets/sponsors/White_Simpolo_Logo.svg" alt="Simpolo Logo" />
+                            <img className='w-10 sm:w-full' src="/assets/sponsors/logoWithSponsors.svg" alt="Simpolo Logo" />
                         </div>
                         <div className={`${rajdhani.className} font-medium flex flex-col sm:flex-row gap-2 items-center justify-center  gap-x-4 text-[#16616E] sm:text-xl mb-8`}>
                             <div className="flex items-center gap-x-2">

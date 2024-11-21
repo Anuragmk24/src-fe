@@ -21,9 +21,9 @@ function Footer() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-center w-full max-w-6xl px-6">
                         {/* Logo and Register Now Button */}
                         <div className="flex sm:gap-8 flex-col gap-3 mt-2 sm:mt-0 items-center sm:items-center sm:space-y-0 justify-center sm:space-x-4">
-                            <img src="/assets/sponsors/jidal-sml-logo.svg" alt="Logo" className="w-66 h-18 md:w-36 md:h-36" />
-                            <img src="/assets/images/logoIcon.svg" alt="Logo" className="w-full h-18 md:w-72" />
-                            <img src="/assets/sponsors/White_Simpolo_Logo.svg" alt="Logo" className="w-66 h-18 md:w-36" />
+                            {/* <img src="/assets/sponsors/jidal-sml-logo.svg" alt="Logo" className="w-66 h-18 md:w-36 md:h-36" />
+                            <img src="/assets/images/logoIcon.svg" alt="Logo" className="w-full h-18 md:w-72" /> */}
+                            <img src="/assets/sponsors/logoWithSponsors.svg" alt="Logo" className="w-80 h-98 md:w-36" />
                             <button className={`${rajdhani.className} mt-4 bg-[#E5E52E] hover:bg-[#E5E52E]  text-[#16616E] font-semibold px-4 py-2 rounded-md`}>
                                 Register Now
                             </button>
