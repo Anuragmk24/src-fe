@@ -127,16 +127,16 @@ function NewAccomodationAdding() {
             // Calculate group amount based on type
             if (memberType === 'IIA_MEMBER') {
                 if (bookingType === 'Group') {
-                    totalAmount += hasSpouse ? 8000 : groupSize * 4000;
+                    totalAmount += hasSpouse ? 9000 : groupSize * 4500;
                 } else {
-                    totalAmount += 4000 * groupSize; // Sum for each individual IIA member
+                    totalAmount += 4500 * groupSize; // Sum for each individual IIA member
                 }
             } else {
                 // Non-IIA_MEMBER
                 if (bookingType === 'Group') {
-                    totalAmount += groupSize * 4500;
+                    totalAmount += groupSize * 5000;
                 } else {
-                    totalAmount += 4500 * groupSize; // Sum for each individual non-IIA member
+                    totalAmount += 5000 * groupSize; // Sum for each individual non-IIA member
                 }
             }
         });

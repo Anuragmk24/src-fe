@@ -304,8 +304,30 @@ function RegistrationForm() {
                 regFee = 1500;
             }
         } else if (memberType === 'NON_IIA_MEMBER') {
-            regFee = 4500;
+            regFee = 5000;
             if (bookingType === 'Individual') {
+                regFee = 5000;
+            } else if (groupSize?.value === 2) {
+                regFee = 10000;
+            } else if (groupSize?.value === 3) {
+                regFee = 15000;
+            } else if (groupSize?.value === 4) {
+                regFee = 20000;
+            }
+
+            // Adjust for group size with accommodation
+            if (groupSize?.value === 2 && accomodation === 'Yes') {
+                regFee = 10000;
+            } else if (groupSize?.value === 3 && accomodation === 'Yes') {
+                regFee = 15000;
+            } else if (groupSize?.value === 4 && accomodation === 'Yes') {
+                regFee = 20000;
+            }
+        } else if (memberType === 'IIA_MEMBER') {
+            regFee = 4500;
+            if (isBringingSpouse === 'Yes') {
+                regFee = 9000;
+            } else if (bookingType === 'Individual') {
                 regFee = 4500;
             } else if (groupSize?.value === 2) {
                 regFee = 9000;
@@ -313,6 +335,8 @@ function RegistrationForm() {
                 regFee = 13500;
             } else if (groupSize?.value === 4) {
                 regFee = 18000;
+            } else if (isBringingSpouse === 'No' && bookingType === 'Individual') {
+                regFee = 4500;
             }
 
             // Adjust for group size with accommodation
@@ -323,49 +347,10 @@ function RegistrationForm() {
             } else if (groupSize?.value === 4 && accomodation === 'Yes') {
                 regFee = 18000;
             }
-        } else if (memberType === 'IIA_MEMBER') {
-            regFee = 3500;
-            if (isBringingSpouse === 'Yes') {
-                regFee = 7000;
-            } else if (bookingType === 'Individual') {
-                regFee = 3500;
-            } else if (groupSize?.value === 2) {
-                regFee = 7000;
-            } else if (groupSize?.value === 3) {
-                regFee = 10500;
-            } else if (groupSize?.value === 4) {
-                regFee = 14000;
-            } else if (isBringingSpouse === 'No' && bookingType === 'Individual') {
-                regFee = 3500;
-            }
-
-            // Adjust for group size with accommodation
-            if (groupSize?.value === 2 && accomodation === 'Yes') {
-                regFee = 7000;
-            } else if (groupSize?.value === 3 && accomodation === 'Yes') {
-                regFee = 10500;
-            } else if (groupSize?.value === 4 && accomodation === 'Yes') {
-                regFee = 14000;
-            }
         }
 
         // Set accommodation fees for IIA and Non-IIA members (excluding spouse for Non-IIA)
         if (memberType === 'IIA_MEMBER' && accomodation === 'Yes') {
-            accFee = 4000;
-            if (bookingType === 'Individual') {
-                regFee = 3500;
-                accFee = 4000;
-            } else if (groupSize?.value === 2) {
-                accFee = 8000;
-            } else if (groupSize?.value === 3) {
-                accFee = 12000;
-            } else if (groupSize?.value === 4) {
-                accFee = 16000;
-            } else if (isBringingSpouse === 'Yes') {
-                accFee = 8000;
-            }
-        }
-        if (memberType === 'NON_IIA_MEMBER' && accomodation === 'Yes') {
             accFee = 4500;
             if (bookingType === 'Individual') {
                 regFee = 4500;
@@ -376,6 +361,21 @@ function RegistrationForm() {
                 accFee = 13500;
             } else if (groupSize?.value === 4) {
                 accFee = 18000;
+            } else if (isBringingSpouse === 'Yes') {
+                accFee = 9000;
+            }
+        }
+        if (memberType === 'NON_IIA_MEMBER' && accomodation === 'Yes') {
+            accFee = 5000;
+            if (bookingType === 'Individual') {
+                regFee = 5000;
+                accFee = 5000;
+            } else if (groupSize?.value === 2) {
+                accFee = 10000;
+            } else if (groupSize?.value === 3) {
+                accFee = 15000;
+            } else if (groupSize?.value === 4) {
+                accFee = 20000;
             }
         }
 
