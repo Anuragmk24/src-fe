@@ -4,25 +4,32 @@ import { Fragment } from 'react';
 import IconEye from '../icon/icon-eye';
 
 function AccomodationModal({ users, spouse }: { users: any; spouse?: any }) {
-    console.log('spouse ===============> ', spouse);
     const [isOpen, setIsOpen] = useState(false);
-    console.log('users =============> ', users);
+    const changeDate = new Date('2024-11-21 06:02:21.629');
 
-    const memberTypes = users.map((user:any) => user.user.memberType);
-    console.log("membertypes",memberTypes)
+    const memberTypes = users.map((user: any) => user.user.memberType);
 
     const calculateAccommodationAmount = () => {
         if (!users || users.length === 0) return null;
 
         const firstUser = users[0];
-        const isBringingSpouse = firstUser?.user?.isBringingSpouse;
-        const memberType = firstUser?.user?.memberType;
-
-        // Calculate based on member type and spouse status
-        if (memberType === "IIA_MEMBER") {
-            return isBringingSpouse ? 8000 : 4000* users?.length ;
-        } else if (memberType === "NON_IIA_MEMBER") {
-            return 4500 * users?.length;
+        const { isBringingSpouse, createdAt, memberType } = firstUser?.user;
+        const createdAtDate = new Date(createdAt);
+        if (createdAtDate >= changeDate) {
+            if (isBringingSpouse) {
+                return 9000;
+            }
+            if (memberType === 'IIA_MEMBER') {
+                return 4500 * users.length;
+            } else if (memberType === 'NON_IIA_MEMBER') {
+                return 5000 * users.length;
+            }
+        } else {
+            if (memberType === 'IIA_MEMBER') {
+                return isBringingSpouse ? 8000 : 4000 * users?.length;
+            } else if (memberType === 'NON_IIA_MEMBER') {
+                return 4500 * users?.length;
+            }
         }
     };
 
@@ -69,7 +76,7 @@ function AccomodationModal({ users, spouse }: { users: any; spouse?: any }) {
                                         <p className="text-center text-gray-500">No group members found.</p>
                                     )}
 
-                                    {spouse.length !==  0 ? (
+                                    {spouse.length !== 0 ? (
                                         <div className="p-4 my-3 border rounded-md shadow-sm bg-gray-50">
                                             <h1>Spouse Details</h1>
                                             <div className="font-semibold text-gray-700">{`${spouse[0].firstName} ${spouse[0].lastName}`}</div>

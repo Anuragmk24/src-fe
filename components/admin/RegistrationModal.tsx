@@ -5,27 +5,48 @@ import IconEye from '../icon/icon-eye';
 
 function RegistrationModal({ users, spouse }: { users: any; spouse?: any }) {
     const [isOpen, setIsOpen] = useState(false);
-    console.log('users =============> ', users);
+    const changeDate = new Date('2024-11-21 06:02:21.629'); // Date when the new rates are applied
 
+    // Function to calculate accommodation amount based on the member type, spouse, and the date of registration
     const calculateAccommodationAmount = () => {
         if (!users || users.length === 0) return null;
 
         const firstUser = users[0];
-        const { isBringingSpouse, memberType, isStudentAffiliatedToIia } = firstUser?.user;
+        const { isBringingSpouse, memberType, isStudentAffiliatedToIia, createdAt } = firstUser?.user;
+        const createdAtDate = new Date(createdAt);
 
-        if (memberType === 'STUDENT') {
-            return isStudentAffiliatedToIia ? 1000 : 1500;
+        // If it's after the change date, apply new rates
+        if (createdAtDate >= changeDate) {
+            if (memberType === 'STUDENT') {
+                return isStudentAffiliatedToIia ? 1000 : 1500;
+            }
+
+            if (isBringingSpouse) {
+                return 4500; // Spouse rate after the change date
+            }
+
+            if (memberType === 'IIA_MEMBER') {
+                return 4500 * users.length; // New IIA member rate after the change
+            } else if (memberType === 'NON_IIA_MEMBER') {
+                return 5000 * users.length; // New non-IIA member rate after the change
+            }
+        } else {
+            // If it's before the change date, apply old rates
+            if (memberType === 'STUDENT') {
+                return isStudentAffiliatedToIia ? 1000 : 1500;
+            }
+
+            if (isBringingSpouse) {
+                return 7000; // Spouse rate before the change date
+            }
+
+            if (memberType === 'IIA_MEMBER') {
+                return 3500 * users.length; // Old IIA member rate before the change
+            } else if (memberType === 'NON_IIA_MEMBER') {
+                return 4500 * users.length; // Old non-IIA member rate before the change
+            }
         }
 
-        if (isBringingSpouse) {
-            return 7000;
-        }
-
-        if (memberType === 'IIA_MEMBER') {
-            return 3500 * users.length;
-        } else if (memberType === 'NON_IIA_MEMBER') {
-            return 4500 * users.length;
-        }
         return null;
     };
 
@@ -72,7 +93,7 @@ function RegistrationModal({ users, spouse }: { users: any; spouse?: any }) {
                                         <p className="text-center text-gray-500">No group members found.</p>
                                     )}
 
-                                    {spouse.length !== 0 ? (
+                                    {spouse && spouse.length > 0 ? (
                                         <div className="p-4 my-3 border rounded-md shadow-sm bg-gray-50">
                                             <h1>Spouse Details</h1>
                                             <div className="font-semibold text-gray-700">{`${spouse[0].firstName} ${spouse[0].lastName}`}</div>
@@ -80,6 +101,7 @@ function RegistrationModal({ users, spouse }: { users: any; spouse?: any }) {
                                             <div className="text-sm text-gray-500">Mobile: {spouse[0].mobile}</div>
                                         </div>
                                     ) : null}
+
                                     <p className="my-6 font-medium text-sm">Registration Amount: {calculateAccommodationAmount()} INR</p>
 
                                     <div className="mt-6 flex justify-end">
