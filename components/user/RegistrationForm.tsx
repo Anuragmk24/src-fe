@@ -89,7 +89,7 @@ function RegistrationForm() {
     //     reset();  // Reset form on change of these values
     //   }, [memberType, bookingType, groupSize, isBringingSpouse, reset]);
     const onSubmit = async (data: any) => {
-        if(!data.group) return
+        // if(!data.group) return
         console.log('submit data ', data);
         if (bookingType === null) {
             return toast.error('Please fill required fields...');
