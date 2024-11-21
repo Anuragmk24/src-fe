@@ -49,7 +49,9 @@ function RegistrationForm() {
         watch,
         reset,
         setValue,
+        resetField,
         trigger,
+        unregister,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(schema),
@@ -87,6 +89,7 @@ function RegistrationForm() {
     //     reset();  // Reset form on change of these values
     //   }, [memberType, bookingType, groupSize, isBringingSpouse, reset]);
     const onSubmit = async (data: any) => {
+        if(!data.group) return
         console.log('submit data ', data);
         if (bookingType === null) {
             return toast.error('Please fill required fields...');
@@ -546,6 +549,46 @@ function RegistrationForm() {
         }
     }, [isBringingSpouse, setValue]);
 
+    // Reset fields when switching booking types
+    useEffect(() => {
+        if (bookingType === 'Individual') {
+            // Clear groupSize and related values
+            resetField('groupSize');
+        }
+    }, [bookingType, resetField]);
+
+    // Reset fields when bringing spouse changes
+    useEffect(() => {
+        if (isBringingSpouse === 'Yes' && memberType === 'IIA_MEMBER') {
+            // Ensure groupSize is set to 2 if required
+            setValue('groupSize', { value: 2, label: '2' });
+        }else if(memberType==='NON_IIA_MEMBER'){
+            resetField('groupSize')
+            resetField('bringingSpouse')
+            resetField('bookingType')
+        }else if(memberType==='IIA_MEMBER'){
+            resetField('groupSize')
+            resetField('bookingType')   
+        }
+    }, [isBringingSpouse, memberType, setValue]);
+
+       // Reset group-related fields when switching to IIA_MEMBER or Individual
+       useEffect(() => {
+        if (memberType === 'IIA_MEMBER' && bookingType !== 'Group') {
+            resetField('group');
+        }
+    }, [memberType, bookingType, resetField]);
+
+    useEffect(() => {
+        if (memberType === 'NON_IIA_MEMBER' && bookingType === 'Individual') {
+            // Clear spouse-related fields and group-related fields
+            resetField('bringingSpouse');
+            unregister('spouse'); // Unregister spouse fields completely
+            unregister('group'); // Unregister group fields completely
+            setValue('groupSize', undefined); // Clear group size
+        }
+    }, [memberType, bookingType, resetField, unregister, setValue]);
+    
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 mb-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-5">
@@ -589,7 +632,7 @@ function RegistrationForm() {
                                 classNames="bg-violet-200"
                             />
                             {memberType === 'IIA_MEMBER' && <Questions register={register} question="Are you bringing your spouse" name="bringingSpouse" />}
-                            {isBringingSpouse === 'Yes' ? (
+                            {isBringingSpouse === 'Yes' && memberType === 'IIA_MEMBER' ? (
                                 <div>
                                     <h2 className="text-lg font-semibold mb-2">Booking Type *</h2>
                                     <div className="flex gap-y-2 flex-col">
@@ -620,7 +663,7 @@ function RegistrationForm() {
                             )}
                         </div>
                         {bookingType === 'Group' && (
-                            <div className={`${isBringingSpouse === 'Yes' ? 'hidden' : ''}`}>
+                            <div className={`${isBringingSpouse === 'Yes' && memberType === 'IIA_MEMBER' ? 'hidden' : ''}`}>
                                 <h2 className="text-lg font-semibold mb-2">Select Group Size</h2>
                                 <Controller
                                     name="groupSize"
@@ -630,7 +673,7 @@ function RegistrationForm() {
                                             className="dark:text-black g-white dark:bg-white bg-white text-black dark:text-black"
                                             {...field}
                                             options={
-                                                isBringingSpouse === 'Yes'
+                                                isBringingSpouse === 'Yes' && memberType === 'IIA_MEMBER'
                                                     ? [{ value: 2, label: '2' }] // Limit group size to 2 if bringing spouse
                                                     : [
                                                           { value: 2, label: '2' },
@@ -638,13 +681,13 @@ function RegistrationForm() {
                                                           { value: 4, label: '4' },
                                                       ]
                                             }
-                                            isDisabled={isBringingSpouse === 'Yes'} // Disable the select if bringing a spouse
+                                            isDisabled={isBringingSpouse === 'Yes' && memberType === 'IIA_MEMBER'} // Disable the select if bringing a spouse
                                         />
                                     )}
                                 />
                             </div>
                         )}
-                        {countData?.count.totalAccomodation <= 420 && <Questions register={register} question="Do you want accomodation" name="accomodation" />}
+                        {countData?.count?.totalAccomodation <= 420 && <Questions register={register} question="Do you want accomodation" name="accomodation" />}
                     </>
                 )}
 
@@ -666,7 +709,7 @@ function RegistrationForm() {
                 {/* {isBringingSpouse === 'Yes' && bookingType === 'Group' && groupSize?.value === 2 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{renderSpouseInfoFields(1)}</div>
                 )} */}
-                {isBringingSpouse === 'Yes' && bookingType === 'Group' && (
+                {isBringingSpouse === 'Yes' && bookingType === 'Group' && memberType === 'IIA_MEMBER' && (
                     <div className="grid grid-cols-1 sm:grid-cols-2">
                         <div className="space-y-4">
                             <h2 className="text-lg font-semibold mb-2">Spouse Details</h2>
