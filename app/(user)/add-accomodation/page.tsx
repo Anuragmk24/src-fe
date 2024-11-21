@@ -225,7 +225,7 @@ function NewAccomodationAdding() {
                                         {amount}
                                     </span>
                                 )}
-                                <SubmitButton uniqueUsers={uniqueUsers} amount={amount} />
+                                {/* <SubmitButton uniqueUsers={uniqueUsers} amount={amount} /> */}
                             </div>
                         </ul>
                     </div>

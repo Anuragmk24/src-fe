@@ -28,7 +28,7 @@ const ResponseScreen = () => {
                         <p className="text-lg text-gray-700 mb-6">Your payment has been processed successfully. Thank you for completing your transaction.</p>
                         <div className="mb-6">
                             <p className="text-lg text-gray-700">A confirmation QR code has been sent to your email</p>
-                            <p className="text-md text-gray-700">Save this reference id for accomodation booking</p>
+                            {/* <p className="text-md text-gray-700">Save this reference id for accomodation booking</p> */}
                         </div>
                         <div className="bg-green-100 p-4 rounded-lg mb-6">
                             <p className="text-lg font-semibold text-green-700">

@@ -625,12 +625,12 @@ function RegistrationForm() {
                 {(memberType === 'IIA_MEMBER' || memberType === 'NON_IIA_MEMBER') && (
                     <>
                         <div>
-                            <Points
+                            {/* <Points
                                 points={`Early Bird Offer: Register for SRC and book your accommodation together for just  ${
                                     memberType === 'IIA_MEMBER' ? '₹7500' : '₹9000'
                                 } . Offer valid only until November 20th.`}
                                 classNames="bg-violet-200"
-                            />
+                            /> */}
                             {memberType === 'IIA_MEMBER' && <Questions register={register} question="Are you bringing your spouse" name="bringingSpouse" />}
                             {isBringingSpouse === 'Yes' && memberType === 'IIA_MEMBER' ? (
                                 <div>
@@ -687,7 +687,7 @@ function RegistrationForm() {
                                 />
                             </div>
                         )}
-                        {countData?.count?.totalAccomodation <= 420 && <Questions register={register} question="Do you want accomodation" name="accomodation" />}
+                        {/* {countData?.count?.totalAccomodation <= 420 && <Questions register={register} question="Do you want accomodation" name="accomodation" />} */}
                     </>
                 )}
 

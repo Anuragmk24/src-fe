@@ -41,9 +41,9 @@ function Header() {
                     <Link href="/" className="bg-[#E5E52E] font-mono text-[#16616E] font-semibold px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                         Register Now
                     </Link>
-                    <Link href="/add-accomodation" className="bg-[#E5E52E] font-mono text-[#16616E] font-semibold px-4 py-2 rounded-md hover:bg-[#E5E52E]">
+                    {/* <Link href="/add-accomodation" className="bg-[#E5E52E] font-mono text-[#16616E] font-semibold px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                         Accomodation
-                    </Link>
+                    </Link> */}
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -76,9 +76,9 @@ function Header() {
                         <Link href="/" className="block  text-white font-semibold bg-[#E5E52E] px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                             Register Now
                         </Link>
-                        <Link href="/add-accomodation" className="block  text-white font-semibold bg-[#E5E52E] px-4 py-2 rounded-md hover:bg-[#E5E52E]">
+                        {/* <Link href="/add-accomodation" className="block  text-white font-semibold bg-[#E5E52E] px-4 py-2 rounded-md hover:bg-[#E5E52E]">
                             Accomodation
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             )}
