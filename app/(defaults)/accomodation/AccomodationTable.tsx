@@ -180,7 +180,8 @@ const RenderAccomodation = ({ record }: { record: any }) => {
 
     useEffect(() => {
         // Check for BOTH and ACCOMODATION types and add them if they exist
-        const successfulPayments = record.groupMmebers?.flatMap((member: any) => member.group?.Payment?.filter((payment: any) => payment.paymentStatus === 'SUCCESS') || []);
+        const successfulPayments =
+            record.groupMmebers?.flatMap((member: any) => member.group?.Payment?.filter((payment: any) => payment.paymentStatus === 'SUCCESS') || []);
         const accomodationExists = successfulPayments?.filter((item: any) => item.type === 'BOTH');
         const accomodationExits2 = successfulPayments?.filter((item: any) => item.type === 'ACCOMMODATION');
 
@@ -193,11 +194,38 @@ const RenderAccomodation = ({ record }: { record: any }) => {
     // Filter out only successful payments
     const accomodationPayment = accomodationdetails.filter((item: any) => item.paymentStatus === 'SUCCESS');
 
+    // Define the date when the new rates came into effect
+    const changeDate = new Date('2024-11-21 06:02:21.629');
+    const createdAt = new Date(record.createdAt);
+
+    // Determine the accommodation fee based on conditions
+    let accommodationFee:any = '---';
+    if (accomodationPayment.length > 0) {
+        if (record.memberType === 'IIA_MEMBER') {
+            accommodationFee = createdAt >= changeDate
+                ? record.isBringingSpouse
+                    ? '9000 (Spouse)'
+                    : record.groupSize * 4500
+                : record.isBringingSpouse
+                    ? '8000 (Spouse)'
+                    : record.groupSize * 4000;
+        } else if (record.memberType === 'NON_IIA_MEMBER') {
+            accommodationFee = createdAt >= changeDate
+                ? record.groupSize * 5000
+                : record.groupSize * 4500;
+        } else if (record.memberType === 'STUDENT') {
+            accommodationFee = record.groupSize * 1500; // Assuming no change for students
+            if (record.isStudentAffiliatedToIia) {
+                accommodationFee = record.groupSize * 1000;
+            }
+        }
+    }
+
     return (
         <div className="text-center">
             {accomodationPayment.length > 0 ? (
                 <>
-                    <p>{record.isBringingSpouse ? '8000' : record.memberType === 'IIA_MEMBER' ? record.groupSize * 4000 : record.memberType === 'NON_IIA_MEMBER' ? record.groupSize * 4500 : null}</p>
+                    <p>{accommodationFee}</p>
                     <AccomodationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
                 </>
             ) : (
