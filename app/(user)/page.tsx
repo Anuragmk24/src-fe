@@ -30,7 +30,7 @@ export default function Page() {
                             <img src="/assets/images/logoIcon.svg" className="w-full" alt="SRC Banner Logo" />
                         </div> */}
                         <div className="mb-4">
-                            <img className='w-10 sm:w-full' src="/assets/sponsors/logoWithSponsors.svg" alt="Simpolo Logo" />
+                            <img className='w-10 sm:w-full' src="/assets/sponsors/logo_with_sponsors.svg" alt="Simpolo Logo" />
                         </div>
                         <div className={`${rajdhani.className} font-medium flex flex-col sm:flex-row gap-2 items-center justify-center  gap-x-4 text-[#16616E] sm:text-xl mb-8`}>
                             <div className="flex items-center gap-x-2">
