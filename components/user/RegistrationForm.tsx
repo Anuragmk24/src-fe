@@ -329,15 +329,15 @@ function RegistrationForm() {
         } else if (memberType === 'IIA_MEMBER') {
             regFee = 4500;
             if (isBringingSpouse === 'Yes') {
-                regFee = 9000;
+                regFee = 7200;
             } else if (bookingType === 'Individual') {
                 regFee = 4500;
             } else if (groupSize?.value === 2) {
-                regFee = 9000;
+                regFee = 7200;
             } else if (groupSize?.value === 3) {
-                regFee = 13500;
+                regFee = 10800;
             } else if (groupSize?.value === 4) {
-                regFee = 18000;
+                regFee = 14400;
             } else if (isBringingSpouse === 'No' && bookingType === 'Individual') {
                 regFee = 4500;
             }
@@ -562,18 +562,18 @@ function RegistrationForm() {
         if (isBringingSpouse === 'Yes' && memberType === 'IIA_MEMBER') {
             // Ensure groupSize is set to 2 if required
             setValue('groupSize', { value: 2, label: '2' });
-        }else if(memberType==='NON_IIA_MEMBER'){
-            resetField('groupSize')
-            resetField('bringingSpouse')
-            resetField('bookingType')
-        }else if(memberType==='IIA_MEMBER'){
-            resetField('groupSize')
-            resetField('bookingType')   
+        } else if (memberType === 'NON_IIA_MEMBER') {
+            resetField('groupSize');
+            resetField('bringingSpouse');
+            resetField('bookingType');
+        } else if (memberType === 'IIA_MEMBER') {
+            resetField('groupSize');
+            resetField('bookingType');
         }
     }, [isBringingSpouse, memberType, setValue]);
 
-       // Reset group-related fields when switching to IIA_MEMBER or Individual
-       useEffect(() => {
+    // Reset group-related fields when switching to IIA_MEMBER or Individual
+    useEffect(() => {
         if (memberType === 'IIA_MEMBER' && bookingType !== 'Group') {
             resetField('group');
         }
@@ -588,7 +588,7 @@ function RegistrationForm() {
             setValue('groupSize', undefined); // Clear group size
         }
     }, [memberType, bookingType, resetField, unregister, setValue]);
-    
+
     return (
         <div className="max-w-5xl mx-auto p-4 mt-5 mb-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-5">
@@ -620,6 +620,7 @@ function RegistrationForm() {
                         </div>
                     </div>
                 </div>
+                {memberType === 'IIA_MEMBER' && <Points points="Special Offer: If you come with a friend, each person in the group can book at ₹3600 per person!"  classNames='bg-violet-300 text-white'/>}{' '}
 
                 {memberType === 'STUDENT' && <Questions register={register} question="Affiliated to IIA" name="isStudentAffiliatedToIia" />}
                 {(memberType === 'IIA_MEMBER' || memberType === 'NON_IIA_MEMBER') && (
