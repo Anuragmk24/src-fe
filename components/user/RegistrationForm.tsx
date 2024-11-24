@@ -606,7 +606,7 @@ function RegistrationForm() {
                             </label>
                             <div className="flex itemse-center flex-col gap-x-3">
                                 <label className="">
-                                    {data && data.count < 50 ? (
+                                    {data && data.count < 101 ? (
                                         <input type="radio" {...register('definition', { required: true })} value="STUDENT" className="mr-2  form-radio w-4 h-4" />
                                     ) : (
                                         <input type="radio" disabled={true} value="student" className="mr-2 form-radio w-4 h-4" />
@@ -614,7 +614,7 @@ function RegistrationForm() {
                                     Student (This registration is only for B.arch students)
                                 </label>
                                 <small className={`text-sm mt-1 font-semibold  ${data && data.count < 50 ? 'text-green-600' : 'text-red-600'}`}>
-                                    {data && data.count < 50 ? `${50 - data.count} Student Tickets Remaining` : 'No Student Tickets Available'}
+                                    {data && data.count < 101 ? `${100 - (data.count)} Student Tickets Remaining` : 'No Student Tickets Available'}
                                 </small>{' '}
                             </div>
                         </div>
