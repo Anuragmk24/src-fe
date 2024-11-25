@@ -17,7 +17,7 @@ export default function Page() {
             {/* <Carousal /> */}
             <div className="relative">
                 {/* Image with Overlay */}
-                <div className="relative w-full h-72 md:h-[100vh] overflow-hidden">
+                <div className="relative w-full h-96 md:h-[100vh] overflow-hidden">
                     <img src="/assets/images/intro-bg.jpg" className="w-full h-full object-cover" alt="Carousal" />
                     <div className="absolute inset-0 bg-[rgba(22,81,91,0.9)]"></div>
 
@@ -29,8 +29,8 @@ export default function Page() {
                         <div className="bnr-logo  mb-2 w-2/3 sm:w-1/3">
                             <img src="/assets/images/logoIcon.svg" className="w-full" alt="SRC Banner Logo" />
                         </div> */}
-                        <div className="mb-4">
-                            <img className='w-10 sm:w-full' src="/assets/sponsors/logo_with_sponsors.svg" alt="Simpolo Logo" />
+                        <div className="mb-4 flex justify-center">
+                            <img className='w-4/5 sm:w-full' src="/assets/sponsors/sponsors.svg" alt="Simpolo Logo" />
                         </div>
                         <div className={`${rajdhani.className} font-medium flex flex-col sm:flex-row gap-2 items-center justify-center  gap-x-4 text-[#16616E] sm:text-xl mb-8`}>
                             <div className="flex items-center gap-x-2">
