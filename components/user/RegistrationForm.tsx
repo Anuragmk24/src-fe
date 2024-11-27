@@ -802,12 +802,12 @@ function RegistrationForm() {
                         </div>
                     </div>
                 )}
-
                 <PriceDetails fee={priceDetails} price={priceData.regFee + priceData.accFee} />
-                <div className="text-center">
-                    <button type="submit" className={`${rajdhani.className} mt-4 bg-[#E5E52E] hover:bg-[#E5E52E]  text-[#16616E] font-semibold px-4 py-2 rounded-md`}>
+                <div className="text-center flex justify-center flex-col">
+                    <button type="submit" className={`${rajdhani.className} mt-4 bg-[#E5E52E] hover:bg-[#E5E52E]   text-[#16616E] font-semibold px-4 py-2 rounded-md`}>
                         {loading ? 'Submiting...' : ' Continue to pay'}
                     </button>
+                <small className='my-2 text-center'>*Cancellation policy: All registrations are non-refundable in the event of cancellation.</small>
                 </div>
             </form>
         </div>

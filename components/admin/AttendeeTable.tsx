@@ -40,7 +40,6 @@ const AttendeeTable = () => {
         // keepPreviousData: true, // Keeps previous data while fetching new page data
     });
 
-
     const [records, setRecords] = useState<any[]>([]);
     useEffect(() => {
         if (search !== '') {
@@ -72,11 +71,10 @@ const AttendeeTable = () => {
         return <div>Error fetching bookings.</div>;
     }
 
-
     const handleResendEmail = async (row: any) => {
         Swal.fire({
             title: 'Are you sure?',
-            text: "Do you want to resend the email?",
+            text: 'Do you want to resend the email?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -104,9 +102,8 @@ const AttendeeTable = () => {
             <div className="mb-5 flex flex-col sm:gap-5 md:flex-row md:items-center">
                 <h5 className="text-lg font-semibold dark:text-white-light">Registration Details</h5>
                 <div className="ltr:ml-auto rtl:mr-auto flex gap-x-3">
-                    <ExcelExort/>
+                    <ExcelExort />
                     <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
-
                 </div>
             </div>
             <div className="datatables">
@@ -115,7 +112,17 @@ const AttendeeTable = () => {
                     className={`${isRtl ? 'table-hover whitespace-nowrap' : 'table-hover whitespace-nowrap'}`}
                     records={records}
                     columns={[
-                        { accessor: 'firstName', title: 'Name', sortable: true, render: (record) => `${record.firstName} ${record.lastName}` },
+                        {
+                            accessor: 'firstName',
+                            title: 'Name',
+                            sortable: true,
+                            render: (record) => (
+                                <>
+                                    {/* {`${record.firstName} ${record.lastName}`} */}
+                                    <Modal firstName={record.firstName} lastName={record?.lastName} record={record} />
+                                </>
+                            ),
+                        },
                         { accessor: 'mobile', title: 'Phone', sortable: true },
 
                         { accessor: 'createdAt', title: 'Date', sortable: true, render: (record: any) => formatDate(record.createdAt) },
@@ -145,11 +152,11 @@ const AttendeeTable = () => {
                                 const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
                                 const memberType = record?.memberType;
                                 const createdAt = new Date(record?.createdAt); // Parse the record creation date
-                                const changeDate = new Date("2024-11-21 06:02:21.629"); // Date for fee change
+                                const changeDate = new Date('2024-11-21 06:02:21.629'); // Date for fee change
                                 let feeDisplay = null;
-                            
-                                console.log("record", record);
-                            
+
+                                console.log('record', record);
+
                                 // Determine the registration fee display based on conditions
                                 if (paymentStatus === 'SUCCESS') {
                                     if (memberType === 'IIA_MEMBER') {
@@ -184,20 +191,14 @@ const AttendeeTable = () => {
                                         }
                                     }
                                 }
-                            
+
                                 return (
                                     <div className="text-center">
                                         {feeDisplay || '---'} {/* Show fee or '---' if not applicable */}
-                                        {feeDisplay && (
-                                            <RegistrationModal
-                                                users={record?.groupMmebers?.[0]?.group?.GroupMember}
-                                                spouse={record?.spouse}
-                                            />
-                                        )}
+                                        {feeDisplay && <RegistrationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />}
                                     </div>
                                 );
-                            }
-                            
+                            },
                         },
 
                         {
@@ -274,24 +275,18 @@ const AttendeeTable = () => {
                             title: 'Resend Email',
                             sortable: true,
                             render: (row: any) => (
-                              
                                 <h1 className="cursor-pointer" onClick={() => handleResendEmail(row)}>
-                                  {'Send'}
+                                    {'Send'}
                                 </h1>
-                              
                             ),
-                          },
+                        },
                         {
                             accessor: '',
                             title: 'File',
                             sortable: true,
-                            render: (row: any) => (
-                              
-                               <ImageViewModal row={row}/>
-                              
-                            ),
-                          },
-                          
+                            render: (row: any) => <ImageViewModal row={row} />,
+                        },
+
                         {
                             accessor: 'action',
                             title: 'Action',
@@ -326,8 +321,7 @@ const RenderAccomodation = ({ record }: { record: any }) => {
 
     useEffect(() => {
         // Check for BOTH and ACCOMODATION types and add them if they exist
-        const successfulPayments =
-            record.groupMmebers?.flatMap((member: any) => member.group?.Payment?.filter((payment: any) => payment.paymentStatus === 'SUCCESS') || []);
+        const successfulPayments = record.groupMmebers?.flatMap((member: any) => member.group?.Payment?.filter((payment: any) => payment.paymentStatus === 'SUCCESS') || []);
         const accomodationExists = successfulPayments?.filter((item: any) => item.type === 'BOTH');
         const accomodationExits2 = successfulPayments?.filter((item: any) => item.type === 'ACCOMMODATION');
 
@@ -345,20 +339,12 @@ const RenderAccomodation = ({ record }: { record: any }) => {
     const createdAt = new Date(record.createdAt);
 
     // Determine the accommodation fee based on conditions
-    let accommodationFee:any = '---';
+    let accommodationFee: any = '---';
     if (accomodationPayment.length > 0) {
         if (record.memberType === 'IIA_MEMBER') {
-            accommodationFee = createdAt >= changeDate
-                ? record.isBringingSpouse
-                    ? '9000 (Spouse)'
-                    : record.groupSize * 4500
-                : record.isBringingSpouse
-                    ? '8000 (Spouse)'
-                    : record.groupSize * 4000;
+            accommodationFee = createdAt >= changeDate ? (record.isBringingSpouse ? '9000 (Spouse)' : record.groupSize * 4500) : record.isBringingSpouse ? '8000 (Spouse)' : record.groupSize * 4000;
         } else if (record.memberType === 'NON_IIA_MEMBER') {
-            accommodationFee = createdAt >= changeDate
-                ? record.groupSize * 5000
-                : record.groupSize * 4500;
+            accommodationFee = createdAt >= changeDate ? record.groupSize * 5000 : record.groupSize * 4500;
         } else if (record.memberType === 'STUDENT') {
             accommodationFee = record.groupSize * 1500; // Assuming no change for students
             if (record.isStudentAffiliatedToIia) {
@@ -380,4 +366,3 @@ const RenderAccomodation = ({ record }: { record: any }) => {
         </div>
     );
 };
-

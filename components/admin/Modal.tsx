@@ -6,13 +6,13 @@ import { useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toggleAttendeeStatus } from '@/data/admin/registration';
 
-function Modal({ record }: { record: any }) {
+function Modal({ firstName, lastName, record }: { firstName?: any; lastName?: any; record: any }) {
     const [modal10, setModal10] = useState(false);
     const [isAttended, setIsAttended] = useState(record?.attended); // assuming record has isAttended field
     const { token } = useSelector((state: any) => state.admin);
     const mutation = useMutation({
-        mutationFn: async (newAttendanceStatus:any) => {
-            const response:any = await toggleAttendeeStatus(token,record.id)
+        mutationFn: async (newAttendanceStatus: any) => {
+            const response: any = await toggleAttendeeStatus(token, record.id);
             return response.data; // Return the response data for further use
         },
         onSuccess: (data) => {
@@ -34,9 +34,7 @@ function Modal({ record }: { record: any }) {
 
     return (
         <div>
-            <div onClick={() => setModal10(true)}>
-                <IconEye />
-            </div>
+            <div className='cursor-pointer' onClick={() => setModal10(true)}>{firstName ? firstName + ' ' + lastName : <IconEye />}</div>
             <Transition appear show={modal10} as={Fragment}>
                 <Dialog as="div" open={modal10} onClose={() => setModal10(false)}>
                     <Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
