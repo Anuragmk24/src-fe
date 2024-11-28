@@ -52,15 +52,15 @@ const ParticipantsList = () => {
         if (data?.participants) {
             let filteredRecords = data.participants;
             // Filter for unique users by group
-            const uniqueGroups: any = {};
-            data.participants.forEach((booking: any) => {
-                const groupId = booking.groupMmebers[0]?.groupId;
-                if (!uniqueGroups[groupId]) {
-                    uniqueGroups[groupId] = booking; // Save the first user of the group
-                }
-            });
+            // const uniqueGroups: any = {};
+            // data.participants.forEach((booking: any) => {
+            //     const groupId = booking.groupMmebers[0]?.groupId;
+            //     if (!uniqueGroups[groupId]) {
+            //         uniqueGroups[groupId] = booking; // Save the first user of the group
+            //     }
+            // });
             // Apply sorting
-            const sortedRecords = sortBy(Object.values(uniqueGroups), (record: any) => -new Date(record.createdAt).getTime());
+            const sortedRecords = sortBy(filteredRecords);
             setRecords(Object.values(sortedRecords));
         }
     }, [data, search, sortStatus]);
@@ -99,6 +99,7 @@ const ParticipantsList = () => {
             }
         });
     };
+    console.log('records ', records);
 
     return (
         <div className="sm:panel mt-6">
