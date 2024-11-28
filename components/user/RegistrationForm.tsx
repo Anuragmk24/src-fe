@@ -592,9 +592,12 @@ function RegistrationForm() {
     return (
         <div className="max-w-5xl  mx-auto p-4 mt-5 mb-5 panel px-8 md:px-12 g-white dark:bg-white bg-white text-black dark:text-black">
              <div
-    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75 text-white text-lg font-semibold z-20"
+    className="absolute inset-0 flex items-center justify-center  bg-black bg-opacity-75 text-white text-lg font-semibold z-20"
   >
+    <p className='m-5 text-center'>
+        
     Registration is now closed. Thank you for your interest!
+    </p>
   </div>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-5">
                 <div className="flex">
@@ -812,7 +815,7 @@ function RegistrationForm() {
                     <button  className={`${rajdhani.className} mt-4 bg-[#E5E52E] hover:bg-[#E5E52E]   text-[#16616E] font-semibold px-4 py-2 rounded-md`}>
                         {loading ? 'Submiting...' : ' Continue to pay'}
                     </button>
-                <small className='my-2 text-center'>*Cancellation policy: All registrations are non-refundable in the event of cancellation.</small>
+                <small className='my-2 text-center '>*Cancellation policy: All registrations are non-refundable in the event of cancellation.</small>
                 </div>
             </form>
         </div>
