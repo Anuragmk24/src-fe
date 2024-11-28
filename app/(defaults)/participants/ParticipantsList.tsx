@@ -5,21 +5,21 @@ import sortBy from 'lodash/sortBy';
 import { useSelector } from 'react-redux';
 import { IRootState } from '@/store';
 import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
-import { fetchBookings } from '@/data/admin/registration';
-import { Loader } from '@mantine/core'; // Assuming you are using Mantine loader
+import { fetchBookings, fetchParticipants } from '@/data/admin/registration';
 import { formatDate } from '@/utils/common';
-import IconEye from '../icon/icon-eye';
-import Modal from './Modal';
-import AccomodationModal from './AccomodationModal';
-import RegistrationModal from './RegistrationModal';
-import GroupModal from './GroupModal';
+
 import { resendEmail } from '@/data/admin/dashbord';
 import toast, { Toaster } from 'react-hot-toast';
 import Swal from 'sweetalert2';
-import ExcelExort from './ExcelExort';
-import ImageViewModal from './ImageViewModal';
+import AccomodationModal from '@/components/admin/AccomodationModal';
+import ImageViewModal from '@/components/admin/ImageViewModal';
+import GroupModal from '@/components/admin/GroupModal';
+import RegistrationModal from '@/components/admin/RegistrationModal';
+import ExcelExort from '@/components/admin/ExcelExort';
+import Modal from '@/components/admin/Modal';
+import { Loader } from '@mantine/core';
 
-const AttendeeTable = (refetchFn: any) => {
+const ParticipantsList = () => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl';
     const { token } = useSelector((state: any) => state.admin);
     const [accomodationdetails, setAccomodationdetails] = useState<any>();
@@ -36,9 +36,11 @@ const AttendeeTable = (refetchFn: any) => {
     // Fetch bookings with pagination and token
     const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ['bookings', page, pageSize],
-        queryFn: () => fetchBookings(token, (page - 1) * pageSize, pageSize, search),
+        queryFn: () => fetchParticipants(token, (page - 1) * pageSize, pageSize, search),
         // keepPreviousData: true, // Keeps previous data while fetching new page data
     });
+
+    console.log('data from participants ', data);
 
     const [records, setRecords] = useState<any[]>([]);
     useEffect(() => {
@@ -47,11 +49,11 @@ const AttendeeTable = (refetchFn: any) => {
         }
     }, [search, refetch]);
     useEffect(() => {
-        if (data?.data?.bookings) {
-            let filteredRecords = data.data.bookings;
+        if (data?.participants) {
+            let filteredRecords = data.participants;
             // Filter for unique users by group
             const uniqueGroups: any = {};
-            data.data.bookings.forEach((booking: any) => {
+            data.participants.forEach((booking: any) => {
                 const groupId = booking.groupMmebers[0]?.groupId;
                 if (!uniqueGroups[groupId]) {
                     uniqueGroups[groupId] = booking; // Save the first user of the group
@@ -63,6 +65,7 @@ const AttendeeTable = (refetchFn: any) => {
         }
     }, [data, search, sortStatus]);
 
+    console.log('records from participants page', records);
     if (isLoading) {
         return <Loader size="xl" />;
     }
@@ -100,9 +103,9 @@ const AttendeeTable = (refetchFn: any) => {
     return (
         <div className="sm:panel mt-6">
             <div className="mb-5 flex flex-col sm:gap-5 md:flex-row md:items-center">
-                <h5 className="text-lg font-semibold dark:text-white-light">Registration Details</h5>
+                <h5 className="text-lg font-semibold dark:text-white-light">Participants Details</h5>
                 <div className="ltr:ml-auto rtl:mr-auto flex gap-x-3">
-                    <ExcelExort />
+                    {/* <ExcelExort /> */}
                     <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
             </div>
@@ -119,7 +122,7 @@ const AttendeeTable = (refetchFn: any) => {
                             render: (record) => (
                                 <>
                                     {/* {`${record.firstName} ${record.lastName}`} */}
-                                    <Modal refetch={refetchFn} firstName={record.firstName} lastName={record?.lastName} record={record} />
+                                    <Modal refetch={refetch} firstName={record.firstName} lastName={record?.lastName} record={record} />
                                 </>
                             ),
                         },
@@ -144,107 +147,107 @@ const AttendeeTable = (refetchFn: any) => {
                             sortable: true,
                             render: (row: any) => (row.state ? row.state : '---'),
                         },
-                        {
-                            accessor: 'regFee',
-                            title: 'Reg',
-                            sortable: true,
-                            render: (record: any) => {
-                                const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
-                                const memberType = record?.memberType;
-                                const createdAt = new Date(record?.createdAt); // Parse the record creation date
-                                const changeDate = new Date('2024-11-21 06:02:21.629'); // Date for fee change
-                                let feeDisplay = null;
+                        // {
+                        //     accessor: 'regFee',
+                        //     title: 'Reg',
+                        //     sortable: true,
+                        //     render: (record: any) => {
+                        //         const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
+                        //         const memberType = record?.memberType;
+                        //         const createdAt = new Date(record?.createdAt); // Parse the record creation date
+                        //         const changeDate = new Date('2024-11-21 06:02:21.629'); // Date for fee change
+                        //         let feeDisplay = null;
 
-                                console.log('record', record);
+                        //         console.log('record', record);
 
-                                // Determine the registration fee display based on conditions
-                                if (paymentStatus === 'SUCCESS') {
-                                    if (memberType === 'IIA_MEMBER') {
-                                        if (createdAt >= changeDate) {
-                                            // After the change date
-                                            feeDisplay = record.isBringingSpouse ? '9000 (Spouse)' : record.groupSize * 4500;
-                                        } else {
-                                            // Before the change date
-                                            feeDisplay = record.isBringingSpouse ? '7000 (with Spouse)' : record.groupSize * 3500;
-                                        }
-                                    } else if (memberType === 'NON_IIA_MEMBER') {
-                                        if (createdAt >= changeDate) {
-                                            // After the change date
-                                            feeDisplay = record.groupSize * 5000;
-                                        } else {
-                                            // Before the change date
-                                            feeDisplay = record.groupSize * 4500;
-                                        }
-                                    } else if (memberType === 'STUDENT') {
-                                        if (createdAt >= changeDate) {
-                                            // After the change date (assuming no change for students)
-                                            feeDisplay = record.groupSize * 1500;
-                                            if (record.isStudentAffiliatedToIia) {
-                                                feeDisplay = record.groupSize * 1000;
-                                            }
-                                        } else {
-                                            // Before the change date
-                                            feeDisplay = record.groupSize * 1500;
-                                            if (record.isStudentAffiliatedToIia) {
-                                                feeDisplay = record.groupSize * 1000;
-                                            }
-                                        }
-                                    }
-                                }
+                        //         // Determine the registration fee display based on conditions
+                        //         if (paymentStatus === 'SUCCESS') {
+                        //             if (memberType === 'IIA_MEMBER') {
+                        //                 if (createdAt >= changeDate) {
+                        //                     // After the change date
+                        //                     feeDisplay = record.isBringingSpouse ? '9000 (Spouse)' : record.groupSize * 4500;
+                        //                 } else {
+                        //                     // Before the change date
+                        //                     feeDisplay = record.isBringingSpouse ? '7000 (with Spouse)' : record.groupSize * 3500;
+                        //                 }
+                        //             } else if (memberType === 'NON_IIA_MEMBER') {
+                        //                 if (createdAt >= changeDate) {
+                        //                     // After the change date
+                        //                     feeDisplay = record.groupSize * 5000;
+                        //                 } else {
+                        //                     // Before the change date
+                        //                     feeDisplay = record.groupSize * 4500;
+                        //                 }
+                        //             } else if (memberType === 'STUDENT') {
+                        //                 if (createdAt >= changeDate) {
+                        //                     // After the change date (assuming no change for students)
+                        //                     feeDisplay = record.groupSize * 1500;
+                        //                     if (record.isStudentAffiliatedToIia) {
+                        //                         feeDisplay = record.groupSize * 1000;
+                        //                     }
+                        //                 } else {
+                        //                     // Before the change date
+                        //                     feeDisplay = record.groupSize * 1500;
+                        //                     if (record.isStudentAffiliatedToIia) {
+                        //                         feeDisplay = record.groupSize * 1000;
+                        //                     }
+                        //                 }
+                        //             }
+                        //         }
 
-                                return (
-                                    <div className="text-center">
-                                        {feeDisplay || '---'} {/* Show fee or '---' if not applicable */}
-                                        {feeDisplay && <RegistrationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />}
-                                    </div>
-                                );
-                            },
-                        },
+                        //         return (
+                        //             <div className="text-center">
+                        //                 {feeDisplay || '---'} {/* Show fee or '---' if not applicable */}
+                        //                 {feeDisplay && <RegistrationModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />}
+                        //             </div>
+                        //         );
+                        //     },
+                        // },
 
-                        {
-                            accessor: 'accommodation',
-                            title: 'Acc',
-                            sortable: true,
-                            render: (record: any) => <RenderAccomodation record={record} />,
-                        },
-                        {
-                            accessor: 'total',
-                            title: 'Total',
-                            sortable: true,
-                            render: (record: any) => {
-                                // const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
-                                // console.log("paymentstatus =======> ",paymentStatus)
-                                const successfulPayments = record.groupMmebers?.flatMap((member: any) => member.group?.Payment?.filter((payment: any) => payment.paymentStatus === 'SUCCESS') || []);
-                                const amount = successfulPayments
-                                    ?.filter((payment: any) => payment.paymentStatus === 'SUCCESS')
-                                    .reduce((sum: any, payment: any) => Number(sum) + Number(payment.amount), 0);
-                                const formattedAmount = amount.toLocaleString();
+                        // {
+                        //     accessor: 'accommodation',
+                        //     title: 'Acc',
+                        //     sortable: true,
+                        //     render: (record: any) => <RenderAccomodation record={record} />,
+                        // },
+                        // {
+                        //     accessor: 'total',
+                        //     title: 'Total',
+                        //     sortable: true,
+                        //     render: (record: any) => {
+                        //         // const paymentStatus = record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus;
+                        //         // console.log("paymentstatus =======> ",paymentStatus)
+                        //         const successfulPayments = record.groupMmebers?.flatMap((member: any) => member.group?.Payment?.filter((payment: any) => payment.paymentStatus === 'SUCCESS') || []);
+                        //         const amount = successfulPayments
+                        //             ?.filter((payment: any) => payment.paymentStatus === 'SUCCESS')
+                        //             .reduce((sum: any, payment: any) => Number(sum) + Number(payment.amount), 0);
+                        //         const formattedAmount = amount.toLocaleString();
 
-                                const numberOfMembers = record?.groupMmebers?.[0]?.group?.numberOfMembers;
+                        //         const numberOfMembers = record?.groupMmebers?.[0]?.group?.numberOfMembers;
 
-                                const groupLabel = numberOfMembers > 1 ? ' (Group)' : '';
-                                return (
-                                    <div className="flex justify-center flex-col items-center">
-                                        <span>{`${formattedAmount}${groupLabel}`}</span>
-                                        <GroupModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
-                                    </div>
-                                );
-                            },
-                        },
+                        //         const groupLabel = numberOfMembers > 1 ? ' (Group)' : '';
+                        //         return (
+                        //             <div className="flex justify-center flex-col items-center">
+                        //                 <span>{`${formattedAmount}${groupLabel}`}</span>
+                        //                 <GroupModal users={record?.groupMmebers?.[0]?.group?.GroupMember} spouse={record?.spouse} />
+                        //             </div>
+                        //         );
+                        //     },
+                        // },
 
-                        {
-                            accessor: 'transactionId',
-                            title: 'Transactin ID',
-                            sortable: true,
-                            render: (record: any) => record?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId ?? '---',
-                        },
+                        // {
+                        //     accessor: 'transactionId',
+                        //     title: 'Transactin ID',
+                        //     sortable: true,
+                        //     render: (record: any) => record?.groupMmebers?.[0]?.group?.Payment?.[0]?.transactionId ?? '---',
+                        // },
 
-                        {
-                            accessor: 'paymentStatus',
-                            title: 'Payment Status',
-                            sortable: true,
-                            render: (record: any) => record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus ?? 'Payment not initiated',
-                        },
+                        // {
+                        //     accessor: 'paymentStatus',
+                        //     title: 'Payment Status',
+                        //     sortable: true,
+                        //     render: (record: any) => record?.groupMmebers?.[0]?.group?.Payment?.[0]?.paymentStatus ?? 'Payment not initiated',
+                        // },
                         {
                             accessor: 'iia',
                             title: 'IIA',
@@ -270,16 +273,16 @@ const AttendeeTable = (refetchFn: any) => {
                             sortable: true,
                             render: (row: any) => (row.collegeName ? row.collegeName : '---'),
                         },
-                        {
-                            accessor: '',
-                            title: 'Resend Email',
-                            sortable: true,
-                            render: (row: any) => (
-                                <h1 className="cursor-pointer" onClick={() => handleResendEmail(row)}>
-                                    {'Send'}
-                                </h1>
-                            ),
-                        },
+                        // {
+                        //     accessor: '',
+                        //     title: 'Resend Email',
+                        //     sortable: true,
+                        //     render: (row: any) => (
+                        //         <h1 className="cursor-pointer" onClick={() => handleResendEmail(row)}>
+                        //             {'Send'}
+                        //         </h1>
+                        //     ),
+                        // },
                         {
                             accessor: '',
                             title: 'File',
@@ -287,17 +290,17 @@ const AttendeeTable = (refetchFn: any) => {
                             render: (row: any) => <ImageViewModal row={row} />,
                         },
 
-                        {
-                            accessor: 'action',
-                            title: 'Action',
-                            render: (record) => (
-                                <div className="cursor-pointer">
-                                    <Modal record={record} />
-                                </div>
-                            ),
-                        },
+                        // {
+                        //     accessor: 'action',
+                        //     title: 'Action',
+                        //     render: (record) => (
+                        //         <div className="cursor-pointer">
+                        //             <Modal record={record} />
+                        //         </div>
+                        //     ),
+                        // },
                     ]}
-                    totalRecords={data?.data?.totalCount}
+                    totalRecords={data?.participants?.length}
                     recordsPerPage={pageSize}
                     page={page}
                     onPageChange={setPage}
@@ -314,7 +317,7 @@ const AttendeeTable = (refetchFn: any) => {
     );
 };
 
-export default AttendeeTable;
+export default ParticipantsList;
 
 const RenderAccomodation = ({ record }: { record: any }) => {
     const [accomodationdetails, setAccomodationdetails] = useState<any[]>([]);

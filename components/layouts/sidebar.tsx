@@ -3,39 +3,16 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { toggleSidebar } from '@/store/themeConfigSlice';
-import AnimateHeight from 'react-animate-height';
 import { IRootState } from '@/store';
 import { useState, useEffect } from 'react';
 import IconCaretsDown from '@/components/icon/icon-carets-down';
 import IconMenuDashboard from '@/components/icon/menu/icon-menu-dashboard';
-import IconCaretDown from '@/components/icon/icon-caret-down';
-import IconMinus from '@/components/icon/icon-minus';
-import IconMenuChat from '@/components/icon/menu/icon-menu-chat';
-import IconMenuMailbox from '@/components/icon/menu/icon-menu-mailbox';
-import IconMenuTodo from '@/components/icon/menu/icon-menu-todo';
-import IconMenuNotes from '@/components/icon/menu/icon-menu-notes';
-import IconMenuScrumboard from '@/components/icon/menu/icon-menu-scrumboard';
-import IconMenuContacts from '@/components/icon/menu/icon-menu-contacts';
-import IconMenuInvoice from '@/components/icon/menu/icon-menu-invoice';
-import IconMenuCalendar from '@/components/icon/menu/icon-menu-calendar';
-import IconMenuComponents from '@/components/icon/menu/icon-menu-components';
-import IconMenuElements from '@/components/icon/menu/icon-menu-elements';
-import IconMenuCharts from '@/components/icon/menu/icon-menu-charts';
-import IconMenuWidgets from '@/components/icon/menu/icon-menu-widgets';
-import IconMenuFontIcons from '@/components/icon/menu/icon-menu-font-icons';
-import IconMenuDragAndDrop from '@/components/icon/menu/icon-menu-drag-and-drop';
-import IconMenuTables from '@/components/icon/menu/icon-menu-tables';
-import IconMenuDatatables from '@/components/icon/menu/icon-menu-datatables';
-import IconMenuForms from '@/components/icon/menu/icon-menu-forms';
-import IconMenuUsers from '@/components/icon/menu/icon-menu-users';
-import IconMenuPages from '@/components/icon/menu/icon-menu-pages';
-import IconMenuAuthentication from '@/components/icon/menu/icon-menu-authentication';
-import IconMenuDocumentation from '@/components/icon/menu/icon-menu-documentation';
+
 import { usePathname } from 'next/navigation';
 import { getTranslation } from '@/i18n';
-import IconBarChart from '../icon/icon-bar-chart';
 import IconUsersGroup from '../icon/icon-users-group';
 import IconHome from '../icon/icon-home';
+import { MdEventAvailable } from "react-icons/md";
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -128,6 +105,14 @@ const Sidebar = () => {
                                     <Link href={'/accomodation'} className="flex items-center">
                                         <IconHome className="shrink-0 group-hover:!text-primary" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Accomodation')}</span>
+                                    </Link>
+                                </button>
+                            </li>
+                            <li className="menu nav-item">
+                                <button type="button" className={`${currentMenu === 'participant' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('participant')}>
+                                    <Link href={'/participants'} className="flex items-center">
+                                        <MdEventAvailable className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Participants')}</span>
                                     </Link>
                                 </button>
                             </li>

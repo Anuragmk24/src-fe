@@ -13,13 +13,14 @@ import Link from 'next/link';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-function CountDetails() {
+function CountDetails(data:any) {
     const { token } = useSelector((state: any) => state.admin);
 
-    const { data, isError, isLoading } = useQuery({
-        queryKey: ['total-counts'],
-        queryFn: () => fetchDashbordDataCounts(token),
-    });
+    console.log("Data from count ",data)
+    // const { data, isError, isLoading,refetch } = useQuery({
+    //     queryKey: ['total-counts'],
+    //     queryFn: () => fetchDashbordDataCounts(token),
+    // });
     const { data: countData, isError: accomodationCountError } = useQuery({
         queryKey: ['total-numbers'],
         queryFn: () => fetchTotalAccomodationCount(),
@@ -36,7 +37,7 @@ function CountDetails() {
                     </div>
                 </div>
                 <div className="flex justify-between items-center mt-5">
-                    <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{data?.data?.totalRegistrationCount}</div>
+                    <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{data?.data?.data?.totalRegistrationCount}</div>
                     <div className="dropdown">
                         <Dropdown
                             offset={[0, 5]}
@@ -64,7 +65,7 @@ function CountDetails() {
                     </div>
                 </div>
                 <div className="flex items-center mt-5">
-                    <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{data?.data?.totalAttendeeCount}</div>
+                    <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{data?.data?.data?.totalAttendeeCount}</div>
                 </div>
             </div>
             <div className="panel ">
@@ -75,7 +76,7 @@ function CountDetails() {
                     </div>
                 </div>
                 <div className="flex items-center mt-5">
-                    <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{data?.data?.totalPaymentAmount}</div>
+                    <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{data?.data?.data?.totalPaymentAmount}</div>
                 </div>
             </div>
             <div className="panel ">
@@ -86,7 +87,7 @@ function CountDetails() {
                     </div>
                 </div>
                 <div className="flex items-center mt-5">
-                    <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{data?.data?.totalpendingPayment}</div>
+                    <div className="text-3xl font-bold ltr:mr-3 rtl:ml-3">{data?.data?.data?.totalpendingPayment}</div>
                 </div>
             </div>
         </div>

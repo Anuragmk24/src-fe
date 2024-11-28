@@ -1,31 +1,28 @@
+'use client'
 import AttendeeTable from '@/components/admin/AttendeeTable';
-import Dropdown from '@/components/dropdown';
-import IconBox from '@/components/icon/icon-box';
-import IconCashBanknotes from '@/components/icon/icon-cash-banknotes';
-import IconEye from '@/components/icon/icon-eye';
-import IconHorizontalDots from '@/components/icon/icon-horizontal-dots'; // Ensure this is imported
-import IconInfoTriangle from '@/components/icon/icon-info-triangle';
-import IconTrendingUp from '@/components/icon/icon-trending-up';
-import IconUsers from '@/components/icon/icon-users';
 import { Metadata } from 'next';
-import Link from 'next/link';
 import React from 'react';
 import CountDetails from './CountDetails';
-import BreadCrumbs from '@/components/BreadCrumbs';
+import { useQuery } from '@tanstack/react-query';
+import { fetchDashbordDataCounts } from '@/data/admin/dashbord';
+import { useSelector } from 'react-redux';
 
-export const metadata: Metadata = {
-    title: 'Sales Admin',
-};
+// export const metadata: Metadata = {
+//     title: 'Sales Admin',
+// };
 
 const Sales = () => {
+    const { token } = useSelector((state: any) => state.admin);
+
+    const { data, isError, isLoading,refetch } = useQuery({
+        queryKey: ['total-counts'],
+        queryFn: () => fetchDashbordDataCounts(token),
+    });
     return (
         <>
-            <CountDetails />
-            {/* <div className='my-4'>
+            <CountDetails data={data} />
 
-            <BreadCrumbs title1='Dashbord' title2='Registration'/>
-            </div> */}
-            <AttendeeTable />
+            <AttendeeTable refetchFn={refetch} />
         </>
     );
 };
